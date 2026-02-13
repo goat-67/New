@@ -2,70 +2,19 @@
 <html>
 <head>
     <title>Ultimate Game Hub</title>
-   <style>
-    /* 1. Base Theme & Layout */
-    body { 
-        background-color: #000; 
-        color: #fff; 
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 40px 0; 
-        margin: 0;
-        overflow-x: hidden;
-    }
+ <style>
+    /* ... existing body and h1 styles ... */
 
-    /* 2. Neon Glowing Header */
-    h1 {
-        font-size: clamp(2.5rem, 8vw, 4.5rem); /* Responsive sizing */
-        margin-bottom: 30px;
-        color: #fff;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        /* Intense Cyan Neon Glow */
-        text-shadow: 
-            0 0 5px #fff, 
-            0 0 10px #fff, 
-            0 0 20px #00f2ff, 
-            0 0 40px #00f2ff, 
-            0 0 80px #00f2ff,
-            0 0 100px #00f2ff;
-    }
-
-    /* 3. The Long Bar (Search Bar) */
-    .game-search { 
-        width: 90%; 
-        max-width: 1100px; 
-        padding: 20px 35px; 
-        background: rgba(15, 15, 15, 0.9); 
-        border: 2px solid #00f2ff; 
-        border-radius: 50px; 
-        color: #fff; 
-        margin-bottom: 60px; 
-        font-size: 1.3rem;
-        outline: none;
-        transition: all 0.4s ease;
-        box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
-        box-sizing: border-box;
-    }
-
-    .game-search:focus {
-        box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
-        background: #000;
-        transform: scale(1.01);
-    }
-
-    /* 4. Container for Game Bars */
+    /* 1. Center the container and its children */
     #sections-container { 
         display: flex; 
-        flex-direction: column; /* Stacks games vertically as bars */
-        align-items: center; 
+        flex-direction: column; 
+        align-items: center;    /* Centers the game bars horizontally */
         width: 100%; 
+        margin: 0 auto;         /* Extra insurance for centering */
     }
 
-    /* 5. Letter Headers */
+    /* 2. Ensure letter headers also align with the bars */
     .letter-header { 
         color: #00f2ff; 
         font-size: 2rem; 
@@ -74,44 +23,39 @@
         width: 90%; 
         max-width: 1100px;
         text-align: left; 
-        padding-left: 20px;
+        padding-left: 40px;     /* Matches button padding for a clean line */
         text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
-        font-weight: bold;
+        box-sizing: border-box;
     }
 
-    /* 6. Game Buttons (The Long Bars) */
+    /* 3. The Long Bars - centered and responsive */
     .game-btn { 
         background: #0a0a0a; 
         border: 1px solid #222; 
         color: #bbb; 
         padding: 20px 40px; 
-        margin: 10px 0;      
-        border-radius: 50px; /* Pill shape matching search bar */
-        width: 90%;          /* Exactly 90% wide */
+        margin: 10px auto;      /* "auto" on left/right forces centering */
+        border-radius: 50px; 
+        width: 90%;          
         max-width: 1100px;   
         cursor: pointer; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
         font-size: 1.2rem;
-        text-align: left;    /* Text on the left of the bar */
+        text-align: left;    
         box-sizing: border-box;
-        display: block;
+        display: block;         /* Necessary for margin: auto to work */
         text-transform: capitalize;
     }
 
-    /* 7. Hover Effect for Game Bars */
     .game-btn:hover { 
         border-color: #00f2ff; 
         color: #fff; 
         background: #111;
         box-shadow: 0 0 25px rgba(0, 242, 255, 0.5); 
-        transform: translateX(10px); /* Slides slightly right on hover */
+        transform: scale(1.01); /* Changed from translateX to keep it centered */
     }
-
-    /* Scrollbar Styling for that Premium Look */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: #00f2ff; border-radius: 10px; }
 </style>
+
 
 
 </head> 
