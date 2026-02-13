@@ -143,25 +143,31 @@
     
     document.head.appendChild(script);
 
-    // SEARCH LOGIC (FIXED CENTERING & WIDTH)
-document.getElementById('game-search').addEventListener('input', (e) => {
-    const val = e.target.value.toLowerCase();
-    
-    // 1. Filter Buttons
-    document.querySelectorAll('.game-btn').forEach(btn => {
-        // CHANGED: Using "block" instead of "inline-block" keeps the long bar shape
-        btn.style.display = btn.innerText.toLowerCase().includes(val) ? "block" : "none";
-    });
+  // 2. UPDATED SEARCH LOGIC (FIXED SELECTOR)
+// We use querySelector('.game-search') to match the CLASS in your HTML
+const searchBar = document.querySelector('.game-search');
 
-    // 2. Filter Sections (Headers)
-    document.querySelectorAll('div[id^="section-"]').forEach(sec => {
-        const hasVisible = Array.from(sec.querySelectorAll('.game-btn'))
-                                .some(b => b.style.display !== 'none');
+if (searchBar) {
+    searchBar.addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase();
         
-        // This hides the letter header if no games match inside it
-        sec.style.display = hasVisible ? "block" : "none";
+        // Filter every game button
+        document.querySelectorAll('.game-btn').forEach(btn => {
+            // "block" keeps them as long, centered bars
+            btn.style.display = btn.innerText.toLowerCase().includes(val) ? "block" : "none";
+        });
+
+        // Hide empty letter headers (1, A, B, etc.)
+        document.querySelectorAll('div[id^="section-"]').forEach(sec => {
+            const hasVisible = Array.from(sec.querySelectorAll('.game-btn'))
+                                    .some(b => b.style.display !== 'none');
+            sec.style.display = hasVisible ? "block" : "none";
+        });
     });
-});
+} else {
+    console.error("Search bar not found! Make sure your input has class='game-search'");
+}
+
 
       
 </script>
