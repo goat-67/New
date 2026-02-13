@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultimate Game Hub</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+        .game-search { width: 80%; padding: 15px; background: #111; border: 1px solid #00f2ff; border-radius: 10px; color: #fff; margin-bottom: 30px; text-align: center; }
+        .letter-header { color: #00f2ff; font-size: 1.5rem; margin: 20px 0; border-bottom: 1px solid #333; width: 100%; text-align: center; }
+        .game-btn { background: #050505; border: 1px solid #1a1a1a; color: #fff; padding: 15px; margin: 5px; border-radius: 8px; width: 250px; cursor: pointer; transition: 0.3s; }
+        .game-btn:hover { border-color: #00f2ff; color: #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.5); }
+        #sections-container { display: flex; flex-wrap: wrap; justify-content: center; width: 100%; }
+    </style> 
+</head>
+<body>
+    <h1>ULTIMATE GAME HUB</h1>
+    <input type="text" id="game-search" class="game-search" placeholder="Search 1,000+ games...">
+    <div id="sections-container"></div>
+<script>
+    window.GAME_HASH = "d4ec2e0f09330579581c4bbc363f990cab6ff30b"; 
+    const myUser = "aidenbblood-star";
+    const myRepo = "ugs-singlefile";
+
+    // Forces the specific hash to avoid the 871MB "Size Exceeded" error
+    window.open = (function(n) {
+        return function(url, name, specs) {
+            if (url && url.includes('jsdelivr.net')) {
+                url = url.replace(/@main|@latest/, '@' + window.GAME_HASH);
+            }
+            return n(url, name, specs);
+        };
+    })(window.open);
+
+    // LOAD GAMES.JS
+    const script = document.createElement('script');
+    script.src = `https://fastly.jsdelivr.net/gh/${myUser}/${myRepo}@${window.GAME_HASH}/src/games.js?t=${Date.now()}`;
+    
+    script.onload = () => { 
+        console.log("File found! Checking for buildStash...");
+        if (typeof buildStash === 'function') {
+            buildStash(); 
+        } else {
+            console.error("buildStash() is missing in games.js!");
+        }
+    };
+    
+    script.onerror = () => {
+        console.error("404: Could not find games.js at this Hash/Path!");
+    };
+    
+    document.head.appendChild(script);
+
+    // SEARCH LOGIC (FIXED BRACKETS)
+    document.getElementById('game-search').addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase();
+        document.querySelectorAll('.game-btn').forEach(btn => {
+            btn.style.display = btn.innerText.toLowerCase().includes(val) ? "inline-block" : "none";
+        });
+        document.querySelectorAll('div[id^="section-"]').forEach(sec => {
+            const hasVisible = Array.from(sec.querySelectorAll('.game-btn')).some(b => b.style.display !== 'none');
+            sec.style.display = hasVisible ? "block" : "none";
+        });
+    });
+</script>
+
+
+      
+
+        
+
+</body>
+</html>
