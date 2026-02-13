@@ -2,59 +2,99 @@
 <html>
 <head>
     <title>Ultimate Game Hub</title>
- <style>
-    /* ... existing body and h1 styles ... */
+<style>
+    /* 1. Base Setup - Forces everything to center */
+    body { 
+        background-color: #000; 
+        color: #fff; 
+        font-family: sans-serif; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; /* Centers items horizontally */
+        justify-content: flex-start;
+        padding: 40px 0; 
+        margin: 0;
+        width: 100%;
+    }
 
-    /* 1. Center the container and its children */
+    /* 2. Neon Glowing Header - Centered */
+    h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        color: #fff;
+        text-align: center;
+        text-transform: uppercase;
+        /* THE NEON GLOW */
+        text-shadow: 
+            0 0 5px #fff, 
+            0 0 10px #fff, 
+            0 0 20px #00f2ff, 
+            0 0 40px #00f2ff, 
+            0 0 80px #00f2ff;
+    }
+
+    /* 3. The Long Bar (Search Bar) - Centered at 90% */
+    .game-search { 
+        width: 90%; 
+        max-width: 1100px; 
+        padding: 18px 30px; 
+        background: #111; 
+        border: 2px solid #00f2ff; 
+        border-radius: 50px; 
+        color: #fff; 
+        margin: 20px auto 50px auto; /* "auto" centers it */
+        font-size: 1.2rem;
+        outline: none;
+        display: block;
+        box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+    }
+
+    /* 4. Games Container - Centers the stack of buttons */
     #sections-container { 
         display: flex; 
         flex-direction: column; 
-        align-items: center;    /* Centers the game bars horizontally */
+        align-items: center; 
         width: 100%; 
-        margin: 0 auto;         /* Extra insurance for centering */
     }
 
-    /* 2. Ensure letter headers also align with the bars */
+    /* 5. Letter Header Alignment */
     .letter-header { 
         color: #00f2ff; 
-        font-size: 2rem; 
-        margin: 50px 0 20px 0; 
+        font-size: 1.8rem; 
+        margin: 40px 0 20px 0; 
         border-bottom: 2px solid #1a1a1a; 
         width: 90%; 
-        max-width: 1100px;
-        text-align: left; 
-        padding-left: 40px;     /* Matches button padding for a clean line */
-        text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
-        box-sizing: border-box;
+        max-width: 1100px; 
+        text-align: left; /* Header stays left of the bar */
+        padding-left: 20px;
+        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
     }
 
-    /* 3. The Long Bars - centered and responsive */
+    /* 6. Game Buttons - The Long Bars */
     .game-btn { 
-        background: #0a0a0a; 
+        background: #080808; 
         border: 1px solid #222; 
-        color: #bbb; 
+        color: #fff; 
         padding: 20px 40px; 
-        margin: 10px auto;      /* "auto" on left/right forces centering */
+        margin: 10px auto; /* Centers the bar itself */
         border-radius: 50px; 
         width: 90%;          
         max-width: 1100px;   
         cursor: pointer; 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        font-size: 1.2rem;
+        transition: 0.3s; 
+        font-size: 1.1rem;
         text-align: left;    
-        box-sizing: border-box;
-        display: block;         /* Necessary for margin: auto to work */
-        text-transform: capitalize;
+        display: block;
     }
 
     .game-btn:hover { 
         border-color: #00f2ff; 
-        color: #fff; 
         background: #111;
-        box-shadow: 0 0 25px rgba(0, 242, 255, 0.5); 
-        transform: scale(1.01); /* Changed from translateX to keep it centered */
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); 
+        transform: scale(1.01);
     }
 </style>
+
 
 
 
