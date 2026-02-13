@@ -2,97 +2,117 @@
 <html>
 <head>
     <title>Ultimate Game Hub</title>
-    <style>
+   <style>
+    /* 1. Base Theme & Layout */
     body { 
         background-color: #000; 
         color: #fff; 
-        font-family: sans-serif; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
         display: flex; 
         flex-direction: column; 
         align-items: center; 
-        padding: 40px; 
+        padding: 40px 0; 
         margin: 0;
+        overflow-x: hidden;
     }
 
-    /* 1. Neon Glow H1 */
+    /* 2. Neon Glowing Header */
     h1 {
-        font-size: 3.5rem;
-        margin-bottom: 20px;
+        font-size: clamp(2.5rem, 8vw, 4.5rem); /* Responsive sizing */
+        margin-bottom: 30px;
         color: #fff;
         text-align: center;
         text-transform: uppercase;
-        /* Cyan Neon Glow */
+        letter-spacing: 4px;
+        /* Intense Cyan Neon Glow */
         text-shadow: 
             0 0 5px #fff, 
             0 0 10px #fff, 
             0 0 20px #00f2ff, 
             0 0 40px #00f2ff, 
-            0 0 80px #00f2ff;
-        letter-spacing: 5px;
+            0 0 80px #00f2ff,
+            0 0 100px #00f2ff;
     }
 
-    /* 2. The Long Bar (Search Bar) */
+    /* 3. The Long Bar (Search Bar) */
     .game-search { 
         width: 90%; 
-        max-width: 1000px; /* Stretches wide across the screen */
-        padding: 18px 30px; 
-        background: rgba(17, 17, 17, 0.8); 
+        max-width: 1100px; 
+        padding: 20px 35px; 
+        background: rgba(15, 15, 15, 0.9); 
         border: 2px solid #00f2ff; 
-        border-radius: 50px; /* Rounded pill shape */
+        border-radius: 50px; 
         color: #fff; 
-        margin-bottom: 50px; 
-        font-size: 1.2rem;
+        margin-bottom: 60px; 
+        font-size: 1.3rem;
         outline: none;
-        transition: 0.3s ease-in-out;
+        transition: all 0.4s ease;
         box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        box-sizing: border-box;
     }
 
     .game-search:focus {
-        box-shadow: 0 0 25px rgba(0, 242, 255, 0.5);
-        background: #111;
+        box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+        background: #000;
+        transform: scale(1.01);
     }
 
-    /* Game List Styling */
+    /* 4. Container for Game Bars */
+    #sections-container { 
+        display: flex; 
+        flex-direction: column; /* Stacks games vertically as bars */
+        align-items: center; 
+        width: 100%; 
+    }
+
+    /* 5. Letter Headers */
     .letter-header { 
         color: #00f2ff; 
-        font-size: 1.8rem; 
-        margin: 40px 0 20px 0; 
+        font-size: 2rem; 
+        margin: 50px 0 20px 0; 
         border-bottom: 2px solid #1a1a1a; 
-        width: 100%; 
+        width: 90%; 
+        max-width: 1100px;
         text-align: left; 
         padding-left: 20px;
-        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+        font-weight: bold;
     }
 
+    /* 6. Game Buttons (The Long Bars) */
     .game-btn { 
-        background: #080808; 
+        background: #0a0a0a; 
         border: 1px solid #222; 
-        color: #ccc; 
-        padding: 15px; 
-        margin: 8px; 
-        border-radius: 10px; 
-        width: 280px; 
+        color: #bbb; 
+        padding: 20px 40px; 
+        margin: 10px 0;      
+        border-radius: 50px; /* Pill shape matching search bar */
+        width: 90%;          /* Exactly 90% wide */
+        max-width: 1100px;   
         cursor: pointer; 
-        transition: all 0.3s ease; 
-        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        font-size: 1.2rem;
+        text-align: left;    /* Text on the left of the bar */
+        box-sizing: border-box;
+        display: block;
+        text-transform: capitalize;
     }
 
+    /* 7. Hover Effect for Game Bars */
     .game-btn:hover { 
         border-color: #00f2ff; 
         color: #fff; 
         background: #111;
-        transform: translateY(-3px); /* Slight lift effect */
-        box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4); 
+        box-shadow: 0 0 25px rgba(0, 242, 255, 0.5); 
+        transform: translateX(10px); /* Slides slightly right on hover */
     }
 
-    #sections-container { 
-        display: flex; 
-        flex-wrap: wrap; 
-        justify-content: flex-start; /* Aligns games better for a long-bar layout */
-        width: 95%; 
-        max-width: 1400px;
-    }
+    /* Scrollbar Styling for that Premium Look */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #00f2ff; border-radius: 10px; }
 </style>
+
 
 </head> 
 <body>
