@@ -99,12 +99,6 @@
     }
 </style>
 
-
-
-
-
-
-
 </head> 
 <body>
     <h1>ULTIMATE GAME HUB</h1>
@@ -117,56 +111,30 @@
 
     // 1. Load the Games Data
     const script = document.createElement('script');
+    // Ensure the URL is perfectly formatted for jsDelivr
     script.src = `https://fastly.jsdelivr.net/gh/${myUser}/${myRepo}@${window.GAME_HASH}/src/games.js?t=${Date.now()}`;
     
     script.onload = () => { 
         if (typeof buildStash === 'function') {
-            buildStash(); // 2. Build the games first
-            initSearch(); // 3. Start search logic ONLY after games exist
+            // This builds the games AND activates the search logic from games.js
+            buildStash(); 
+        } else {
+            console.error("buildStash function not found in games.js");
         }
     };
     document.head.appendChild(script);
 
-    // 4. THE SEARCH FUNCTION
-    function initSearch() {
-        const searchInput = document.getElementById('game-search');
-        if (!searchInput) return;
-
-        searchInput.addEventListener('input', () => {
-            const val = searchInput.value.toLowerCase();
-            
-            // Filter Game Buttons
-            document.querySelectorAll('.game-btn').forEach(btn => {
-                const isMatch = btn.innerText.toLowerCase().includes(val);
-                // Force 'block' to maintain the centered long-bar shape
-                btn.style.display = isMatch ? "block" : "none";
-            });
-
-            // Hide empty Letter Headers
-            document.querySelectorAll('div[id^="section-"]').forEach(sec => {
-                const hasVisible = Array.from(sec.querySelectorAll('.game-btn'))
-                                        .some(b => b.style.display !== 'none');
-                sec.style.display = hasVisible ? "block" : "none";
-            });
-        });
-    }
-
-    // 5. Fix for window.open
-    window.open = (function(n) {
+    // 2. Fix for window.open 
+    // This ensures games opened in new tabs use the correct version/hash
+    window.open = (function(originalOpen) {
         return function(url, name, specs) {
             if (url && url.includes('jsdelivr.net')) {
+                // Redirects @main or @latest to your specific GAME_HASH
                 url = url.replace(/@main|@latest/, '@' + window.GAME_HASH);
             }
-            return n(url, name, specs);
+            return originalOpen(url, name, specs);
         };
     })(window.open);
 </script>
-
-
-
-
-
-
-
 </body>
 </html>
