@@ -27,10 +27,19 @@
         letter-spacing: 5px;
         display: inline-block;
         font-weight: 900;
-        animation: neonBreath 4s ease-in-out infinite;
+        animation: neonBreathe 3s ease-in-out infinite;
     }
 
-   
+    @keyframes neonBreathe {
+        0%, 100% {
+            transform: scale(0.98);
+            text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
+        }
+        50% {
+            transform: scale(1.05);
+            text-shadow: 0 0 15px #00f2ff, 0 0 30px #00f2ff, 0 0 50px #00f2ff, 0 0 70px #00f2ff;
+        }
+    }
 
         /* 3. The Search Bar - Upgraded Neon Pill Style */
     .game-search { 
@@ -54,7 +63,7 @@
     z-index: 10;
     
     /* Idle Breathing Effect */
-    animation: neonBreath 4s infinite ease-in-out;
+    animation: idlePulse 4s infinite ease-in-out;
 }
 
 .game-search:focus {
@@ -89,16 +98,17 @@
     }
 }
 
-@keyframes neonBreath {
-        0%, 100% {
-            transform: scale(0.98);
-            text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff;
-        }
-        50% {
-            transform: scale(1.05);
-            text-shadow: 0 0 15px #00f2ff, 0 0 30px #00f2ff, 0 0 50px #00f2ff, 0 0 70px #00f2ff;
-        }
+/* Smooth Glow Animation */
+@keyframes idlePulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 
+                    inset 0 0 10px rgba(0, 242, 255, 0.1); 
     }
+    50% { 
+        box-shadow: 0 0 35px rgba(0, 242, 255, 0.4), 
+                    inset 0 0 15px rgba(0, 242, 255, 0.2); 
+    }
+}
 
 
     /* 4. The Container */
