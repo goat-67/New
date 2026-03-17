@@ -43,43 +43,72 @@
 
         /* 3. The Search Bar - Upgraded Neon Pill Style */
     .game-search { 
-        width: 90%; 
-        max-width: 700px; /* Slightly narrower makes it look more "premium" */
-        padding: 20px 40px; 
-        background: rgba(10, 10, 10, 0.9); /* Darker glass effect */
-        border: 3px solid #1a1a1a; /* Thicker border to stand out */
-        border-radius: 100px; /* Fully rounded "Pill" shape */
-        color: #fff; 
-        margin: 20px auto 50px auto; 
-        font-size: 1.3rem;
-        outline: none;
-        display: block;
-        text-align: center;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        
-        /* Stronger outer glow */
-        box-shadow: 0 0 20px rgba(0, 242, 255, 0.3), 
-                    inset 0 0 10px rgba(0, 242, 255, 0.1);
-        
-        /* Force it on top of the grid background */
-        position: relative;
-        z-index: 10;
-    }
+    width: 90%; 
+    max-width: 700px; 
+    padding: 20px 40px; 
+    background: rgba(10, 10, 10, 0.9); 
+    border: 3px solid #1a1a1a; 
+    border-radius: 100px; 
+    color: #fff; 
+    margin: 20px auto 50px auto; 
+    font-size: 1.3rem;
+    outline: none;
+    display: block;
+    text-align: center;
+    
+    /* Animation & Performance Fixes */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backface-visibility: hidden; /* Prevents text jitter on scale */
+    position: relative;
+    z-index: 10;
+    
+    /* Idle Breathing Effect */
+    animation: idlePulse 4s infinite ease-in-out;
+}
 
-    .game-search:focus {
-        background: rgba(20, 20, 20, 1);
-        border-color: #fff; /* Turns white when you type */
-        box-shadow: 0 0 40px rgba(0, 242, 255, 0.6), 
-                    0 0 10px #fff;
-        transform: scale(1.05); /* Grows slightly when clicked */
-    }
+.game-search:focus {
+    background: rgba(20, 20, 20, 1);
+    border-color: #fff; 
+    transform: scale(1.04); 
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.6), 
+                0 0 15px #fff,
+                inset 0 0 15px rgba(0, 242, 255, 0.2);
+    animation: none; /* Stop pulsing when user is typing */
+}
 
-    /* Makes the placeholder text look like a neon sign too */
-    .game-search::placeholder {
-        color: rgba(0, 242, 255, 0.5);
-        text-transform: uppercase;
-        letter-spacing: 1px;
+/* Enhanced Neon Placeholder */
+.game-search::placeholder {
+    color: rgba(0, 242, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.game-search:focus::placeholder {
+    opacity: 0.2; /* Dims placeholder when active */
+}
+
+/* Responsive Polish */
+@media (max-width: 480px) {
+    .game-search {
+        padding: 15px 25px;
+        font-size: 1.1rem;
+        width: 95%;
     }
+}
+
+/* Smooth Glow Animation */
+@keyframes idlePulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 
+                    inset 0 0 10px rgba(0, 242, 255, 0.1); 
+    }
+    50% { 
+        box-shadow: 0 0 35px rgba(0, 242, 255, 0.4), 
+                    inset 0 0 15px rgba(0, 242, 255, 0.2); 
+    }
+}
 
 
     /* 4. The Container */
