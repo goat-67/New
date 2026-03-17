@@ -101,10 +101,12 @@
 /* Smooth Glow Animation */
 @keyframes idlePulse {
     0%, 100% { 
+        transform: scale(0.98);
         box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 
                     inset 0 0 10px rgba(0, 242, 255, 0.1); 
     }
     50% { 
+        transform: scale(1.05);
         box-shadow: 0 0 35px rgba(0, 242, 255, 0.4), 
                     inset 0 0 15px rgba(0, 242, 255, 0.2); 
     }
