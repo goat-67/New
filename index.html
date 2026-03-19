@@ -1,7 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UGH Math</title>
+    <title>UGH Math</title> 
+    <script>
+    (function() {
+        const BLOCKED = 'cdn.jsdelivr.net';
+        const WORKING = 'fastly.jsdelivr.net';
+        
+        // This part intercepts background requests
+        const originalOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url) {
+            if (typeof url === 'string' && url.includes(BLOCKED)) {
+                url = url.replace(BLOCKED, WORKING);
+            }
+            return originalOpen.apply(this, arguments);
+        };
+
+        // This part intercepts elements being added to the page
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    const attr = node.tagName === 'LINK' ? 'href' : 'src';
+                    if (node[attr] && typeof node[attr] === 'string' && node[attr].includes(BLOCKED)) {
+                        node[attr] = node[attr].replace(BLOCKED, WORKING);
+                    }
+                });
+            });
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+    })();
+    </script>
+
 <style>
     /* 1. Universal Layout Fix - Added subtle texture */
     html, body { 
@@ -239,7 +268,7 @@ body::after {
     <div class="grid-bg"></div>
 
 <script>
-    window.GAME_HASH = "46585649e8c270d0045fbd5f6319c1b032fe1c1c"; 
+    window.GAME_HASH = "6c72416a5de34da445461be3e07fdb713d85b4a4"; 
     const myUser = "goat-67";
     const myRepo = "ugs-singlefile";
 
