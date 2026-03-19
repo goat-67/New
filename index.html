@@ -19,16 +19,36 @@
     }
 
     /* 2. Neon Header - Smooth Breathing */
-    h1 {
-        font-size: clamp(2rem, 8vw, 3.5rem); /* Responsive sizing */
-        margin: 50px 0 20px 0;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        display: inline-block;
-        font-weight: 900;
-        animation: neonBreathe 3s ease-in-out infinite;
-    }
+    /* Container to control alignment of both headers */
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Change to 'center' to center both */
+}
+
+h1, h2 {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    padding-left: 5px; /* Balances the letter-spacing so it's not off-center */
+    display: block; 
+    margin: 0;
+    animation: neonBreathe 3s ease-in-out infinite;
+}
+
+h1 {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-weight: 900;
+    margin-top: 50px;    /* Space above the whole group */
+    margin-bottom: 10px; /* Space between H1 and H2 */
+}
+
+h2 {
+    font-size: clamp(1.75rem, 7.75vw, 3.25rem);
+    font-weight: 700;
+    margin-bottom: 20px; /* Space below the whole group */
+}
+
 
     @keyframes neonBreathe {
         0%, 100% {
@@ -210,7 +230,10 @@ body::after {
 
 </head> 
 <body>
-    <h1> MORE GAMES SOON AT ULTIMATE GAME HUB</h1>
+   <div class="header-container">
+    <h1>ULTIMATE GAME HUB</h1>
+    <h2>LAST SWING ADDED</h2>
+</div>
     <input type="text" id="game-search" class="game-search" placeholder="Search from 1,205 games...">
     <div id="sections-container"></div>
     <div class="grid-bg"></div>
