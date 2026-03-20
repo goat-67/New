@@ -2,82 +2,29 @@
 <html>
 <head>
     <title>UGH Math</title> 
-    <script>
+ 
+<script>
 (function() {
-    const BLOCKED = 'cdn.jsdelivr.net';
-    const WORKING = 'fastly.jsdelivr.net';
+    const fix = (u) => (typeof u === 'string' && u.includes('cdn.jsdelivr.net')) 
+        ? u.replace('cdn.jsdelivr.net', 'fastly.jsdelivr.net') : u;
 
-    // Helper to swap the URL string
-    const fixUrl = (url) => {
-        if (typeof url === 'string' && url.includes(BLOCKED)) {
-            return url.replace(BLOCKED, WORKING);
-        }
-        return url;
-    };
-
-    // 1. TRAP: window.open (When you click a button to open a game)
-    const originalWindowOpen = window.open;
-    window.open = function(url, target, features) {
-        console.log("Intercepted window.open:", url);
-        return originalWindowOpen.call(this, fixUrl(url), target, features);
-    };
-
-    // 2. TRAP: Link Clicks (In case games.js makes <a> tags)
-    document.addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        if (link && link.href) {
-            link.href = fixUrl(link.href);
-        }
-    }, true);
-
-    // 3. TRAP: Fetch API (For the game's internal data/assets)
-    const originalFetch = window.fetch;
-    window.fetch = function(input, init) {
-        if (typeof input === 'string') {
-            input = fixUrl(input);
-        } else if (input instanceof Request) {
-            input = new Request(fixUrl(input.url), input);
-        }
-        return originalFetch(input, init);
-    };
-
-    // 4. TRAP: XMLHttpRequest (For older games)
-    const originalOpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function(method, url) {
-        return originalOpen.apply(this, [method, fixUrl(url), ...Array.from(arguments).slice(2)]);
-    };
-
-    // 5. TRAP: Attribute Setters (For new Image(), Script.src, etc.)
-    const interceptAttr = (obj, attr) => {
-        const descriptor = Object.getOwnPropertyDescriptor(obj.prototype, attr);
-        if (!descriptor) return;
-        Object.defineProperty(obj.prototype, attr, {
-            set(val) { descriptor.set.call(this, fixUrl(val)); },
-            get() { return descriptor.get.call(this); }
-        });
-    };
-    interceptAttr(HTMLImageElement, 'src');
-    interceptAttr(HTMLScriptElement, 'src');
-    interceptAttr(HTMLAudioElement, 'src');
-    interceptAttr(HTMLLinkElement, 'href');
-
-    // 6. OBSERVER: Watch for any new tags added to the page by games.js
+    // 1. Fix the Hub's CSS and Scripts immediately
     const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-                if (node.nodeType === 1) { // Only Elements
-                    const attr = node.tagName === 'LINK' ? 'href' : 'src';
-                    if (node[attr]) node[attr] = fixUrl(node[attr]);
-                }
-            });
-        });
+        mutations.forEach(m => m.addedNodes.forEach(node => {
+            if (node.tagName === 'LINK' && node.href) node.href = fix(node.href);
+            if (node.tagName === 'SCRIPT' && node.src) node.src = fix(node.src);
+            if (node.tagName === 'IMG' && node.src) node.src = fix(node.src);
+        }));
     });
     observer.observe(document.documentElement, { childList: true, subtree: true });
 
-    console.log("Master Interceptor Active: All jsDelivr links will now use Fastly.");
+    // 2. Initial fix for tags already in the HTML (like your CSS)
+    document.querySelectorAll('link, script, img').forEach(el => {
+        if (el.href) el.href = fix(el.href);
+        if (el.src) el.src = fix(el.src);
+    });
 })();
 </script>
-
 
 
 
@@ -318,7 +265,7 @@ body::after {
     <div class="grid-bg"></div>
 
 <script>
-    window.GAME_HASH = "cd21799192a53fab6e07532cfd5d30da69171207"; 
+    window.GAME_HASH = "1a36d09d1b172706afe52eeab2679bf04be02777"; 
     const myUser = "goat-67";
     const myRepo = "ugs-singlefile";
 
