@@ -3,33 +3,83 @@
 <head>
     <title>UGH Math</title> 
     <script>
-    (function() {
-        const BLOCKED = 'cdn.jsdelivr.net';
-        const WORKING = 'fastly.jsdelivr.net';
-        
-        // This part intercepts background requests
-        const originalOpen = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = function(method, url) {
-            if (typeof url === 'string' && url.includes(BLOCKED)) {
-                url = url.replace(BLOCKED, WORKING);
-            }
-            return originalOpen.apply(this, arguments);
-        };
+(function() {
+    const BLOCKED = 'cdn.jsdelivr.net';
+    const WORKING = 'fastly.jsdelivr.net';
 
-        // This part intercepts elements being added to the page
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
+    // Helper to swap the URL string
+    const fixUrl = (url) => {
+        if (typeof url === 'string' && url.includes(BLOCKED)) {
+            return url.replace(BLOCKED, WORKING);
+        }
+        return url;
+    };
+
+    // 1. TRAP: window.open (When you click a button to open a game)
+    const originalWindowOpen = window.open;
+    window.open = function(url, target, features) {
+        console.log("Intercepted window.open:", url);
+        return originalWindowOpen.call(this, fixUrl(url), target, features);
+    };
+
+    // 2. TRAP: Link Clicks (In case games.js makes <a> tags)
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && link.href) {
+            link.href = fixUrl(link.href);
+        }
+    }, true);
+
+    // 3. TRAP: Fetch API (For the game's internal data/assets)
+    const originalFetch = window.fetch;
+    window.fetch = function(input, init) {
+        if (typeof input === 'string') {
+            input = fixUrl(input);
+        } else if (input instanceof Request) {
+            input = new Request(fixUrl(input.url), input);
+        }
+        return originalFetch(input, init);
+    };
+
+    // 4. TRAP: XMLHttpRequest (For older games)
+    const originalOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function(method, url) {
+        return originalOpen.apply(this, [method, fixUrl(url), ...Array.from(arguments).slice(2)]);
+    };
+
+    // 5. TRAP: Attribute Setters (For new Image(), Script.src, etc.)
+    const interceptAttr = (obj, attr) => {
+        const descriptor = Object.getOwnPropertyDescriptor(obj.prototype, attr);
+        if (!descriptor) return;
+        Object.defineProperty(obj.prototype, attr, {
+            set(val) { descriptor.set.call(this, fixUrl(val)); },
+            get() { return descriptor.get.call(this); }
+        });
+    };
+    interceptAttr(HTMLImageElement, 'src');
+    interceptAttr(HTMLScriptElement, 'src');
+    interceptAttr(HTMLAudioElement, 'src');
+    interceptAttr(HTMLLinkElement, 'href');
+
+    // 6. OBSERVER: Watch for any new tags added to the page by games.js
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Only Elements
                     const attr = node.tagName === 'LINK' ? 'href' : 'src';
-                    if (node[attr] && typeof node[attr] === 'string' && node[attr].includes(BLOCKED)) {
-                        node[attr] = node[attr].replace(BLOCKED, WORKING);
-                    }
-                });
+                    if (node[attr]) node[attr] = fixUrl(node[attr]);
+                }
             });
         });
-        observer.observe(document.documentElement, { childList: true, subtree: true });
-    })();
-    </script>
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+
+    console.log("Master Interceptor Active: All jsDelivr links will now use Fastly.");
+})();
+</script>
+
+
+
 
 <style>
     /* 1. Universal Layout Fix - Added subtle texture */
