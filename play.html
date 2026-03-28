@@ -127,16 +127,33 @@
 
         if (list && list[gameId]) {
             const game = list[gameId];
+            
+            // 1. Set the Title
             let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
             document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
+            // 2. The Download Link (Using JSDelivr is fine here because we aren't using an iframe yet)
             const fileName = game.gameUrl.split('/').pop();
-            
-            // We use Statically here. It's usually unblocked and faster for schools.
-            // Adding '?v=1' helps bypass some basic iframe-busting headers.
-            const finalUrl = `https://cdn.statically.io/gh/goat-67/ugs-singlefile/main/UGS-Files/${fileName}?v=1`;
-            
-            document.getElementById('game-frame').src = finalUrl;
+            const fetchUrl = `https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+
+            // 3. THE MAGIC: Fetch the game code as text
+            fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(html => {
+                    // Turn the text into a "Blob" (a fake file)
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    // Force the iframe to load the Blob
+                    document.getElementById('game-frame').src = blobUrl;
+                })
+                .catch(err => {
+                    console.error("Fetch failed:", err);
+                    document.getElementById('display-title').innerText = "LOAD ERROR - CHECK CONSOLE";
+                });
         }
     };
 </script>
