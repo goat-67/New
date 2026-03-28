@@ -5,97 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDXP | Playing</title>
     <style>
-        /* 1. Base Styles */
-        body, html {
-            margin: 0; padding: 0;
-            background-color: #1a1a1a;
-            color: #fff;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden; /* Keeps it tight and clean */
-        }
-
-        /* 2. Top Header */
-        nav {
-            background-color: #0c0c0c;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border-bottom: 2px solid #d4af37; /* Gold Accent Line */
-        }
-
-        .menu-icon {
-            position: absolute;
-            left: 20px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        body, html { margin: 0; padding: 0; background-color: #1a1a1a; color: #fff; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+        nav { background-color: #0c0c0c; height: 70px; display: flex; align-items: center; justify-content: center; position: relative; border-bottom: 2px solid #d4af37; }
+        .menu-icon { position: absolute; left: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; }
         .menu-icon div { width: 25px; height: 3px; background-color: #fff; }
-
-        .logo {
-            font-size: 38px;
-            font-weight: 900;
-            color: #ff3e3e; 
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            text-shadow: 3px 3px 0px #000;
-            cursor: pointer;
-        }
-
-        /* 3. Game Layout Area */
-        .game-wrapper {
-            max-width: 1100px;
-            margin: 40px auto; /* Centered with top spacing */
-            padding: 0 20px;
-        }
-
-        .iframe-container {
-            width: 100%;
-            height: 70vh;
-            aspect-ratio: 16 / 9;
-            background: #000;
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        }
-
+        .logo { font-size: 38px; font-weight: 900; color: #ff3e3e; letter-spacing: -2px; text-transform: uppercase; text-shadow: 3px 3px 0px #000; cursor: pointer; }
+        .game-wrapper { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .iframe-container { width: 100%; height: 75vh; background: #000; border-radius: 8px 8px 0 0; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        
+        /* IMPORTANT: Added allowfullscreen support */
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* 4. Control Bar (Under Game) */
-        .control-bar {
-            background-color: #2b2b2b;
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
+        .control-bar { background-color: #2b2b2b; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; border-radius: 0 0 8px 8px; }
         .game-title { font-weight: bold; font-size: 18px; text-transform: uppercase; }
-        .star-icon { color: #fff; font-size: 20px; opacity: 0.6; }
-
-        .fs-btn {
-            background-color: #ff8c00; /* Orange Fullscreen Button */
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 12px;
-            transition: 0.2s;
-        }
+        .fs-btn { background-color: #ff8c00; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; transition: 0.2s; }
         .fs-btn:hover { background-color: #ffae42; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
     <nav>
         <div class="menu-icon" onclick="window.location.href='index.html'">
             <div></div><div></div><div></div>
@@ -104,61 +32,56 @@
     </nav>
 
     <div class="game-wrapper">
-        <!-- The Game Viewport -->
         <div class="iframe-container">
-            <iframe id="game-frame" src=""></iframe>
+            <!-- Added allowfullscreen and allow="fullscreen" for Chromebooks -->
+            <iframe id="game-frame" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" allow="fullscreen"></iframe>
         </div>
 
-        <!-- Grey Control Bar -->
         <div class="control-bar">
             <div id="display-title" class="game-title">Loading...</div>
-            <div class="star-icon">☆</div>
             <button class="fs-btn" onclick="openFullscreen()">Fullscreen</button>
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
+    <!-- 1. Load your games list (Change URL if your games.js moved) -->
+    <script src="https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
 
-<script>
-    window.onload = () => {
-        const params = new URLSearchParams(window.location.search);
-        const gameId = params.get('id');
-        const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
-
-        if (list && list[gameId]) {
-            const game = list[gameId];
+    <script>
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const gameId = params.get('id');
             
-            // 1. Set the Title
-            let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
+            // Check if list exists (Handles allGames or myGamesList)
+            const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
-            // 2. The Download Link (Using JSDelivr is fine here because we aren't using an iframe yet)
-            const fileName = game.gameUrl.split('/').pop();
-            const fetchUrl = `https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+            if (list && list[gameId]) {
+                const game = list[gameId];
+                let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+                document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
-            // 3. THE MAGIC: Fetch the game code as text
-            fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.text();
-                })
-                .then(html => {
-                    // Turn the text into a "Blob" (a fake file)
-                    const blob = new Blob([html], { type: 'text/html' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    // Force the iframe to load the Blob
-                    document.getElementById('game-frame').src = blobUrl;
-                })
-                .catch(err => {
-                    console.error("Fetch failed:", err);
-                    document.getElementById('display-title').innerText = "LOAD ERROR - CHECK CONSOLE";
-                });
+                // THE BLOB FETCH (The filter bypass)
+                const fileName = game.gameUrl.split('/').pop();
+                const fetchUrl = `https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+
+                fetch(fetchUrl)
+                    .then(r => r.text())
+                    .then(html => {
+                        const blob = new Blob([html], { type: 'text/html' });
+                        document.getElementById('game-frame').src = URL.createObjectURL(blob);
+                    })
+                    .catch(err => {
+                        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+                    });
+            }
+        };
+
+        // FIXED FULLSCREEN FUNCTION
+        function openFullscreen() {
+            const elem = document.getElementById("game-frame");
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } // Chrome/Chromebooks
+            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
         }
-    };
-</script>
-
-
-
+    </script>
 </body>
 </html>
