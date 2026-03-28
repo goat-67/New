@@ -1,112 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ULTIMATE GAME HUB</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDXP | ULTIMATE GAME HUB</title>
+    
     <style>
-        /* 1. The Matte Background */
-        body { 
+        /* 1. Base Layout - Official Matte Grey */
+        html, body { 
             background-color: #1a1a1a; 
             color: #fff; 
-            font-family: 'Segoe UI', Arial, sans-serif; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0; padding: 0;
             overflow-x: hidden;
         }
 
-        /* 2. The Message Head (Top Bar) */
-        .update-bar {
-            background: #000;
-            border-bottom: 1px solid #333;
-            padding: 10px 20px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #888;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .update-bar b { color: #ff3e3e; margin-right: 8px; }
-
-        /* 3. The SDXP Navbar */
+        /* 2. Top Navigation (Logo & Search) */
         nav {
-            background-color: #121212; 
-            height: 65px;
+            background-color: #080808; /* Deep black to make logo pop */
+            height: 85px;
             display: flex;
             align-items: center;
-            justify-content: center; /* This centers the logo */
-            padding: 0 30px;
-            border-bottom: 1px solid #282828;
-            position: sticky;
-            top: 0; z-index: 1000;
+            justify-content: center; /* Centers the logo */
+            padding: 0 40px;
+            position: relative;
+            z-index: 1001;
+            border-bottom: 1px solid #1a1a1a;
         }
 
+        /* THE OFFICIAL SDXP LOGO WITH DEPTH SHADOW */
         .logo {
-            font-size: 28px;
+            font-size: 45px;
             font-weight: 900;
             color: #ff3e3e; 
-            letter-spacing: -1px;
+            letter-spacing: -2px;
             text-transform: uppercase;
             cursor: pointer;
+            /* 3D SHADOW: Subtle red glow + heavy black drop shadows */
+            text-shadow: 
+                0 2px 4px rgba(255, 62, 62, 0.4), 
+                0 10px 25px rgba(0, 0, 0, 0.9),
+                0 15px 40px rgba(0, 0, 0, 0.6);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .logo:hover { transform: scale(1.05); }
+
+        /* 3. THE GOLD UPDATE BAR (Message Head) */
+        .update-bar {
+            background: #000;
+            border-bottom: 1px solid #222;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            width: 100%;
+            font-weight: 800;
+            /* Metallic Gold Gradient Effect */
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            box-shadow: inset 0 -1px 0 rgba(184, 134, 11, 0.1);
         }
 
-        /* 4. Rectangular Search (Pushed to Right) */
+        /* 4. RECTANGULAR SEARCH WRAPPER (Far Right) */
         .search-wrapper { 
             position: absolute; 
-            right: 30px; 
-            width: 240px; 
+            right: 40px; 
+            width: 260px; 
         }
 
         .game-search {
             width: 100%;
-            background: #0a0a0a;
+            background: #111;
             border: 1px solid #333;
-            border-radius: 4px;
-            padding: 8px 12px;
+            border-radius: 4px; /* Square rectangular edges */
+            padding: 10px 15px;
             color: #fff;
             outline: none;
             font-size: 13px;
+            transition: 0.2s;
         }
-        .game-search:focus { border-color: #ff3e3e; }
+        .game-search:focus { 
+            border-color: #d4af37; /* Gold glow on focus */
+            background: #000; 
+        }
 
-        /* 5. The Icon Grid */
+        /* 5. SEARCH DROPDOWN (Top 5 Results) */
+        #search-dropdown {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            width: 100%;
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 4px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .search-item {
+            display: block;
+            padding: 12px;
+            color: #eee;
+            text-decoration: none;
+            border-bottom: 1px solid #222;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .search-item:hover { 
+            background: #1a1a1a; 
+            color: #ff3e3e; 
+        }
+
+        /* 6. ICON GRID (The Squircles) */
         #sections-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
             gap: 20px;
-            padding: 40px 60px;
+            padding: 40px 60px 100px 60px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Squircle Game Buttons */
+        /* The Game Button Styles */
         .game-btn {
             aspect-ratio: 1 / 1;
             background: #2b2b2b;
-            border-radius: 22px; 
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; color: #fff; font-weight: bold;
-            text-decoration: none; padding: 15px;
-            transition: transform 0.1s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-radius: 22px; /* The Official Squircle Radius */
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            text-align: center; 
+            color: #fff; 
+            font-weight: bold;
+            text-decoration: none; 
+            padding: 15px;
+            transition: transform 0.15s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             border: none;
             cursor: pointer;
         }
-        .game-btn:hover { transform: scale(1.05); background: #353535; }
-
-        /* Search Dropdown */
-        #search-dropdown {
-            position: absolute; top: 45px; right: 0; width: 100%;
-            background: #111; border: 1px solid #333; border-radius: 4px;
-            display: none; z-index: 1000;
+        .game-btn:hover { 
+            transform: scale(1.05); 
+            background: #353535; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
         }
-        .search-item { display: block; padding: 10px; color: #eee; text-decoration: none; border-bottom: 1px solid #222; font-size: 12px; }
-        .search-item:hover { background: #1a1a1a; color: #ff3e3e; }
     </style>
-</head> 
+</head>
 <body>
 
-    <div class="update-bar">
-        <b>UPDATE:</b> 1,205 GAMES LOADED. WORKING ON FIXING LINKS FOR SCHOOL COMPUTERS.
-    </div>
-
+    <!-- 1. NAVIGATION BAR (LOGO TOP) -->
     <nav>
         <div class="logo">SDXP</div>
         
@@ -116,15 +161,26 @@
         </div>
     </nav>
 
+    <!-- 2. GOLD UPDATE BAR (BELOW LOGO) -->
+    <div class="update-bar">
+        UPDATE: 1,205 GAMES LOADED. WORKING ON FIXING LINKS FOR SCHOOL COMPUTERS.
+    </div>
+
+    <!-- 3. MAIN GAME CONTENT -->
     <div id="sections-container"></div>
 
 <script>
-    // Replace 'myGamesList' with your list name if needed
+    // THE SEARCH LOGIC
     function sdxpSearch() {
         let input = document.getElementById('game-search').value.toLowerCase();
         let dropdown = document.getElementById('search-dropdown');
-        if (input.length < 2) { dropdown.style.display = "none"; return; }
+        
+        if (input.length < 2) {
+            dropdown.style.display = "none";
+            return;
+        }
 
+        // Change 'myGamesList' if your array has a different name in games.js
         if (typeof myGamesList === 'undefined') return;
 
         let matches = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 5);
@@ -140,11 +196,18 @@
         }
     }
 
-    // Load your games.js (Replace with your actual URL)
+    // LOAD GAMES.JS FROM YOUR REPO
+    window.GAME_HASH = "1a36d09d1b172706afe52eeab2679bf04be02777"; 
     const script = document.createElement('script');
-    script.src = `https://fastly.jsdelivr.net`;
-    script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
+    script.src = `https://fastly.jsdelivr.net{window.GAME_HASH}/src/games.js`;
+    
+    script.onload = () => { 
+        if (typeof buildStash === 'function') {
+            buildStash(); 
+        }
+    };
     document.head.appendChild(script);
 </script>
+
 </body>
 </html>
