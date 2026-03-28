@@ -222,19 +222,35 @@
         <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
         <a href="https://lecture.library.english.literature.technology.ebb.com.au/" target="_blank">STRONGDOGXP</a>
         <a href="https://math.geometry.algebra.learning.windsurfwetter.de/"target="_blank">STRONGDOGXP</a>
-       <a href="#" onclick="
-  fetch('https://goat-67.github.io/New/index.html' + Date.now())
-    .then(response => response.text())
-    .then(text => {
-      const newWin = window.open('about:blank', '_blank');
-      if (newWin) {
-        newWin.document.open();
-        newWin.document.write(text);
-        newWin.document.close();
-      }
-    });
-  return false;
-">Open In about_blank</a>
+      <a href="#" onclick="
+    // 1. Open the blank window immediately
+    const win = window.open('about:blank', '_blank');
+    
+    // 2. Define the URL to cloak
+    const url = 'https://goat-67.github.io';
+
+    if (win) {
+        // 3. Create a full-screen iframe inside the new window
+        const iframe = win.document.createElement('iframe');
+        iframe.src = url;
+        
+        // 4. Style it to cover the entire page
+        iframe.style.position = 'fixed';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.margin = '0';
+        iframe.style.padding = '0';
+        
+        // 5. Add it to the new window
+        win.document.body.appendChild(iframe);
+        win.document.body.style.margin = '0';
+    }
+    return false;
+">Open in about_blank</a>
+
 
     </div>
 
