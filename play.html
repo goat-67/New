@@ -117,34 +117,30 @@
         </div>
     </div>
 
- <script>
-    const params = new URLSearchParams(window.location.search);
-    let rawUrl = params.get('url');
-    const gameName = params.get('name');
+<script src="https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
 
-    if (rawUrl) {
-        // 1. Remove that persistent hidden space if it's still there
-        rawUrl = rawUrl.trim();
+<script>
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const gameId = params.get('id');
+        const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
-        // 2. Clean the encoding so %3A becomes : and %2F becomes /
-        let cleanUrl = decodeURIComponent(rawUrl);
-        
-        // 3. Set the iframe source
-        document.getElementById('game-frame').src = cleanUrl;
-        console.log("Loading Game from:", cleanUrl); // Check your console (F12) to see this
-    }
+        if (list && list[gameId]) {
+            const game = list[gameId];
+            let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
-    if (gameName) {
-        document.getElementById('display-title').innerText = decodeURIComponent(gameName).toUpperCase();
-    }
-
-    function openFullscreen() {
-        const elem = document.getElementById("game-frame");
-        if (elem.requestFullscreen) { elem.requestFullscreen(); }
-        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
-        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
-    }
+            const fileName = game.gameUrl.split('/').pop();
+            
+            // We use Statically here. It's usually unblocked and faster for schools.
+            // Adding '?v=1' helps bypass some basic iframe-busting headers.
+            const finalUrl = `https://cdn.statically.io/gh/goat-67/ugs-singlefile/main/UGS-Files/${fileName}?v=1`;
+            
+            document.getElementById('game-frame').src = finalUrl;
+        }
+    };
 </script>
+
 
 
 </body>
