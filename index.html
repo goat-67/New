@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDXP | ULTIMATE GAME HUB</title>
     
-   <style>
+ <style>
     /* 1. BASE LAYOUT - MATTE CHARCOAL */
     html, body { 
         background-color: #2b2b2b; 
@@ -15,7 +15,7 @@
         overflow-x: hidden;
     }
 
-    /* 2. FLOATING NAVIGATION BAR */
+    /* 2. NAVIGATION BAR (STAYING ON TOP) */
     nav {
         background-color: #121212;
         height: 75px;
@@ -23,10 +23,9 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 30px;
-        position: relative; /* REQUIRED for logo centering */
+        position: relative; /* CRITICAL for logo centering */
         z-index: 2000;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
 
     /* MENU ICON (LEFT) */
@@ -38,32 +37,22 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%); /* Mathematical Dead Center */
+        transform: translate(-50%, -50%);
         font-size: 42px;
         font-weight: 900;
-        color: #235bff; /* Your Electric Cobalt */
+        color: #235bff; 
         letter-spacing: -2.5px;
         text-transform: uppercase;
-        /* Double Shadow: Sharp Edge + Deep Blue Glow */
-        text-shadow: 
-            3px 3px 0px #000, 
-            0 0 20px rgba(35, 91, 255, 0.4);
+        text-shadow: 3px 3px 0px #000, 0 0 20px rgba(35, 91, 255, 0.4);
         cursor: pointer;
         white-space: nowrap;
-        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .logo:hover {
-        transform: translate(-50%, -55%) scale(1.05);
-        text-shadow: 3px 3px 0px #000, 0 0 30px rgba(35, 91, 255, 0.7);
     }
 
     /* NAV RIGHT (SEARCH & GRID) */
     .nav-right { display: flex; align-items: center; gap: 15px; position: relative; z-index: 1100; }
-    
     .grid-icon { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; opacity: 0.6; }
     .grid-icon div { width: 4px; height: 4px; background: #fff; border-radius: 1px; }
 
-    /* PILL SEARCH BAR */
     .search-wrapper { position: relative; width: 230px; }
     .game-search {
         width: 100%;
@@ -74,62 +63,55 @@
         color: #fff;
         font-size: 13px;
         outline: none;
-        transition: 0.2s;
     }
-    .game-search:focus { border-color: #235bff; box-shadow: 0 0 10px rgba(35, 91, 255, 0.3); }
+    .game-search:focus { border-color: #235bff; }
 
-    /* FLOATING SEARCH DROPDOWN */
-    #search-results {
-        position: absolute;
-        top: 50px;
-        right: 0;
-        width: 280px;
-        background: #151515;
-        border: 1px solid #333;
-        border-radius: 12px;
-        display: none;
-        z-index: 3000;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-        max-height: 400px;
-        overflow-y: auto;
-    }
-    .search-item { 
-        display: block; padding: 14px 18px; color: #eee; 
-        text-decoration: none; font-size: 13px; border-bottom: 1px solid #222; 
-        transition: 0.2s;
-    }
-    .search-item:hover { background: #1f1f1f; color: #235bff; }
+  /* 3. ENHANCED METALLIC UPDATE BAR */
+.update-bar {
+    /* More black on the edges to center the shine */
+    background: linear-gradient(to right, #000 0%, #bf953f 35%, #fcf6ba 50%, #bf953f 65%, #000 100%);
+    
+    /* BIGGER HEIGHT: Increased from 14px to 22px */
+    padding: 22px 0; 
+    
+    text-align: center;
+    
+    /* BIGGER TEXT: Increased from 0.85rem to 1.1rem */
+    font-size: 1.1rem; 
+    
+    /* WIDER SPACING: Increased from 2px to 4px for that "cinematic" look */
+    letter-spacing: 4px; 
+    
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #2a2005; 
+    
+    /* HEAVIER SHADOW: Makes the bigger bar pop off the screen */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    
+    position: relative;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    /* 3. SOLID GOLD UPDATE BAR (Metallic Polish) */
-    .update-bar {
-        background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
-        padding: 12px 0;
-        text-align: center;
-        font-size: 0.85rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-weight: 900;
-        color: #2a2005; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        width: 100%;
-    }
 
-    /* 4. PREMIUM SLATE GAME GRID */
+    /* 4. PREMIUM 3D SLATE GAME GRID */
     #sections-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
-        gap: 14px;
-        padding: 30px 45px;
+        gap: 15px;
+        padding: 40px 50px;
         max-width: 1600px;
         margin: 0 auto;
     }
 
-    /* THE PREMIUM SQUIRCLES (3D Deep Slate) */
+    /* THE "TRIPLE-LAYER" PREMIUM SQUIRCLES */
     .game-btn {
         aspect-ratio: 1 / 1;
-        background-color: #1e1e1e; /* Deep Slate */
-        color: #888; /* Soft White/Grey Text */
-        border-radius: 20px;
+        /* Vertical Gradient: Light Slate to Dark Slate */
+        background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+        color: #999;
+        border-radius: 22px;
         display: flex; 
         align-items: center; 
         justify-content: center;
@@ -138,31 +120,33 @@
         text-transform: uppercase;
         text-align: center;
         padding: 12px;
-        border: 1px solid #333;
         cursor: pointer;
+        border: 1px solid #111; /* Dark border to recede */
         
-        /* 3D DEPTH: Inset light edge + Heavy outer shadow */
+        /* THE PREMIUM DEPTH EFFECT */
         box-shadow: 
-            inset 0 1px 1px rgba(255, 255, 255, 0.05), 
-            0 8px 15px rgba(0,0,0,0.4);
+            inset 0 2px 2px rgba(255, 255, 255, 0.08), /* Top "Glass" Highlight */
+            inset 0 -2px 2px rgba(0, 0, 0, 0.5),      /* Bottom Inner Shadow */
+            0 8px 20px rgba(0,0,0,0.5);               /* Heavy Floor Shadow */
         
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         word-break: break-word;
     }
 
     .game-btn:hover { 
-        transform: translateY(-8px) scale(1.15); /* Jumps toward user */
-        background-color: #252525;
-        color: #fff; /* Text lights up white */
+        transform: translateY(-10px) scale(1.15); 
+        background: #252525;
+        color: #fff;
         
-        /* ELECTRIC COBALT ACCENT - Matches Logo */
+        /* ELECTRIC COBALT GLOW */
         border-color: #235bff; 
         box-shadow: 
-            0 0 20px rgba(35, 91, 255, 0.4), 
-            0 15px 35px rgba(0,0,0,0.7);
+            0 0 25px rgba(35, 91, 255, 0.5), 
+            0 20px 40px rgba(0,0,0,0.8);
         z-index: 10;
     }
 </style>
+
 
 </head>
 <body>
