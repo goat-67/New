@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDXP | ULTIMATE GAME HUB</title>
     
- <style>
+<style>
     /* 1. BASE LAYOUT - MATTE CHARCOAL */
     html, body { 
         background-color: #2b2b2b; 
@@ -13,9 +13,53 @@
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
         margin: 0; padding: 0;
         overflow-x: hidden;
+        scroll-behavior: smooth;
     }
 
-    /* 2. NAVIGATION BAR (STAYING ON TOP) */
+    /* 2. FLOATING SIDEBAR (DOES NOT MOVE PAGE) */
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed; /* Fixes it to the side so it doesn't push the page */
+        z-index: 3000;   /* Sits on top of everything */
+        top: 0;
+        left: 0;
+        background-color: #111111;
+        overflow-x: hidden;
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: 80px;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    }
+
+    .sidebar a {
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 16px;
+        color: #888;
+        display: block;
+        transition: 0.2s;
+        border-left: 3px solid transparent;
+        white-space: nowrap;
+    }
+
+    .sidebar a:hover {
+        color: #235bff;
+        background: #1a1a1a;
+        border-left: 3px solid #235bff;
+    }
+
+    /* CLOSE BUTTON INSIDE SIDEBAR */
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 36px;
+        color: #818181;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    /* 3. NAVIGATION BAR */
     nav {
         background-color: #121212;
         height: 75px;
@@ -23,16 +67,20 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 30px;
-        position: relative; /* CRITICAL for logo centering */
+        position: relative; /* Anchor for logo centering */
         z-index: 2000;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
 
-    /* MENU ICON (LEFT) */
-    .menu-icon { cursor: pointer; z-index: 1100; position: relative; }
+    /* MENU ICON (Z-INDEX MUST BE HIGH) */
+    .menu-icon { 
+        cursor: pointer; 
+        z-index: 3100; /* Stays above sidebar so you can close it */
+        position: relative; 
+    }
     .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; transition: 0.3s; }
 
-    /* ELECTRIC COBALT LOGO (ABSOLUTE CENTER) */
+    /* LOGO (ABSOLUTE CENTER) */
     .logo {
         position: absolute;
         left: 50%;
@@ -48,7 +96,7 @@
         white-space: nowrap;
     }
 
-    /* NAV RIGHT (SEARCH & GRID) */
+    /* NAV RIGHT */
     .nav-right { display: flex; align-items: center; gap: 15px; position: relative; z-index: 1100; }
     .grid-icon { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; opacity: 0.6; }
     .grid-icon div { width: 4px; height: 4px; background: #fff; border-radius: 1px; }
@@ -66,36 +114,22 @@
     }
     .game-search:focus { border-color: #235bff; }
 
-  /* 3. ENHANCED METALLIC UPDATE BAR */
-.update-bar {
-    /* More black on the edges to center the shine */
-    background: linear-gradient(to right, #000 0%, #bf953f 35%, #fcf6ba 50%, #bf953f 65%, #000 100%);
-    
-    /* BIGGER HEIGHT: Increased from 14px to 22px */
-    padding: 22px 0; 
-    
-    text-align: center;
-    
-    /* BIGGER TEXT: Increased from 0.85rem to 1.1rem */
-    font-size: 1.1rem; 
-    
-    /* WIDER SPACING: Increased from 2px to 4px for that "cinematic" look */
-    letter-spacing: 4px; 
-    
-    text-transform: uppercase;
-    font-weight: 900;
-    color: #2a2005; 
-    
-    /* HEAVIER SHADOW: Makes the bigger bar pop off the screen */
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-    
-    position: relative;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+    /* 4. ENHANCED METALLIC UPDATE BAR */
+    .update-bar {
+        background: linear-gradient(to right, #000 0%, #bf953f 35%, #fcf6ba 50%, #bf953f 65%, #000 100%);
+        padding: 22px 0; 
+        text-align: center;
+        font-size: 1.1rem; 
+        letter-spacing: 4px; 
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #2a2005; 
+        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        position: relative;
+        z-index: 1000;
+    }
 
-
-    /* 4. PREMIUM 3D SLATE GAME GRID */
+    /* 5. PREMIUM SLATE GAME GRID */
     #sections-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
@@ -105,10 +139,8 @@
         margin: 0 auto;
     }
 
-    /* THE "TRIPLE-LAYER" PREMIUM SQUIRCLES */
     .game-btn {
         aspect-ratio: 1 / 1;
-        /* Vertical Gradient: Light Slate to Dark Slate */
         background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
         color: #999;
         border-radius: 22px;
@@ -121,14 +153,11 @@
         text-align: center;
         padding: 12px;
         cursor: pointer;
-        border: 1px solid #111; /* Dark border to recede */
-        
-        /* THE PREMIUM DEPTH EFFECT */
+        border: 1px solid #111;
         box-shadow: 
-            inset 0 2px 2px rgba(255, 255, 255, 0.08), /* Top "Glass" Highlight */
-            inset 0 -2px 2px rgba(0, 0, 0, 0.5),      /* Bottom Inner Shadow */
-            0 8px 20px rgba(0,0,0,0.5);               /* Heavy Floor Shadow */
-        
+            inset 0 2px 2px rgba(255, 255, 255, 0.08), 
+            inset 0 -2px 2px rgba(0, 0, 0, 0.5),      
+            0 8px 20px rgba(0,0,0,0.5);               
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         word-break: break-word;
     }
@@ -137,15 +166,12 @@
         transform: translateY(-10px) scale(1.15); 
         background: #252525;
         color: #fff;
-        
-        /* ELECTRIC COBALT GLOW */
         border-color: #235bff; 
-        box-shadow: 
-            0 0 25px rgba(35, 91, 255, 0.5), 
-            0 20px 40px rgba(0,0,0,0.8);
+        box-shadow: 0 0 25px rgba(35, 91, 255, 0.5), 0 20px 40px rgba(0,0,0,0.8);
         z-index: 10;
     }
 </style>
+
 
 
 </head>
