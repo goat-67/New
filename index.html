@@ -223,33 +223,29 @@
         <a href="https://lecture.library.english.literature.technology.ebb.com.au/" target="_blank">STRONGDOGXP</a>
         <a href="https://math.geometry.algebra.learning.windsurfwetter.de/"target="_blank">STRONGDOGXP</a>
       <a href="#" onclick="
-    // 1. Open the blank window immediately
+    // 1. Get the current URL dynamically
+    const currentUrl = window.location.href;
+
+    // 2. Open the blank window immediately (to bypass popup blockers)
     const win = window.open('about:blank', '_blank');
-    
-    // 2. Define the URL to cloak
-    const url = 'https://goat-67.github.io/New/index.html';
 
     if (win) {
-        // 3. Create a full-screen iframe inside the new window
+        // 3. Create the cloaking iframe
         const iframe = win.document.createElement('iframe');
-        iframe.src = url;
+        iframe.src = currentUrl;
         
-        // 4. Style it to cover the entire page
-        iframe.style.position = 'fixed';
-        iframe.style.top = '0';
-        iframe.style.left = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-        iframe.style.margin = '0';
-        iframe.style.padding = '0';
+        // 4. Style the iframe to fill the screen
+        iframe.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;';
         
         // 5. Add it to the new window
         win.document.body.appendChild(iframe);
         win.document.body.style.margin = '0';
+        
+        // Optional: Set a title for the new tab
+        win.document.title = 'Dashboard';
     }
-    return false;
-">Open in about_blank</a>
+">Cloak Current Page</button>
+
 
 
     </div>
