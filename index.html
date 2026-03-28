@@ -6,7 +6,7 @@
     <title>SDXP | ULTIMATE GAME HUB</title>
     
     <style>
-        /* 1. Base Layout - Official Matte Grey */
+        /* 1. Base Layout */
         html, body { 
             background-color: #1a1a1a; 
             color: #fff; 
@@ -15,78 +15,94 @@
             overflow-x: hidden;
         }
 
-        /* 2. Top Navigation (Logo & Search) */
+        /* 2. Navigation Bar */
         nav {
-            background-color: #080808; /* Deep black to make logo pop */
+            background-color: #080808;
             height: 85px;
             display: flex;
             align-items: center;
-            justify-content: center; /* Centers the logo */
+            justify-content: center;
             padding: 0 40px;
             position: relative;
             z-index: 1001;
             border-bottom: 1px solid #1a1a1a;
         }
 
-        /* THE OFFICIAL SDXP LOGO WITH DEPTH SHADOW */
+        /* MENU ICON (LEFT) */
+        .menu-icon {
+            position: absolute;
+            left: 25px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 1100;
+        }
+        .menu-icon div { width: 30px; height: 3px; background-color: #fff; transition: 0.3s; }
+
+        /* SIDEBAR */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1050;
+            top: 0;
+            left: 0;
+            background-color: #0c0c0c;
+            overflow-x: hidden;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 100px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        }
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar a:hover { color: #d4af37; background: #151515; border-left: 3px solid #d4af37; }
+
+        /* LOGO */
         .logo {
             font-size: 45px;
             font-weight: 900;
             color: #ff3e3e; 
             letter-spacing: -2px;
             text-transform: uppercase;
-            cursor: pointer;
-            /* 3D SHADOW: Subtle red glow + heavy black drop shadows */
-            text-shadow: 
-                0 2px 4px rgba(255, 62, 62, 0.4), 
-                0 10px 25px rgba(0, 0, 0, 0.9),
-                0 15px 40px rgba(0, 0, 0, 0.6);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 0 10px 25px rgba(0, 0, 0, 0.9), 0 15px 40px rgba(0, 0, 0, 0.6);
         }
-        .logo:hover { transform: scale(1.05); }
 
-        /* 3. THE GOLD UPDATE BAR (Message Head) */
+        /* 3. SOLID GOLD UPDATE BAR (Darker Text) */
         .update-bar {
-            background: #000;
-            border-bottom: 1px solid #222;
-            padding: 14px 20px;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+            padding: 12px 0;
             text-align: center;
             font-size: 0.85rem;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 900;
+            color: #2a2005; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             width: 100%;
-            font-weight: 800;
-            /* Metallic Gold Gradient Effect */
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            box-shadow: inset 0 -1px 0 rgba(184, 134, 11, 0.1);
         }
 
-        /* 4. RECTANGULAR SEARCH WRAPPER (Far Right) */
-        .search-wrapper { 
-            position: absolute; 
-            right: 40px; 
-            width: 260px; 
-        }
-
+        /* 4. SEARCH WRAPPER */
+        .search-wrapper { position: absolute; right: 40px; width: 240px; }
         .game-search {
             width: 100%;
             background: #111;
             border: 1px solid #333;
-            border-radius: 4px; /* Square rectangular edges */
+            border-radius: 4px;
             padding: 10px 15px;
             color: #fff;
             outline: none;
-            font-size: 13px;
-            transition: 0.2s;
         }
-        .game-search:focus { 
-            border-color: #d4af37; /* Gold glow on focus */
-            background: #000; 
-        }
+        .game-search:focus { border-color: #d4af37; }
 
-        /* 5. SEARCH DROPDOWN (Top 5 Results) */
+        /* DROPDOWN RESULTS */
         #search-dropdown {
             position: absolute;
             top: 45px;
@@ -96,10 +112,8 @@
             border: 1px solid #333;
             border-radius: 4px;
             display: none;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 2000;
         }
-
         .search-item {
             display: block;
             padding: 12px;
@@ -107,99 +121,99 @@
             text-decoration: none;
             border-bottom: 1px solid #222;
             font-size: 13px;
-            transition: 0.2s;
         }
-        .search-item:hover { 
-            background: #1a1a1a; 
-            color: #ff3e3e; 
-        }
+        .search-item:hover { background: #1a1a1a; color: #ff3e3e; }
 
-        /* 6. ICON GRID (The Squircles) */
+        /* 5. ICON GRID */
         #sections-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 20px;
-            padding: 40px 60px 100px 60px;
+            padding: 40px 60px;
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        /* The Game Button Styles */
         .game-btn {
             aspect-ratio: 1 / 1;
             background: #2b2b2b;
-            border-radius: 22px; /* The Official Squircle Radius */
+            border-radius: 22px;
             display: flex; 
             align-items: center; 
             justify-content: center;
-            text-align: center; 
             color: #fff; 
             font-weight: bold;
             text-decoration: none; 
-            padding: 15px;
-            transition: transform 0.15s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            border: none;
-            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            text-align: center;
+            padding: 10px;
         }
-        .game-btn:hover { 
-            transform: scale(1.05); 
-            background: #353535; 
-            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-        }
+        .game-btn:hover { transform: scale(1.08); background: #d4af37; color: #000; }
     </style>
 </head>
 <body>
 
-    <!-- 1. NAVIGATION BAR (LOGO TOP) -->
+    <div id="mySidebar" class="sidebar">
+        <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5;">UNBLOCKED LINKS</h2>
+        <a href="https://google.com">Google Proxy</a>
+        <a href="https://github.com">GitHub Mirror</a>
+        <a href="#">More Links...</a>
+    </div>
+
     <nav>
+        <div class="menu-icon" onclick="toggleNav()">
+            <div></div><div></div><div></div>
+        </div>
         <div class="logo">SDXP</div>
-        
         <div class="search-wrapper">
-            <input type="text" id="game-search" class="game-search" placeholder="Search 1,200 games..." onkeyup="sdxpSearch()">
+            <input type="text" id="game-search" class="game-search" placeholder="Search 1,205 games..." onkeyup="sdxpSearch()">
             <div id="search-dropdown"></div>
         </div>
     </nav>
 
-    <!-- 2. GOLD UPDATE BAR (BELOW LOGO) -->
     <div class="update-bar">
-        UPDATE: 1,205 GAMES LOADED. WORKING ON FIXING LINKS FOR SCHOOL COMPUTERS.
+        UPDATE: 1,205 GAMES LOADED — FIXING SCHOOL LINKS
     </div>
 
-    <!-- 3. MAIN GAME CONTENT -->
     <div id="sections-container"></div>
 
 <script>
-    // THE SEARCH LOGIC
+    // SIDEBAR TOGGLE
+    function toggleNav() {
+        const sidebar = document.getElementById("mySidebar");
+        sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
+    }
+
+    // SEARCH LOGIC
     function sdxpSearch() {
         let input = document.getElementById('game-search').value.toLowerCase();
         let dropdown = document.getElementById('search-dropdown');
         
-        if (input.length < 2) {
+        // Hide if empty
+        if (input.length < 1) {
             dropdown.style.display = "none";
             return;
         }
 
-        // Change 'myGamesList' if your array has a different name in games.js
+        // Ensure list exists from games.js
         if (typeof myGamesList === 'undefined') return;
 
-        let matches = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 5);
+        let matches = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 6);
         dropdown.innerHTML = "";
         
         if (matches.length > 0) {
             dropdown.style.display = "block";
             matches.forEach(game => {
-                dropdown.innerHTML += `<a href="play.html?name=${encodeURIComponent(game.name)}" class="search-item">${game.name}</a>`;
+                dropdown.innerHTML += `<a href="play.html?game=${encodeURIComponent(game.name)}" class="search-item">${game.name}</a>`;
             });
         } else {
-            dropdown.style.display = "none";
+            dropdown.innerHTML = `<div class="search-item" style="opacity:0.5">No games found</div>`;
+            dropdown.style.display = "block";
         }
     }
 
-    // LOAD GAMES.JS FROM YOUR REPO
-    window.GAME_HASH = "1a36d09d1b172706afe52eeab2679bf04be02777"; 
+    // UPDATED REPO LOADER (Username: goat-67 | Repo: New)
     const script = document.createElement('script');
-    script.src = `https://fastly.jsdelivr.net{window.GAME_HASH}/src/games.js`;
+    script.src = `https://cdn.jsdelivr.net`;
     
     script.onload = () => { 
         if (typeof buildStash === 'function') {
