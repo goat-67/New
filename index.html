@@ -241,7 +241,7 @@
             matches.forEach(game => {
                 let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
                 const fileName = game.gameUrl.split('/').pop();
-                const finalGameUrl = `https://fastly.jsdelivr.net{fileName}`;
+                const finalGameUrl = ` https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/{fileName}`;
                 
                 resultsDiv.innerHTML += `
                     <a href="play.html?name=${encodeURIComponent(cleanName)}&url=${encodeURIComponent(finalGameUrl)}" class="search-item">
@@ -262,7 +262,7 @@
     });
 
     // GAME LOADER
-    window.GAME_HASH = " 21c478149b8170480769152ef8fefa850932703f"; 
+    window.GAME_HASH = " 1813fa459a904b4f158679a01ff80aa4897604a4"; 
     const script = document.createElement('script');
     script.src = ` https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
     
