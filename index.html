@@ -97,21 +97,26 @@
         outline: none;
     }
     .game-search:focus { border-color: #235bff; }
+#search-results {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 260px;
+    /* Semi-transparent black */
+    background: rgba(15, 15, 15, 0.85); 
+    /* The "Frosty" Blur effect */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: none;
+    z-index: 3000;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+    max-height: 400px;
+    overflow-y: auto;
+}
 
-    #search-results {
-        position: absolute;
-        top: 45px;
-        right: 0;
-        width: 260px;
-        background: #0f0f0f;
-        border: 1px solid #333;
-        border-radius: 12px;
-        display: none;
-        z-index: 3000;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-        max-height: 400px;
-        overflow-y: auto;
-    }
+   
     .search-item { display: block; padding: 12px 18px; color: #eee; text-decoration: none; font-size: 13px; border-bottom: 1px solid #1a1a1a; }
     .search-item:hover { background: #1a1a1a; color: #235bff; }
 
