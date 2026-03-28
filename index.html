@@ -153,30 +153,41 @@
             margin: 0 auto;
         }
 
-        /* ALWAYS GOLD SQUIRCLES */
-        .game-btn {
-            aspect-ratio: 1 / 1;
-            background: #d4af37; /* STATIC GOLD */
-            color: #000; 
-            border-radius: 24px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-weight: 800;
-            text-decoration: none; 
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-            padding: 15px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        }
+      .game-btn {
+    aspect-ratio: 1 / 1;
+    /* This creates that exact metallic shine from your image */
+    background: linear-gradient(
+        135deg, 
+        #bf953f 0%, 
+        #fcf6ba 45%, 
+        #b38728 50%, 
+        #fcf6ba 55%, 
+        #bf953f 100%
+    );
+    color: #2a2005; /* Dark brown text for high-end contrast */
+    border-radius: 24px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-weight: 800;
+    text-decoration: none; 
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+    text-align: center;
+    padding: 15px;
+    /* Added a thin metallic border to make it pop */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    text-transform: uppercase;
+}
 
-        .game-btn:hover { 
-            transform: scale(1.15); /* GROWS BIGGER */
-            z-index: 10;
-        }
+.game-btn:hover { 
+    transform: scale(1.15); 
+    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
     </style>
 </head>
 <body>
@@ -262,7 +273,7 @@
     });
 
     // GAME LOADER
-    window.GAME_HASH = "ddfe931290be67c5e740770453b0b4c3e358a76a"; 
+    window.GAME_HASH = "8cd7b2cb81501e545d71d080483f2b498403d3dd"; 
     const script = document.createElement('script');
     script.src = ` https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
     
