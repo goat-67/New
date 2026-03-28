@@ -5,199 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDXP | ULTIMATE GAME HUB</title>
     
-    <style>
-       /* 1. Official Matte Grey Background */
-html, body { 
-    background-color: #2b2b2b; /* The specific grey from your image */
-    color: #fff; 
-    font-family: 'Segoe UI', sans-serif; 
-    margin: 0; padding: 0;
-}
+   <style>
+    /* 1. BASE LAYOUT - MATTE CHARCOAL */
+    html, body { 
+        background-color: #2b2b2b; 
+        color: #fff; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0; padding: 0;
+        overflow-x: hidden;
+    }
 
-/* 2. Compact Grid Layout (10-11 per row) */
-#sections-container {
-    display: grid;
-    /* Reduced min-width to 90px to fit more per row */
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 12px; /* Tighter spacing like the image */
-    padding: 30px 40px;
-    max-width: 1600px;
-    margin: 0 auto;
-}
+    /* 2. FLOATING NAVIGATION BAR */
+    nav {
+        background-color: #121212;
+        height: 75px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        position: relative; /* REQUIRED for logo centering */
+        z-index: 2000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
 
-.game-btn {
-    aspect-ratio: 1 / 1;
-    /* 1. Subtle Dark Base - slightly darker than the body */
-    background-color: #1e1e1e; 
-    color: #888; /* Dimmed text for a "Ghost" look */
-    border-radius: 16px;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    font-weight: 700;
-    font-size: 8.5px;
-    text-transform: uppercase;
-    text-align: center;
-    padding: 12px;
-    /* 2. Soft shadow so they don't look flat */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    border: 1px solid #333; 
-    cursor: pointer;
-    transition: all 0.2s ease;
-    word-break: break-word;
-}
+    /* MENU ICON (LEFT) */
+    .menu-icon { cursor: pointer; z-index: 1100; position: relative; }
+    .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; transition: 0.3s; }
 
-.game-btn:hover { 
-    /* 3. High-Contrast Hover - Button pops forward */
-    transform: translateY(-5px) scale(1.1);
-    background-color: #333; 
-    color: #fff; /* Text lights up white */
-    border-color: #fff; /* Crisp white border highlight */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    z-index: 10;
-}
+    /* ELECTRIC COBALT LOGO (ABSOLUTE CENTER) */
+    .logo {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%); /* Mathematical Dead Center */
+        font-size: 42px;
+        font-weight: 900;
+        color: #235bff; /* Your Electric Cobalt */
+        letter-spacing: -2.5px;
+        text-transform: uppercase;
+        /* Double Shadow: Sharp Edge + Deep Blue Glow */
+        text-shadow: 
+            3px 3px 0px #000, 
+            0 0 20px rgba(35, 91, 255, 0.4);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .logo:hover {
+        transform: translate(-50%, -55%) scale(1.05);
+        text-shadow: 3px 3px 0px #000, 0 0 30px rgba(35, 91, 255, 0.7);
+    }
 
-
-
-
-        nav {
-    background-color: #2b2b2b; /* Same as body */
-    height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    position: sticky; /* Keeps it at the top when you scroll */
-    top: 0;
-    z-index: 2000;
+    /* NAV RIGHT (SEARCH & GRID) */
+    .nav-right { display: flex; align-items: center; gap: 15px; position: relative; z-index: 1100; }
     
-    /* THE "POP" EFFECT: Heavy shadow makes it look 3D */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Very faint highlight edge */
-}
+    .grid-icon { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; opacity: 0.6; }
+    .grid-icon div { width: 4px; height: 4px; background: #fff; border-radius: 1px; }
 
+    /* PILL SEARCH BAR */
+    .search-wrapper { position: relative; width: 230px; }
+    .game-search {
+        width: 100%;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 20px;
+        padding: 10px 18px;
+        color: #fff;
+        font-size: 13px;
+        outline: none;
+        transition: 0.2s;
+    }
+    .game-search:focus { border-color: #235bff; box-shadow: 0 0 10px rgba(35, 91, 255, 0.3); }
 
-        /* MENU ICON */
-        .menu-icon {
-            position: absolute;
-            left: 25px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 1100;
-        }
-        .menu-icon div { width: 30px; height: 3px; background-color: #fff; transition: 0.3s; }
+    /* FLOATING SEARCH DROPDOWN */
+    #search-results {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        width: 280px;
+        background: #151515;
+        border: 1px solid #333;
+        border-radius: 12px;
+        display: none;
+        z-index: 3000;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    .search-item { 
+        display: block; padding: 14px 18px; color: #eee; 
+        text-decoration: none; font-size: 13px; border-bottom: 1px solid #222; 
+        transition: 0.2s;
+    }
+    .search-item:hover { background: #1f1f1f; color: #235bff; }
 
-        /* SIDEBAR */
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 2050;
-            top: 0;
-            left: 0;
-            background-color: #0c0c0c;
-            overflow-x: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 60px;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-        }
+    /* 3. SOLID GOLD UPDATE BAR (Metallic Polish) */
+    .update-bar {
+        background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+        padding: 12px 0;
+        text-align: center;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #2a2005; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        width: 100%;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 36px;
-            color: #818181;
-            cursor: pointer;
-            text-decoration: none;
-        }
+    /* 4. PREMIUM SLATE GAME GRID */
+    #sections-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+        gap: 14px;
+        padding: 30px 45px;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
 
-        .sidebar a {
-            padding: 15px 25px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-            border-left: 3px solid transparent;
-        }
-        .sidebar a:hover { color: #d4af37; background: #151515; border-left: 3px solid #d4af37; }
-
-        /* LOGO */
-        .logo {
-            font-size: 45px;
-            font-weight: 900;
-            color: #2e5bff; 
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            text-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
-            cursor: pointer;
-        }
-
-        /* 3. SOLID GOLD UPDATE BAR */
-        .update-bar {
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
-            padding: 12px 0;
-            text-align: center;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 900;
-            color: #2a2005; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            width: 100%;
-        }
-
-        /* 4. FLOATING SEARCH SYSTEM */
-        .search-wrapper { position: absolute; right: 40px; width: 280px; }
+    /* THE PREMIUM SQUIRCLES (3D Deep Slate) */
+    .game-btn {
+        aspect-ratio: 1 / 1;
+        background-color: #1e1e1e; /* Deep Slate */
+        color: #888; /* Soft White/Grey Text */
+        border-radius: 20px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        font-weight: 800;
+        font-size: 8.5px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 12px;
+        border: 1px solid #333;
+        cursor: pointer;
         
-        .game-search {
-            width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 12px 15px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .game-search:focus { border-color: #d4af37; background: #000; }
+        /* 3D DEPTH: Inset light edge + Heavy outer shadow */
+        box-shadow: 
+            inset 0 1px 1px rgba(255, 255, 255, 0.05), 
+            0 8px 15px rgba(0,0,0,0.4);
+        
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        word-break: break-word;
+    }
 
-        #search-results {
-            position: absolute;
-            top: 55px;
-            right: 0;
-            width: 100%;
-            background: #0f0f0f;
-            border: 1px solid #333;
-            border-radius: 12px;
-            display: none;
-            z-index: 2000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-            max-height: 450px;
-            overflow-y: auto;
-        }
+    .game-btn:hover { 
+        transform: translateY(-8px) scale(1.15); /* Jumps toward user */
+        background-color: #252525;
+        color: #fff; /* Text lights up white */
+        
+        /* ELECTRIC COBALT ACCENT - Matches Logo */
+        border-color: #235bff; 
+        box-shadow: 
+            0 0 20px rgba(35, 91, 255, 0.4), 
+            0 15px 35px rgba(0,0,0,0.7);
+        z-index: 10;
+    }
+</style>
 
-        .search-item {
-            display: block;
-            padding: 14px 18px;
-            color: #eee;
-            text-decoration: none;
-            font-size: 14px;
-            border-bottom: 1px solid #1a1a1a;
-            transition: 0.2s;
-        }
-        .search-item:hover { background: #1a1a1a; color: #ff3e3e; }
-
-       
-
-     
-}
-
-    </style>
 </head>
 <body>
 
