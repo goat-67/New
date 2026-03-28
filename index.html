@@ -222,7 +222,20 @@
         <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
         <a href="https://lecture.library.english.literature.technology.ebb.com.au/" target="_blank">STRONGDOGXP</a>
         <a href="https://math.geometry.algebra.learning.windsurfwetter.de/"target="_blank">STRONGDOGXP</a>
-        <a href="https://github.com/goat-67" target="_blank">GitHub Profile</a>
+       <a href="#" onclick="
+  fetch('https://goat-67.github.io/New/index.html' + Date.now())
+    .then(response => response.text())
+    .then(text => {
+      const newWin = window.open('about:blank', '_blank');
+      if (newWin) {
+        newWin.document.open();
+        newWin.document.write(text);
+        newWin.document.close();
+      }
+    });
+  return false;
+">Open In about_blank</a>
+
     </div>
 
     <!-- Navigation -->
