@@ -117,27 +117,35 @@
         </div>
     </div>
 
-   <script>
+ <script>
     const params = new URLSearchParams(window.location.search);
-    const rawUrl = params.get('url');
+    let rawUrl = params.get('url');
     const gameName = params.get('name');
 
     if (rawUrl) {
-        // Double-decoding to fix the %3A%2F%2F issue
-        let cleanUrl = decodeURIComponent(decodeURIComponent(rawUrl));
+        // 1. Remove that persistent hidden space if it's still there
+        rawUrl = rawUrl.trim();
+
+        // 2. Clean the encoding so %3A becomes : and %2F becomes /
+        let cleanUrl = decodeURIComponent(rawUrl);
+        
+        // 3. Set the iframe source
         document.getElementById('game-frame').src = cleanUrl;
+        console.log("Loading Game from:", cleanUrl); // Check your console (F12) to see this
     }
 
     if (gameName) {
-        document.getElementById('display-title').innerText = decodeURIComponent(gameName);
+        document.getElementById('display-title').innerText = decodeURIComponent(gameName).toUpperCase();
     }
 
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
         if (elem.requestFullscreen) { elem.requestFullscreen(); }
         else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
     }
 </script>
+
 
 </body>
 </html>
