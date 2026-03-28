@@ -51,9 +51,22 @@
             background-color: #0c0c0c;
             overflow-x: hidden;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 100px;
+            padding-top: 60px;
             box-shadow: 5px 0 15px rgba(0,0,0,0.5);
         }
+
+        /* CLOSE BUTTON INSIDE SIDEBAR */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 36px;
+            color: #818181;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .close-btn:hover { color: #fff; }
+
         .sidebar a {
             padding: 15px 25px;
             text-decoration: none;
@@ -75,7 +88,7 @@
             text-shadow: 0 10px 25px rgba(0, 0, 0, 0.9), 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
-        /* 3. SOLID GOLD UPDATE BAR (Darker Text) */
+        /* 3. SOLID GOLD UPDATE BAR */
         .update-bar {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
             padding: 12px 0;
@@ -102,7 +115,6 @@
         }
         .game-search:focus { border-color: #d4af37; }
 
-        /* DROPDOWN RESULTS */
         #search-dropdown {
             position: absolute;
             top: 45px;
@@ -153,10 +165,13 @@
 <body>
 
     <div id="mySidebar" class="sidebar">
-        <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5;">UNBLOCKED LINKS</h2>
-        <a href="https://google.com">Google Proxy</a>
-        <a href="https://github.com">GitHub Mirror</a>
-        <a href="#">More Links...</a>
+        <!-- CLOSE BUTTON -->
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a>
+        
+        <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
+        <a href="https://strongdog.com" target="_blank">strongdog.com</a>
+        <a href="#"></a> <!-- Blank mirror link -->
+        <a href="https://github.com" target="_blank">GitHub Profile</a>
     </div>
 
     <nav>
@@ -183,18 +198,16 @@
         sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
     }
 
-    // SEARCH LOGIC
+    // SEARCH LOGIC (Links directly to game URL since you don't have play.html)
     function sdxpSearch() {
         let input = document.getElementById('game-search').value.toLowerCase();
         let dropdown = document.getElementById('search-dropdown');
         
-        // Hide if empty
         if (input.length < 1) {
             dropdown.style.display = "none";
             return;
         }
 
-        // Ensure list exists from games.js
         if (typeof myGamesList === 'undefined') return;
 
         let matches = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 6);
@@ -203,7 +216,8 @@
         if (matches.length > 0) {
             dropdown.style.display = "block";
             matches.forEach(game => {
-                dropdown.innerHTML += `<a href="play.html?game=${encodeURIComponent(game.name)}" class="search-item">${game.name}</a>`;
+                // Pointing directly to the game's URL
+                dropdown.innerHTML += `<a href="${game.url}" class="search-item">${game.name}</a>`;
             });
         } else {
             dropdown.innerHTML = `<div class="search-item" style="opacity:0.5">No games found</div>`;
@@ -211,7 +225,7 @@
         }
     }
 
-    // UPDATED REPO LOADER (Username: goat-67 | Repo: New)
+    // REPO LOADER
     const script = document.createElement('script');
     script.src = `https://cdn.jsdelivr.net`;
     
