@@ -117,35 +117,27 @@
         </div>
     </div>
 
-    <script>
-        // Grab info from the URL (sent by games.js buildStash)
-        const params = new URLSearchParams(window.location.search);
-        const gameUrl = params.get('url');
-        const gameName = params.get('name');
+   <script>
+    const params = new URLSearchParams(window.location.search);
+    const rawUrl = params.get('url');
+    const gameName = params.get('name');
 
-        // Load the actual game file into the iframe
-        if (gameUrl) {
-            document.getElementById('game-frame').src = decodeURIComponent(gameUrl);
-        }
+    if (rawUrl) {
+        // Double-decoding to fix the %3A%2F%2F issue
+        let cleanUrl = decodeURIComponent(decodeURIComponent(rawUrl));
+        document.getElementById('game-frame').src = cleanUrl;
+    }
 
-        // Set the title in the control bar and browser tab
-        if (gameName) {
-            const cleanName = decodeURIComponent(gameName);
-            document.getElementById('display-title').innerText = cleanName;
-            document.title = "SDXP | Playing " + cleanName;
-        }
+    if (gameName) {
+        document.getElementById('display-title').innerText = decodeURIComponent(gameName);
+    }
 
-        // Fullscreen Logic
-        function openFullscreen() {
-            const elem = document.getElementById("game-frame");
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
-            }
-        }
-    </script>
+    function openFullscreen() {
+        const elem = document.getElementById("game-frame");
+        if (elem.requestFullscreen) { elem.requestFullscreen(); }
+        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+    }
+</script>
+
 </body>
 </html>
