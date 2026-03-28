@@ -25,44 +25,57 @@ html, body {
     margin: 0 auto;
 }
 
-/* 3. Small Gold Squircles */
 .game-btn {
     aspect-ratio: 1 / 1;
-    background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
-    color: #2a2005; 
-    border-radius: 18px; /* Slightly smaller radius for smaller icons */
+    /* 1. Subtle Dark Base - slightly darker than the body */
+    background-color: #1e1e1e; 
+    color: #888; /* Dimmed text for a "Ghost" look */
+    border-radius: 16px;
     display: flex; 
     align-items: center; 
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700;
+    font-size: 8.5px;
     text-transform: uppercase;
     text-align: center;
-    padding: 8px; /* Less padding for smaller size */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    /* 2. Soft shadow so they don't look flat */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border: 1px solid #333; 
     cursor: pointer;
-    font-size: 10px; /* Smaller font to fit the tiny boxes */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.2s ease;
+    word-break: break-word;
 }
 
 .game-btn:hover { 
-    transform: scale(1.2); /* Big pop on small icons looks great */
+    /* 3. High-Contrast Hover - Button pops forward */
+    transform: translateY(-5px) scale(1.1);
+    background-color: #333; 
+    color: #fff; /* Text lights up white */
+    border-color: #fff; /* Crisp white border highlight */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     z-index: 10;
 }
 
 
-        /* 2. Navigation Bar */
+
+
         nav {
-            background-color: #080808;
-            height: 85px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 40px;
-            position: relative;
-            z-index: 1001;
-            border-bottom: 1px solid #1a1a1a;
-        }
+    background-color: #2b2b2b; /* Same as body */
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    position: sticky; /* Keeps it at the top when you scroll */
+    top: 0;
+    z-index: 2000;
+    
+    /* THE "POP" EFFECT: Heavy shadow makes it look 3D */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Very faint highlight edge */
+}
+
 
         /* MENU ICON */
         .menu-icon {
@@ -116,7 +129,7 @@ html, body {
         .logo {
             font-size: 45px;
             font-weight: 900;
-            color: #ff3e3e; 
+            color: #2e5bff; 
             letter-spacing: -2px;
             text-transform: uppercase;
             text-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
