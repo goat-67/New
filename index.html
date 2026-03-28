@@ -1,188 +1,149 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ULTIMATE GAME HUB</title> 
+    <title>SDXP Clone</title> 
     <style>
-        /* --- SDXP BASE THEME --- */
-        html, body { 
-            background: radial-gradient(circle at center, #0a111a 0%, #000 100%); 
+        /* 1. SDXP Color Palette */
+        body { 
+            background-color: #212121; /* The exact matte dark grey */
             color: #fff; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; padding: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* --- TOP NOTICE BAR (SDXP Update Bar) --- */
-        .top-notice {
-            background: rgba(0, 242, 255, 0.1);
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            color: #00f2ff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* 2. The SDXP Navbar */
+        nav {
+            background-color: #2b2b2b; /* Slightly lighter grey top bar */
+            height: 70px;
             display: flex;
             align-items: center;
-            backdrop-filter: blur(10px);
-        }
-        .top-notice span { font-weight: bold; margin-right: 10px; background: #00f2ff; color: #000; padding: 2px 8px; border-radius: 4px; }
-
-        /* --- NAVIGATION BAR (Header + Search) --- */
-        header {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 30px 40px;
-            position: relative;
+            padding: 0 20px;
+            border-bottom: 1px solid #1a1a1a;
+            position: sticky;
+            top: 0; z-index: 1000;
         }
 
-        h1 { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            margin: 0; 
-            letter-spacing: 5px; 
-            color: #fff; 
-            text-shadow: 0 0 15px #00f2ff; 
+        /* The Burger Menu Icon (Left) */
+        .menu-icon { font-size: 28px; cursor: pointer; color: #888; }
+
+        /* The Pixel Logo (Center) */
+        .logo {
+            font-family: 'Courier New', Courier, monospace; /* Temporary pixel font */
+            font-size: 32px;
+            font-weight: 900;
+            color: #ff4757; /* Red logo like the screenshot */
+            letter-spacing: -2px;
+            text-transform: uppercase;
         }
 
-        /* --- SDXP FLOATING SEARCH --- */
-        .search-wrapper {
-            position: relative;
-            width: 350px;
-        }
-
-        .game-search { 
+        /* The Search Bar (Right) */
+        .search-container { position: relative; width: 250px; }
+        .game-search {
             width: 100%;
-            padding: 12px 25px; 
-            background: rgba(20, 20, 20, 0.6); 
-            backdrop-filter: blur(15px);
-            border: 1px solid #444; 
-            border-radius: 30px; 
-            color: #fff; 
-            font-size: 1rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 10px 15px;
+            color: #fff;
             outline: none;
-            transition: 0.3s;
+            font-size: 14px;
+        }
+        .game-search::placeholder { color: #555; }
+
+        /* 3. Section Headers (e.g., "Top 20") */
+        .section-header {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 40px 0 20px 0;
+            font-weight: 800;
         }
 
-        .game-search:focus { 
-            border-color: #00f2ff; 
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3); 
-            background: rgba(30, 30, 30, 0.8);
+        /* 4. The Game Grid (Squircle icons) */
+        #sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            padding: 0 40px 50px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* --- SEARCH DROPDOWN --- */
+        /* Game Card - Makes them look like SDXP icons */
+        .game-btn {
+            aspect-ratio: 1 / 1; /* Makes them squares */
+            background: #333;
+            border-radius: 18px; /* The "Squircle" look */
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.1s ease;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .game-btn:hover {
+            transform: scale(1.05);
+            background: #444;
+        }
+
+        /* Search Dropdown Logic */
         #search-dropdown {
             position: absolute;
-            top: 55px;
-            right: 0;
-            width: 100%;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(25px);
-            border: 1px solid #333;
-            border-radius: 15px;
-            display: none; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
-            z-index: 1000;
+            top: 45px; right: 0; width: 100%;
+            background: #1a1a1a; border: 1px solid #333;
+            border-radius: 6px; display: none; z-index: 100;
         }
+        .search-item { display: block; padding: 10px; color: #fff; text-decoration: none; border-bottom: 1px solid #222; }
+        .search-item:hover { background: #333; }
 
-        .search-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            text-decoration: none;
-            color: #eee;
-            border-bottom: 1px solid #222;
-            transition: 0.2s;
-        }
-
-        .search-item:hover { background: rgba(0, 242, 255, 0.1); color: #00f2ff; }
-
-        .letter-icon {
-            width: 35px; height: 35px;
-            background: linear-gradient(45deg, #00f2ff, #0066ff);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; margin-right: 15px; flex-shrink: 0;
-            color: white;
-        }
-
-        /* --- THE GRID --- */
-        #sections-container { width: 90%; max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
-
-        .game-btn { 
-            background: rgba(15,15,15,0.4); border: 1px solid #222; 
-            color: #ccc; padding: 18px 30px; margin: 8px 0; border-radius: 10px; 
-            width: 100%; cursor: pointer; transition: 0.3s; display: block; 
-            text-decoration: none; font-size: 1.1rem;
-        }
-        .game-btn:hover { border-color: #00f2ff; color: #00f2ff; transform: translateX(10px); background: rgba(0, 242, 255, 0.05); }
-
-        .grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.1;
-            background-image: linear-gradient(#00f2ff 1px, transparent 1px), linear-gradient(90deg, #00f2ff 1px, transparent 1px);
-            background-size: 60px 60px; transform: perspective(600px) rotateX(60deg); transform-origin: center top;
-        }
     </style>
-</head> 
+</head>
 <body>
 
-    <!-- SDXP NOTICE BAR -->
-    <div class="top-notice">
-        <span>UPDATE</span> Newest games added! Working on fixing links for school computers.
-    </div>
-
-    <header>
-        <h1>ULTIMATE GAME HUB</h1>
-        
-        <div class="search-wrapper">
-            <input type="text" id="game-search" class="game-search" placeholder="Search 1,205 games..." onkeyup="sdxpSearch()">
+    <nav>
+        <div class="menu-icon">☰</div>
+        <div class="logo">SDXP</div>
+        <div class="search-container">
+            <input type="text" id="game-search" class="game-search" placeholder="Search 1205 games..." onkeyup="sdxpSearch()">
             <div id="search-dropdown"></div>
         </div>
-    </header>
+    </nav>
 
-    <div id="sections-container"></div>
-    <div class="grid-bg"></div>
+    <div class="section-header">Top 20</div>
+    <div id="sections-container">
+        <!-- Your games.js will fill this -->
+    </div>
 
 <script>
-    window.GAME_HASH = "1a36d09d1b172706afe52eeab2679bf04be02777"; 
-    const myUser = "goat-67";
-    const myRepo = "ugs-singlefile";
-
+    // Replace 'myGamesList' with the variable name in your games.js
     function sdxpSearch() {
-        const input = document.getElementById('game-search').value.toLowerCase();
-        const dropdown = document.getElementById('search-dropdown');
-        
-        if (input.length < 2) {
-            dropdown.style.display = "none";
-            return;
-        }
+        let input = document.getElementById('game-search').value.toLowerCase();
+        let dropdown = document.getElementById('search-dropdown');
+        if (input.length < 2) { dropdown.style.display = "none"; return; }
 
-        // Change 'myGamesList' below if your games.js array uses a different name
         if (typeof myGamesList === 'undefined') return;
 
-        const matches = myGamesList.filter(g => g.name.toLowerCase().includes(input));
-        const top5 = matches.slice(0, 5);
-
+        let top5 = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 5);
         dropdown.innerHTML = "";
         if (top5.length > 0) {
             dropdown.style.display = "block";
             top5.forEach(game => {
-                const item = document.createElement('a');
-                item.href = `play.html?name=${encodeURIComponent(game.name)}`;
-                item.className = "search-item";
-                const letter = game.name.charAt(0).toUpperCase();
-                item.innerHTML = `<div class="letter-icon">${letter}</div><span>${game.name}</span>`;
-                dropdown.appendChild(item);
+                dropdown.innerHTML += `<a href="play.html?name=${encodeURIComponent(game.name)}" class="search-item">${game.name}</a>`;
             });
-        } else {
-            dropdown.style.display = "none";
-        }
+        } else { dropdown.style.display = "none"; }
     }
 
+    // Load your games.js
     const script = document.createElement('script');
-    script.src = `https://fastly.jsdelivr.net/gh/${myUser}/${myRepo}@${window.GAME_HASH}/src/games.js?t=${Date.now()}`;
-    
-    script.onload = () => { if (typeof buildStash === 'function') buildStash()a; };
+    script.src = `https://fastly.jsdelivr.net`;
+    script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
     document.head.appendChild(script);
 </script>
 </body>
