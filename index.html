@@ -1,5 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ULTIMATE GAME HUB</title> 
+    <style>
+        /* 1. The Matte Background */
+        body { 
+            background-color: #1a1a1a; 
+            color: #fff; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* 2. The Message Head (Top Bar) */
+        .update-bar {
+            background: #000;
+            border-bottom: 1px solid #333;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .update-bar b { color: #ff3e3e; margin-right: 8px; }
+
+        /* 3. The SDXP Navbar */
+        nav {
+            background-color: #121212; 
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* This centers the logo */
+            padding: 0 30px;
+            border-bottom: 1px solid #282828;
+            position: sticky;
+            top: 0; z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ff3e3e; 
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        /* 4. Rectangular Search (Pushed to Right) */
+        .search-wrapper { 
+            position: absolute; 
+            right: 30px; 
+            width: 240px; 
+        }
+
+        .game-search {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+        .game-search:focus { border-color: #ff3e3e; }
+
+        /* 5. The Icon Grid */
+        #sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 20px;
+            padding: 40px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Squircle Game Buttons */
+        .game-btn {
+            aspect-ratio: 1 / 1;
+            background: #2b2b2b;
+            border-radius: 22px; 
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; color: #fff; font-weight: bold;
+            text-decoration: none; padding: 15px;
+            transition: transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .game-btn:hover { transform: scale(1.05); background: #353535; }
+
+        /* Search Dropdown */
+        #search-dropdown {
+            position: absolute; top: 45px; right: 0; width: 100%;
+            background: #111; border: 1px solid #333; border-radius: 4px;
+            display: none; z-index: 1000;
+        }
+        .search-item { display: block; padding: 10px; color: #eee; text-decoration: none; border-bottom: 1px solid #222; font-size: 12px; }
+        .search-item:hover { background: #1a1a1a; color: #ff3e3e; }
+    </style>
+</head> 
 <body>
-    <!-- THE UPDATE BAR (Message Head) -->
+
     <div class="update-bar">
         <b>UPDATE:</b> 1,205 GAMES LOADED. WORKING ON FIXING LINKS FOR SCHOOL COMPUTERS.
     </div>
@@ -13,18 +116,15 @@
         </div>
     </nav>
 
-    <div id="sections-container">
-        <!-- Your games.js will build the icons here -->
-    </div>
+    <div id="sections-container"></div>
 
 <script>
-    // Search function with Top 5 results
+    // Replace 'myGamesList' with your list name if needed
     function sdxpSearch() {
         let input = document.getElementById('game-search').value.toLowerCase();
         let dropdown = document.getElementById('search-dropdown');
         if (input.length < 2) { dropdown.style.display = "none"; return; }
 
-        // Change 'myGamesList' if your array has a different name in games.js
         if (typeof myGamesList === 'undefined') return;
 
         let matches = myGamesList.filter(g => g.name.toLowerCase().includes(input)).slice(0, 5);
@@ -39,5 +139,12 @@
             dropdown.style.display = "none";
         }
     }
+
+    // Load your games.js (Replace with your actual URL)
+    const script = document.createElement('script');
+    script.src = `https://fastly.jsdelivr.net`;
+    script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
+    document.head.appendChild(script);
 </script>
 </body>
+</html>
