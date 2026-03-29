@@ -96,11 +96,12 @@
     }
 
         /* 7. DEEP CARVED SQUIRCLES (NON-PLASTIC) */
+        /* 7. PREMIUM SLATE SQUIRCLES (SOLID & HEAVY) */
     .game-btn {
         aspect-ratio: 1 / 1;
-        /* THE COLOR: Even darker than the background for a 'Hole' effect */
-        background: #181818; 
-        color: rgba(255, 255, 255, 0.35); /* Stealth text */
+        /* THE MATERIAL: Dark Matte Slate (No shiny center) */
+        background: linear-gradient(145deg, #222222, #1b1b1b); 
+        color: rgba(255, 255, 255, 0.45); 
         border-radius: 20px;
         display: flex; 
         align-items: center; 
@@ -117,34 +118,33 @@
         word-break: break-all;
         line-height: 1.2;
 
-        /* THE "DEEP" SECRET: Heavy Inset Shadows */
-        border: 1px solid #111;
+        /* THE "SOLID" SECRET: Sharp Outer Shadow + Micro-Rim */
+        border: 1px solid #151515; /* Dark outer edge */
         box-shadow: 
-            /* 1. BOTTOM LIGHT: Mimics light hitting the bottom rim of a hole */
-            inset 0 -1.5px 1px rgba(255, 255, 255, 0.05),
-            /* 2. TOP DEPTH: A heavy shadow that makes the button look 'Sunken' */
-            inset 0 6px 12px rgba(0, 0, 0, 0.8),
-            /* 3. OUTER RIM: Subtle separation from the charcoal floor */
-            0 2px 4px rgba(0, 0, 0, 0.4);
+            /* 1. TOP HIGHLIGHT: Razor-thin matte edge (not a glow) */
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.04), 
+            /* 2. THE DROP: Wide, dark floor shadow for "Weight" */
+            0 10px 20px rgba(0, 0, 0, 0.6),      
+            /* 3. THE BASE: A secondary tighter shadow for a "Sharp" look */
+            0 4px 6px rgba(0, 0, 0, 0.8);            
             
-        /* Snappy, professional movement */
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* THE "POP" HOVER: The button 'clicks' out of the hole */
+    /* THE PREMIUM ENGAGEMENT */
     .game-btn:hover { 
-        transform: translateY(-4px); 
-        background: #222;
+        transform: translateY(-8px) scale(1.05); 
+        background: #252525;
         color: #fff;
         border-color: #235bff; 
         
-        /* Switch from 'Carved' to 'Glowing' */
+        /* Electric Aura Under-Glow */
         box-shadow: 
-            0 10px 25px rgba(0, 0, 0, 0.8),
-            0 0 15px rgba(35, 91, 255, 0.25),
-            inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            0 15px 35px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(35, 91, 255, 0.35);
         z-index: 10;
     }
+
 
 </style>
 
