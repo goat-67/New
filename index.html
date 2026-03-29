@@ -4,132 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VORTEX | ULTIMATE GAME HUB</title>
-    <style>
-        /* 1. BASE LAYOUT - MATTE CHARCOAL */
-        html, body { 
-            background-color: #2b2b2b; 
-            color: #fff; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+   <style>
+    /* 1. BASE LAYOUT - MATTE CHARCOAL */
+    html, body { 
+        background-color: #2b2b2b; 
+        color: #fff; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0; padding: 0;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
 
-        /* 2. FLOATING SIDEBAR */
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 3500;
-            top: 0; left: 0; background-color: #111111; overflow-x: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
-        }
+    /* 2. FLOATING SIDEBAR */
+    .sidebar {
+        height: 100%; width: 0; position: fixed; z-index: 3500;
+        top: 0; left: 0; background-color: #111111; overflow-x: hidden;
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 80px;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    }
 
-        .sidebar a {
-            padding: 15px 30px; text-decoration: none; font-size: 16px;
-            color: #888; display: block; transition: 0.2s; border-left: 3px solid transparent;
-            white-space: nowrap;
-        }
+    .sidebar a {
+        padding: 15px 30px; text-decoration: none; font-size: 16px;
+        color: #888; display: block; transition: 0.2s; border-left: 3px solid transparent;
+        white-space: nowrap;
+    }
 
-        .sidebar a:hover { color: #235bff; background: #1a1a1a; border-left: 3px solid #235bff; }
-        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 36px !important; cursor: pointer; }
+    .sidebar a:hover { color: #235bff; background: #1a1a1a; border-left: 3px solid #235bff; }
+    .close-btn { position: absolute; top: 20px; right: 25px; font-size: 36px !important; cursor: pointer; }
 
-       
+    .menu-icon { cursor: pointer; z-index: 3600; position: relative; padding: 10px; }
+    .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; }
 
-        .menu-icon { cursor: pointer; z-index: 3600; position: relative; padding: 10px; }
-        .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; }
+    /* LOGO RETAINED - ORIGINAL BRANDING */
+    .logo {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+        font-size: 38px; font-weight: 900; color: #235bff; letter-spacing: -2.5px;
+        text-transform: uppercase; text-shadow: 2px 2px 0px #000, 0 0 15px rgba(35, 91, 255, 0.4);
+        cursor: pointer; white-space: nowrap;
+    }
 
-        .logo {
-            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-            font-size: 38px; font-weight: 900; color: #235bff; letter-spacing: -2.5px;
-            text-transform: uppercase; text-shadow: 2px 2px 0px #000, 0 0 15px rgba(35, 91, 255, 0.4);
-            cursor: pointer; white-space: nowrap;
-        }
+    /* 4. 9-DOT BENTO MENU (INJEX LAUNCHER) */
+    .bento-wrapper { margin-left: auto; margin-right: 15px; display: flex; align-items: center; }
+    .bento-menu { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; padding: 10px; border-radius: 50%; transition: 0.3s; }
+    .bento-menu:hover { background: rgba(255, 255, 255, 0.1); }
+    .bento-dot { width: 4px; height: 4px; background-color: #fff; border-radius: 50%; }
 
-        /* 4. 9-DOT BENTO MENU (INJEX LAUNCHER) */
-        .bento-wrapper { margin-left: auto; margin-right: 15px; display: flex; align-items: center; }
-        .bento-menu { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; padding: 10px; border-radius: 50%; transition: 0.3s; }
-        .bento-menu:hover { background: rgba(255, 255, 255, 0.1); }
-        .bento-dot { width: 4px; height: 4px; background-color: #fff; border-radius: 50%; }
+    /* 5. THE SEARCH WRAPPER - FIXED WIDTH 280px */
+    .search-wrapper { 
+        position: relative; 
+        width: 280px; 
+        max-width: 35vw; 
+        z-index: 4500; 
+        box-sizing: border-box; 
+    }
 
-        /* 1. THE SEARCH WRAPPER - STAYS WITHIN SCREEN BOUNDARIES */
-.search-wrapper { 
-    position: relative; 
-    width: 280px; /* Restored to your preferred width */
-    max-width: 35vw; /* Prevents it from ever being wider than 35% of the screen */
-    z-index: 3000;
-    box-sizing: border-box; /* Crucial: includes padding in the width calculation */
-}
+    .game-search {
+        width: 100%;
+        box-sizing: border-box; 
+        background: #222;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 15px;
+        color: #fff;
+        font-size: 15px;
+        outline: none;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    }
 
-/* 2. THE SEARCH INPUT - CAPSULE SHAPE */
-.game-search {
-    width: 100%;
-    box-sizing: border-box; /* Prevents overflow */
-    background: #222;
-    border: none;
-    border-radius: 12px;
-    padding: 12px 15px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-}
+    /* 3. THE NAV BAR - NO OVERFLOW TO ALLOW SEARCH RESULTS */
+    nav {
+        background-color: #121212;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px; 
+        position: relative;
+        z-index: 4000; 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    }
 
-/* 3. THE NAV BAR - PREVENTS OVERFLOW */
-nav {
-    background-color: #121212;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px; /* Slightly reduced padding to keep items inside */
-    position: relative;
-    z-index: 2000;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-    overflow: hidden; /* Hard-stops any element from going off-screen */
-}
+    /* SEARCH RESULTS DROPDOWN - FIXED Z-INDEX */
+    #search-results {
+        position: absolute; top: 55px; left: 0; width: 100%;
+        background: #1a1a1a; border-radius: 12px; display: none;
+        z-index: 5000; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;
+        border: 1px solid #252525;
+    }
 
+    .search-item {
+        display: flex; align-items: center; padding: 15px 20px; color: #fff;
+        text-decoration: none; font-size: 14px; border-bottom: 1px solid #252525; transition: 0.2s;
+    }
+    .search-item:hover { background: #333; color: #235bff; }
+
+    /* 6. ORIGINAL BLUE GRADIENT UPDATE BAR - RETAINED */
+    .update-bar {
+        width: 96%; max-width: 1400px; margin: 10px auto; padding: 14px 25px;
+        background: linear-gradient(to right, #000B18 0%, #003366 25%, #235bff 50%, #003366 75%, #000B18 100%);
+        border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        color: #ffffff; text-align: center; font-size: 0.85rem; line-height: 1.5;
+        letter-spacing: 1.2px; text-transform: uppercase; font-weight: 800;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); position: relative; z-index: 1000;
+        border: 1px solid rgba(0, 163, 255, 0.3);
+    }
+
+    /* 7. PREMIUM METALLIC SQUIRCLES (NON-HOVER STATE) */
+    #sections-container {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 15px; padding: 40px 60px; max-width: 1600px; margin: 0 auto;
+    }
+
+    .game-btn {
+        aspect-ratio: 1 / 1; 
+        background: linear-gradient(135deg, #323232 0%, #1a1a1a 100%); /* Diagonal Metallic Gradient */
+        color: #777; 
+        border-radius: 20px; 
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 7.5px; text-transform: uppercase; text-align: center;
+        padding: 10px; overflow-wrap: anywhere; word-break: normal; line-height: 1.1;
+        cursor: pointer; 
         
-    
+        border: 1px solid #111;
+        box-shadow: 
+            inset 0 1px 1px rgba(255, 255, 255, 0.1), /* Beveled Top Light */
+            inset 0 -2px 5px rgba(0, 0, 0, 0.5),      /* Internal Depth */
+            0 8px 15px rgba(0, 0, 0, 0.5);            /* Floor Shadow */
+            
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-        #search-results {
-            position: absolute; top: 55px; left: 0; width: 100%;
-            background: #1a1a1a; border-radius: 12px; display: none;
-            z-index: 3100; box-shadow: 0 10px 40px rgba(0,0,0,0.8); overflow: hidden;
-        }
+    .game-btn:hover { 
+        transform: translateY(-8px) scale(1.1); 
+        background: #252525; 
+        color: #fff; 
+        border-color: #235bff; 
+        box-shadow: 0 0 20px rgba(35, 91, 255, 0.4), 0 15px 35px rgba(0,0,0,0.7); 
+        z-index: 10; 
+    }
+</style>
 
-        .search-item {
-            display: flex; align-items: center; padding: 15px 20px; color: #fff;
-            text-decoration: none; font-size: 14px; border-bottom: 1px solid #252525; transition: 0.2s;
-        }
-        .search-item:hover { background: #333; color: #235bff; }
-
-        /* 6. RESTORED ORIGINAL UPDATE BAR */
-        .update-bar {
-            width: 96%; max-width: 1400px; margin: 10px auto; padding: 14px 25px;
-            background: linear-gradient(to right, #000B18 0%, #003366 25%, #235bff 50%, #003366 75%, #000B18 100%);
-            border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-            color: #ffffff; text-align: center; font-size: 0.85rem; line-height: 1.5;
-            letter-spacing: 1.2px; text-transform: uppercase; font-weight: 800;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); position: relative; z-index: 1000;
-            border: 1px solid rgba(0, 163, 255, 0.3);
-        }
-
-        /* 7. PREMIUM GAME GRID */
-        #sections-container {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px; padding: 40px 60px; max-width: 1600px; margin: 0 auto;
-        }
-
-        .game-btn {
-            aspect-ratio: 1 / 1; background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
-            color: #999; border-radius: 20px; display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 7.5px; text-transform: uppercase; text-align: center;
-            padding: 8px; overflow-wrap: anywhere; word-break: normal; line-height: 1.1;
-            cursor: pointer; border: 1px solid #111; box-shadow: 0 8px 20px rgba(0,0,0,0.5);               
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .game-btn:hover { transform: translateY(-8px) scale(1.1); background: #252525; color: #fff; border-color: #235bff; box-shadow: 0 0 20px rgba(35, 91, 255, 0.4); z-index: 10; }
-    </style>
 </head>
 <body>
 
