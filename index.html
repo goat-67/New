@@ -137,28 +137,45 @@
 
 
     /* 5. SOLID METALLIC GOLD UPDATE BAR (NO BLACK EDGES) */
-    .update-bar {
-        background: linear-gradient(
-            to right, 
-            #7a5d1c 0%, 
-            #bf953f 25%, 
-            #fcf6ba 50%, 
-            #bf953f 75%, 
-            #7a5d1c 100%
-        );
-        padding: 12px 0;
-        text-align: center;
-        font-size: 0.85rem;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        font-weight: 900;
-        color: #2a2005; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        position: relative;
-        z-index: 1000;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    }
+ .update-bar {
+    /* 1. POSITIONING & SIZE */
+    width: 96%;           /* Pulls it away from the screen edges */
+    max-width: 1400px;    /* Prevents it from getting too wide on large monitors */
+    margin: 10px auto;    /* Centers it and adds space above/below */
+    padding: 14px 25px;   /* Extra side padding for long sentences */
+    
+    /* 2. THE BLUE GRADIENT (Lightest in the Middle) */
+    background: linear-gradient(
+        to right, 
+        #000B18 0%,    /* Dark Deep Navy */
+        #003366 25%,   /* Royal Blue */
+        #00A3FF 50%,   /* VORTEX ELECTRIC BLUE (The Shine) */
+        #003366 75%,   /* Royal Blue */
+        #000B18 100%   /* Dark Deep Navy */
+    );
+
+    /* 3. EDGES & SHADOWS */
+    border-radius: 12px;  /* Smooth, modern rounded corners */
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.7), /* Deep dark shadow for depth */
+        inset 0 1px 1px rgba(255, 255, 255, 0.2); /* Subtle "top-lit" edge */
+    
+    /* 4. TEXT STYLING */
+    color: #ffffff;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.5;      /* Improves readability for long messages */
+    letter-spacing: 1.2px; /* Slightly tighter for better word recognition */
+    text-transform: uppercase;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+    /* 5. OVERLAYS */
+    position: relative;
+    z-index: 1000;
+    border: 1px solid rgba(0, 163, 255, 0.3); /* Thin blue border matches the shine */
+}
+
 
     /* 6. PREMIUM GAME GRID */
     #sections-container {
