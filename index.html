@@ -116,33 +116,51 @@
         gap: 15px; padding: 40px 60px; max-width: 1600px; margin: 0 auto;
     }
 
+      /* 6. ULTRA-PREMIUM SQUIRCLES (NON-HOVER STATE) */
     .game-btn {
-        aspect-ratio: 1 / 1; 
-        background: linear-gradient(135deg, #323232 0%, #1a1a1a 100%); /* Diagonal Metallic Gradient */
+        aspect-ratio: 1 / 1;
+        /* A deeper, multi-stage gradient for metallic depth */
+        background: linear-gradient(145deg, #353535, #1a1a1a);
         color: #777; 
-        border-radius: 20px; 
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 800; font-size: 7.5px; text-transform: uppercase; text-align: center;
-        padding: 10px; overflow-wrap: anywhere; word-break: normal; line-height: 1.1;
-        cursor: pointer; 
+        border-radius: 20px;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        font-weight: 800;
+        font-size: 7.5px;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 12px;
+        cursor: pointer;
         
-        border: 1px solid #111;
+        /* THE PREMIUM SECRET: "Glass-Beveled" Edges */
+        border: 1px solid rgba(0, 0, 0, 0.4);
         box-shadow: 
-            inset 0 1px 1px rgba(255, 255, 255, 0.1), /* Beveled Top Light */
-            inset 0 -2px 5px rgba(0, 0, 0, 0.5),      /* Internal Depth */
-            0 8px 15px rgba(0, 0, 0, 0.5);            /* Floor Shadow */
+            /* 1. Subtle Outer Glow (Bottom) */
+            0 10px 20px rgba(0, 0, 0, 0.5), 
+            /* 2. Top-Edge Highlight (Makes it look 3D) */
+            inset 0 1px 1px rgba(255, 255, 255, 0.15), 
+            /* 3. Deep Bottom Recess (Adds weight) */
+            inset 0 -3px 6px rgba(0, 0, 0, 0.6);
             
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
+    /* THE PREMIUM HOVER: "Electric Engagement" */
     .game-btn:hover { 
-        transform: translateY(-8px) scale(1.1); 
-        background: #252525; 
-        color: #fff; 
+        transform: translateY(-8px) scale(1.08); 
+        background: #222;
+        color: #fff;
         border-color: #235bff; 
-        box-shadow: 0 0 20px rgba(35, 91, 255, 0.4), 0 15px 35px rgba(0,0,0,0.7); 
-        z-index: 10; 
+        
+        /* High-Intensity Blue Underglow */
+        box-shadow: 
+            0 15px 30px rgba(0, 0, 0, 0.7),
+            0 0 20px rgba(35, 91, 255, 0.4), /* Electric Blue Aura */
+            inset 0 1px 2px rgba(255, 255, 255, 0.2); /* Brightens top edge on hover */
+        z-index: 10;
     }
+
 </style>
 
 </head>
