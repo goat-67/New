@@ -32,12 +32,7 @@
         .sidebar a:hover { color: #235bff; background: #1a1a1a; border-left: 3px solid #235bff; }
         .close-btn { position: absolute; top: 20px; right: 25px; font-size: 36px !important; cursor: pointer; }
 
-        /* 3. NAVIGATION BAR */
-        nav {
-            background-color: #121212; height: 70px; display: flex;
-            align-items: center; justify-content: space-between; padding: 0 25px;
-            position: relative; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-        }
+       
 
         .menu-icon { cursor: pointer; z-index: 3600; position: relative; padding: 10px; }
         .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; }
@@ -55,19 +50,45 @@
         .bento-menu:hover { background: rgba(255, 255, 255, 0.1); }
         .bento-dot { width: 4px; height: 4px; background-color: #fff; border-radius: 50%; }
 
-        /* 5. SEARCH WRAPPER - WIDTH REDUCED TO 280px */
-        .search-wrapper { position: relative; width: 280px; z-index: 3000; }
-        .game-search {
-            width: 100%; background: #222; border: none; border-radius: 12px;
-            padding: 12px 20px; color: #fff; font-size: 15px; outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
+        /* 1. THE SEARCH WRAPPER - STAYS WITHIN SCREEN BOUNDARIES */
+.search-wrapper { 
+    position: relative; 
+    width: 280px; /* Restored to your preferred width */
+    max-width: 35vw; /* Prevents it from ever being wider than 35% of the screen */
+    z-index: 3000;
+    box-sizing: border-box; /* Crucial: includes padding in the width calculation */
+}
 
-        /* MOBILE FIX: Smaller search bar for small screens */
-        @media (max-width: 800px) {
-            .search-wrapper { width: 180px; }
-            .logo { font-size: 24px; }
-        }
+/* 2. THE SEARCH INPUT - CAPSULE SHAPE */
+.game-search {
+    width: 100%;
+    box-sizing: border-box; /* Prevents overflow */
+    background: #222;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* 3. THE NAV BAR - PREVENTS OVERFLOW */
+nav {
+    background-color: #121212;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px; /* Slightly reduced padding to keep items inside */
+    position: relative;
+    z-index: 2000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    overflow: hidden; /* Hard-stops any element from going off-screen */
+}
+
+        
+    
 
         #search-results {
             position: absolute; top: 55px; left: 0; width: 100%;
@@ -144,7 +165,7 @@
     </nav>
 
     <!-- RESTORED UPDATE TEXT -->
-    <div class="update-bar">UPDATE: Sorry Guys, Some Unity Games are down, only the original version of Granny works now, but most games should be fixed for chromebooks. I am working on trying to fix some heavy games that don't work, so hold on tight for a moment. Some games take a Long time to load, but if they dont load within about 1-2 minutes, then its probably broken. Original Granny works, same with Backrooms, and most others.</div>
+    <div class="update-bar">UPDATE: INJEX IS ADDED!!! Injex should be the 9 dots by the search bar. Also, some games take a long time to load, but if they dont load within about 1-2 minutes, then its probably broken.</div>
 
     <div id="sections-container"></div>
 
