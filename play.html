@@ -127,6 +127,7 @@
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
         
+        // Checks which list you are using
         const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
         if (list && list[gameId]) {
@@ -134,49 +135,64 @@
             let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
             document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
+            // Correct URL path for the CDN
             const fileName = game.gameUrl.split('/').pop();
-            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-single@main/UGS-Files/${fileName}`;
 
             fetch(fetchUrl)
                 .then(r => r.text())
                 .then(html => {
                     const frame = document.getElementById('game-frame');
+                    
+                    // 1. Ensure trailing slash for the CDN folder
                     let baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
                     if (!baseUrl.endsWith('/')) baseUrl += '/';
 
-                    // UNIVERSAL BYPASS: Tricks Ads, SDKs, and Security
+                    // 2. THE UNIVERSAL BYPASS HEADERS
+                    // This fixes freezes, 404s, and "Local Resource" errors
                     const masterHeaders = `
                         <head>
                             <base href="${baseUrl}">
                             <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
                             <script>
-                                // 1. MOCK ADS: Prevents "FullAdShow" or "showAd" freezes
-                                window.FullAdShow = function() { console.log("Ad Blocked"); };
+                                // AD BYPASS & UNFREEZER: Tells Unity to resume after "showing" an ad
+                                window.FullAdShow = function() { 
+                                    console.log("Ad intercepted - Resuming...");
+                                    if (window.unityInstance) { 
+                                        window.unityInstance.SendMessage('GameManager', 'ResumeGame'); 
+                                    }
+                                };
                                 window.externFullAdShow = window.FullAdShow;
                                 window.showAd = window.FullAdShow;
-                                window.PokiSDK = { initWithOptions: function() { return Promise.resolve(); }, gameLoadingFinished: function() {}, gameLoadingStart: function() {}, happyTime: function() {} };
-                                
-                                // 2. MOCK YANDEX (YSDK): Stops "ysdk is not defined" crashes
+
+                                // YANDEX (YSDK) BYPASS: Actively triggers the "onClose" callback to unfreeze game
                                 window.ysdk = {
                                     features: { LoadingAPI: { ready: function() {} } },
-                                    adv: { showFullscreenAdv: { callbacks: { onClose: function() { console.log("Yandex Ad Closed"); } } } },
+                                    adv: {
+                                        showFullscreenAdv: function(opt) {
+                                            console.log("YSDK Ad Bypass...");
+                                            if (opt && opt.callbacks && opt.callbacks.onClose) {
+                                                // Trigger the resume signal with a tiny delay for stability
+                                                setTimeout(() => { opt.callbacks.onClose(true); }, 100);
+                                            }
+                                        }
+                                    },
                                     getStorage: function() { return Promise.resolve({}); }
                                 };
 
-                                // 3. MOCK PURCHASES: Skips shop/money errors
+                                // POKI & PURCHASE BYPASS: Stops other SDK errors
+                                window.PokiSDK = { initWithOptions: function() { return Promise.resolve(); }, gameLoadingFinished: function() {}, gameLoadingStart: function() {}, happyTime: function() {} };
                                 window.BuyPayments = function() { return true; };
                                 window.ConsumePurchases = function() { return true; };
-                                
-                                // 4. ERROR SILENCER: Prevents minor script errors from stopping the game
-                                window.onerror = function() { return true; };
+                                window.onerror = function() { return true; }; // Silence minor bugs
                             <\/script>
                         </head>
                     `;
 
-                    // Merge our bypass headers with the game's actual code
+                    // Combine headers with the fetched game code
                     const finalHtml = masterHeaders + html;
 
-                    // THE NUCLEAR INJECTION: Bypasses GitHub Pages "Local Resource" Block
+                    // 3. THE "NUCLEAR" INJECTION: Bypasses GitHub Pages "Local Resource" Block
                     frame.src = "about:blank";
                     const frameDoc = frame.contentDocument || frame.contentWindow.document;
                     frameDoc.open();
@@ -190,6 +206,7 @@
         }
     };
 
+    // Fullscreen Function for your button
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
         if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -197,6 +214,7 @@
         else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
     }
 </script>
+
 
 
 
