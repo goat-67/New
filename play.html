@@ -127,7 +127,6 @@
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
         
-        // Check if list exists (Handles allGames or myGamesList)
         const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
         if (list && list[gameId]) {
@@ -135,47 +134,70 @@
             let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
             document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
-            // The URL for the single-file game
             const fileName = game.gameUrl.split('/').pop();
             const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
-fetch(fetchUrl)
-    .then(r => r.text())
-    .then(html => {
-        const frame = document.getElementById('game-frame');
-        const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
 
-        // 1. Prepare the game code with a Base URL so it finds its scripts
-        const fixedHtml = `<base href="${baseUrl}"><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">` + html;
+            fetch(fetchUrl)
+                .then(r => r.text())
+                .then(html => {
+                    const frame = document.getElementById('game-frame');
+                    let baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
+                    if (!baseUrl.endsWith('/')) baseUrl += '/';
 
-        // 2. The Nuclear Option: Directly write to the iframe's document
-        // This is the ONLY way to avoid "Local Resource" errors on strict hosts
-        const frameDoc = frame.contentDocument || frame.contentWindow.document;
-        frameDoc.open();
-        frameDoc.write(fixedHtml);
-        frameDoc.close();
-    })
-    .catch(err => {
-        console.error("Game Load Error:", err);
-        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
-    });
+                    // UNIVERSAL BYPASS: Tricks Ads, SDKs, and Security
+                    const masterHeaders = `
+                        <head>
+                            <base href="${baseUrl}">
+                            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+                            <script>
+                                // 1. MOCK ADS: Prevents "FullAdShow" or "showAd" freezes
+                                window.FullAdShow = function() { console.log("Ad Blocked"); };
+                                window.externFullAdShow = window.FullAdShow;
+                                window.showAd = window.FullAdShow;
+                                window.PokiSDK = { initWithOptions: function() { return Promise.resolve(); }, gameLoadingFinished: function() {}, gameLoadingStart: function() {}, happyTime: function() {} };
+                                
+                                // 2. MOCK YANDEX (YSDK): Stops "ysdk is not defined" crashes
+                                window.ysdk = {
+                                    features: { LoadingAPI: { ready: function() {} } },
+                                    adv: { showFullscreenAdv: { callbacks: { onClose: function() { console.log("Yandex Ad Closed"); } } } },
+                                    getStorage: function() { return Promise.resolve({}); }
+                                };
 
+                                // 3. MOCK PURCHASES: Skips shop/money errors
+                                window.BuyPayments = function() { return true; };
+                                window.ConsumePurchases = function() { return true; };
+                                
+                                // 4. ERROR SILENCER: Prevents minor script errors from stopping the game
+                                window.onerror = function() { return true; };
+                            <\/script>
+                        </head>
+                    `;
 
-            
-        } // <--- WAS MISSING (Closes the 'if' statement)
-    }; // <--- WAS MISSING (Closes the 'window.onload' function)
+                    // Merge our bypass headers with the game's actual code
+                    const finalHtml = masterHeaders + html;
 
-    // FIXED FULLSCREEN FUNCTION
+                    // THE NUCLEAR INJECTION: Bypasses GitHub Pages "Local Resource" Block
+                    frame.src = "about:blank";
+                    const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                    frameDoc.open();
+                    frameDoc.write(finalHtml);
+                    frameDoc.close();
+                })
+                .catch(err => {
+                    console.error("Master Load Error:", err);
+                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+                });
+        }
+    };
+
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
-        if (elem.requestFullscreen) { 
-            elem.requestFullscreen(); 
-        } else if (elem.webkitRequestFullscreen) { 
-            elem.webkitRequestFullscreen(); 
-        } else if (elem.msRequestFullscreen) { 
-            elem.msRequestFullscreen(); 
-        }
+        if (elem.requestFullscreen) { elem.requestFullscreen(); }
+        else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
+        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
     }
 </script>
+
 
 
 
