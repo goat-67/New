@@ -138,26 +138,33 @@
             // The URL for the single-file game
             const fileName = game.gameUrl.split('/').pop();
             const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+fetch(fetchUrl)
+    .then(r => r.text())
+    .then(html => {
+        const frame = document.getElementById('game-frame');
 
-            fetch(fetchUrl)
-                .then(r => r.text())
-                .then(html => {
-                    const frame = document.getElementById('game-frame');
+        // 1. Get the folder path from your jsDelivr link
+        const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
 
-                    // 1. Tell the game to look for its loader/data files on the CDN, not your site
-                    const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
-                    const fixedHtml = `<base href="${baseUrl}">` + html;
+        // 2. Force HTTPS and set the Base URL
+        // This stops the "Mixed Content" errors and "Insecure resource" blocks
+        const headInject = `
+            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+            <base href="${baseUrl}">
+        `;
+        
+        const fixedHtml = headInject + html;
 
-                    // 2. Convert to Base64 to bypass the "Local Resource" (blob) block
-                    const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
-                    
-                    // 3. Load as a Data URI instead of a Blob
-                    frame.src = "data:text/html;base64," + base64Html;
-                })
-                .catch(err => {
-                    console.error("Game Load Error:", err);
-                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
-                });
+        // 3. Load via Base64 to bypass the "Local Resource" (Blob) error
+        const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
+        frame.src = "data:text/html;base64," + base64Html;
+    })
+    .catch(err => {
+        console.error("Game Load Error:", err);
+        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+    });
+
+            
         } // <--- WAS MISSING (Closes the 'if' statement)
     }; // <--- WAS MISSING (Closes the 'window.onload' function)
 
