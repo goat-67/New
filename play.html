@@ -126,53 +126,41 @@
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
-        
-        // Checks which list you are using
         const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
         if (list && list[gameId]) {
             const game = list[gameId];
-            let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
+            document.getElementById('display-title').innerText = game.name.toUpperCase();
 
-            // Correct URL path for the CDN
             const fileName = game.gameUrl.split('/').pop();
-            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-single@main/UGS-Files/${fileName}`;
+            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
 
             fetch(fetchUrl)
                 .then(r => r.text())
                 .then(html => {
                     const frame = document.getElementById('game-frame');
-                    
-                    // 1. Ensure trailing slash for the CDN folder
                     let baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
                     if (!baseUrl.endsWith('/')) baseUrl += '/';
 
-                    // 2. THE UNIVERSAL BYPASS HEADERS
-                    // This fixes freezes, 404s, and "Local Resource" errors
                     const masterHeaders = `
                         <head>
                             <base href="${baseUrl}">
                             <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
                             <script>
-                                // AD BYPASS & UNFREEZER: Tells Unity to resume after "showing" an ad
-                                window.FullAdShow = function() { 
-                                    console.log("Ad intercepted - Resuming...");
-                                    if (window.unityInstance) { 
-                                        window.unityInstance.SendMessage('GameManager', 'ResumeGame'); 
-                                    }
-                                };
-                                window.externFullAdShow = window.FullAdShow;
-                                window.showAd = window.FullAdShow;
-
-                                // YANDEX (YSDK) BYPASS: Actively triggers the "onClose" callback to unfreeze game
+                                // 1. THE MOCK SDK (Matches your code snippet exactly)
                                 window.ysdk = {
-                                    features: { LoadingAPI: { ready: function() {} } },
+                                    features: {
+                                        LoadingAPI: { ready: function() { console.log("Mock: Loading Ready"); } },
+                                        GameplayAPI: {
+                                            start: function() { console.log("Mock: Gameplay Started"); },
+                                            stop: function() { console.log("Mock: Gameplay Stopped"); }
+                                        }
+                                    },
                                     adv: {
                                         showFullscreenAdv: function(opt) {
-                                            console.log("YSDK Ad Bypass...");
+                                            console.log("Mock: Ad Bypassed");
                                             if (opt && opt.callbacks && opt.callbacks.onClose) {
-                                                // Trigger the resume signal with a tiny delay for stability
+                                                // Trigger the 'onClose' signal to unfreeze movement
                                                 setTimeout(() => { opt.callbacks.onClose(true); }, 100);
                                             }
                                         }
@@ -180,19 +168,26 @@
                                     getStorage: function() { return Promise.resolve({}); }
                                 };
 
-                                // POKI & PURCHASE BYPASS: Stops other SDK errors
+                                // 2. AD UNFREEZER: Forces Unity to resume
+                                window.FullAdShow = function() { 
+                                    if (window.unityInstance) { 
+                                        window.unityInstance.SendMessage('GameManager', 'ResumeGame'); 
+                                        window.unityInstance.SendMessage('GameManager', 'Unpause');
+                                    }
+                                };
+                                window.externFullAdShow = window.FullAdShow;
+                                window.showAd = window.FullAdShow;
+
+                                // 3. POKI & MISC BYPASS
                                 window.PokiSDK = { initWithOptions: function() { return Promise.resolve(); }, gameLoadingFinished: function() {}, gameLoadingStart: function() {}, happyTime: function() {} };
                                 window.BuyPayments = function() { return true; };
                                 window.ConsumePurchases = function() { return true; };
-                                window.onerror = function() { return true; }; // Silence minor bugs
+                                window.onerror = function() { return true; };
                             <\/script>
                         </head>
                     `;
 
-                    // Combine headers with the fetched game code
                     const finalHtml = masterHeaders + html;
-
-                    // 3. THE "NUCLEAR" INJECTION: Bypasses GitHub Pages "Local Resource" Block
                     frame.src = "about:blank";
                     const frameDoc = frame.contentDocument || frame.contentWindow.document;
                     frameDoc.open();
@@ -200,20 +195,18 @@
                     frameDoc.close();
                 })
                 .catch(err => {
-                    console.error("Master Load Error:", err);
-                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+                    document.getElementById('display-title').innerText = "LOAD ERROR";
                 });
         }
     };
 
-    // Fullscreen Function for your button
     function openFullscreen() {
         const elem = document.getElementById("game-frame");
         if (elem.requestFullscreen) { elem.requestFullscreen(); }
         else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
-        else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
     }
 </script>
+
 
 
 
