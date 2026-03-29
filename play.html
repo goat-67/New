@@ -122,7 +122,6 @@
 
     <!-- 1. Load your games list (Change URL if your games.js moved) -->
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
-
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
@@ -139,27 +138,28 @@
             // The URL for the single-file game
             const fileName = game.gameUrl.split('/').pop();
             const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
-fetch(fetchUrl)
-    .then(r => r.text())
-    .then(html => {
-        const frame = document.getElementById('game-frame');
 
-        // 1. Tell the game to look for its loader/data files on the CDN, not your site
-        const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
-        const fixedHtml = `<base href="${baseUrl}">` + html;
+            fetch(fetchUrl)
+                .then(r => r.text())
+                .then(html => {
+                    const frame = document.getElementById('game-frame');
 
-        // 2. Convert to Base64 to bypass the "Local Resource" (blob) block
-        const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
-        
-        // 3. Load as a Data URI instead of a Blob
-        frame.src = "data:text/html;base64," + base64Html;
-    })
-    .catch(err => {
-        console.error("Game Load Error:", err);
-        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
-    });
+                    // 1. Tell the game to look for its loader/data files on the CDN, not your site
+                    const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
+                    const fixedHtml = `<base href="${baseUrl}">` + html;
 
-           
+                    // 2. Convert to Base64 to bypass the "Local Resource" (blob) block
+                    const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
+                    
+                    // 3. Load as a Data URI instead of a Blob
+                    frame.src = "data:text/html;base64," + base64Html;
+                })
+                .catch(err => {
+                    console.error("Game Load Error:", err);
+                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+                });
+        } // <--- WAS MISSING (Closes the 'if' statement)
+    }; // <--- WAS MISSING (Closes the 'window.onload' function)
 
     // FIXED FULLSCREEN FUNCTION
     function openFullscreen() {
@@ -167,12 +167,14 @@ fetch(fetchUrl)
         if (elem.requestFullscreen) { 
             elem.requestFullscreen(); 
         } else if (elem.webkitRequestFullscreen) { 
-            elem.webkitRequestFullscreen(); // Specific for Chrome/Chromebooks
+            elem.webkitRequestFullscreen(); 
         } else if (elem.msRequestFullscreen) { 
             elem.msRequestFullscreen(); 
         }
     }
 </script>
+
+
 
 </body>
 </html>
