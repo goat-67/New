@@ -3,262 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> VORTEX | ULTIMATE GAME HUB</title>
-    
-<style>
-    /* 1. BASE LAYOUT - MATTE CHARCOAL */
-    html, body { 
-        background-color: #2b2b2b; 
-        color: #fff; 
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-        margin: 0; padding: 0;
-        overflow-x: hidden;
-        scroll-behavior: smooth;
-    }
+    <title>VORTEX | ULTIMATE GAME HUB</title>
+    <style>
+        /* 1. BASE LAYOUT - MATTE CHARCOAL */
+        html, body { 
+            background-color: #2b2b2b; 
+            color: #fff; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
 
-    /* 2. FLOATING SIDEBAR (DOES NOT MOVE PAGE) */
-    .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed; 
-        z-index: 3500;
-        top: 0;
-        left: 0;
-        background-color: #111111;
-        overflow-x: hidden;
-        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding-top: 80px;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.8);
-    }
+        /* 2. FLOATING SIDEBAR */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed; 
+            z-index: 3500;
+            top: 0;
+            left: 0;
+            background-color: #111111;
+            overflow-x: hidden;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 80px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
 
-    .sidebar a {
-        padding: 15px 30px;
-        text-decoration: none;
-        font-size: 16px;
-        color: #888;
-        display: block;
-        transition: 0.2s;
-        border-left: 3px solid transparent;
-        white-space: nowrap;
-    }
+        .sidebar a {
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #888;
+            display: block;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+            white-space: nowrap;
+        }
 
-    .sidebar a:hover {
-        color: #235bff;
-        background: #1a1a1a;
-        border-left: 3px solid #235bff;
-    }
+        .sidebar a:hover {
+            color: #235bff;
+            background: #1a1a1a;
+            border-left: 3px solid #235bff;
+        }
 
-    /* 3. NAVIGATION BAR (Centered Logo) */
-    nav {
-        background-color: #121212;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 25px;
-        position: relative;
-        z-index: 2000;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-    }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 36px !important;
+            cursor: pointer;
+        }
 
-    .menu-icon { 
-        cursor: pointer; 
-        z-index: 3600; 
-        position: relative; 
-        padding: 10px;
-    }
-    .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; }
+        /* 3. NAVIGATION BAR */
+        nav {
+            background-color: #121212;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            position: relative;
+            z-index: 2000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
 
-    .logo {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 38px;
-        font-weight: 900;
-        color: #235bff; 
-        letter-spacing: -2.5px;
-        text-transform: uppercase;
-        text-shadow: 2px 2px 0px #000, 0 0 15px rgba(35, 91, 255, 0.4);
-        cursor: pointer;
-    }
+        .menu-icon { 
+            cursor: pointer; 
+            z-index: 3600; 
+            position: relative; 
+            padding: 10px;
+        }
+        .menu-icon div { width: 25px; height: 3px; background: #fff; margin-bottom: 5px; }
 
-   /* 1. THE SEARCH WRAPPER - MOVED LEFT & WIDENED */
-.search-wrapper { 
-    position: relative; 
-    right: 60px; /* Moved away from the far right edge */
-    width: 360px; /* Much wider like your image */
-    z-index: 3000;
-}
+        .logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            font-weight: 900;
+            color: #235bff; 
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000, 0 0 15px rgba(35, 91, 255, 0.4);
+            cursor: pointer;
+            white-space: nowrap;
+        }
 
-/* 2. THE SEARCH INPUT - CAPSULE SHAPE */
-.game-search {
-    width: 100%;
-    background: #222; /* Dark charcoal */
-    border: none;
-    border-radius: 12px; /* Smooth rounded corners */
-    padding: 14px 20px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-}
+        /* 4. 9-DOT BENTO MENU (INJEX LAUNCHER) */
+        .bento-wrapper {
+            margin-left: auto;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
 
-/* 3. THE DROPDOWN - SOLID & CLEAN */
-#search-results {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background: #1a1a1a; /* Solid dark background (no transparency) */
-    border-radius: 12px;
-    display: none;
-    z-index: 3100;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    overflow: hidden; /* Clips the corners of the items */
-}
+        .bento-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 4px);
+            gap: 3px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
 
-/* 4. THE RESULT ITEMS - LIST STYLE */
-.search-item {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 1px solid #252525;
-    transition: 0.2s;
-}
+        .bento-menu:hover { background: rgba(255, 255, 255, 0.1); }
+        .bento-dot { width: 4px; height: 4px; background-color: #fff; border-radius: 50%; }
 
-.search-item:hover {
-    background: #333;
-    color: #235bff; /* Your Electric Cobalt Blue */
-}
+        /* 5. SEARCH WRAPPER */
+        .search-wrapper { 
+            position: relative; 
+            width: 360px; 
+            z-index: 3000;
+        }
 
+        .game-search {
+            width: 100%;
+            background: #222;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
 
-    /* 5. SOLID METALLIC GOLD UPDATE BAR (NO BLACK EDGES) */
- .update-bar {
-    /* 1. POSITIONING & SIZE */
-    width: 96%;           /* Pulls it away from the screen edges */
-    max-width: 1400px;    /* Prevents it from getting too wide on large monitors */
-    margin: 10px auto;    /* Centers it and adds space above/below */
-    padding: 14px 25px;   /* Extra side padding for long sentences */
-    
-    /* 2. THE BLUE GRADIENT (Lightest in the Middle) */
-    background: linear-gradient(
-        to right, 
-        #000B18 0%,    /* Dark Deep Navy */
-        #003366 25%,   /* Royal Blue */
-        #235bff 50%,   /* VORTEX ELECTRIC BLUE (The Shine) */
-        #003366 75%,   /* Royal Blue */
-        #000B18 100%   /* Dark Deep Navy */
-    );
+        #search-results {
+            position: absolute;
+            top: 55px;
+            left: 0;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 12px;
+            display: none;
+            z-index: 3100;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            overflow: hidden;
+        }
 
-    /* 3. EDGES & SHADOWS */
-    border-radius: 12px;  /* Smooth, modern rounded corners */
-    box-shadow: 
-        0 10px 25px rgba(0, 0, 0, 0.7), /* Deep dark shadow for depth */
-        inset 0 1px 1px rgba(255, 255, 255, 0.2); /* Subtle "top-lit" edge */
-    
-    /* 4. TEXT STYLING */
-    color: #ffffff;
-    text-align: center;
-    font-size: 0.85rem;
-    line-height: 1.5;      /* Improves readability for long messages */
-    letter-spacing: 1.2px; /* Slightly tighter for better word recognition */
-    text-transform: uppercase;
-    font-weight: 800;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        .search-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid #252525;
+            transition: 0.2s;
+        }
 
-    /* 5. OVERLAYS */
-    position: relative;
-    z-index: 1000;
-    border: 1px solid rgba(0, 163, 255, 0.3); /* Thin blue border matches the shine */
-}
+        .search-item:hover { background: #333; color: #235bff; }
 
+        /* 6. UPDATE BAR */
+        .update-bar {
+            width: 94%;
+            max-width: 1400px;
+            margin: 15px auto;
+            padding: 14px 25px;
+            background: linear-gradient(to right, #000B18 0%, #003366 25%, #235bff 50%, #003366 75%, #000B18 100%);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+            text-align: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            border: 1px solid rgba(0, 163, 255, 0.3);
+        }
 
-    /* 6. PREMIUM GAME GRID */
-    #sections-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 15px;
-        padding: 40px 60px;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
+        /* 7. GAME GRID */
+        #sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 15px;
+            padding: 40px 60px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
 
-    /* PREMIUM SQUIRCLES (FIXED TEXT WRAP) */
-    .game-btn {
-        aspect-ratio: 1 / 1;
-        background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
-        color: #999;
-        border-radius: 20px;
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        font-weight: 800;
-        font-size: 7.5px; /* Tiny, clean font */
-        text-transform: uppercase;
-        text-align: center;
-        padding: 8px; /* Breathing room inside box */
-        
-        /* THE FIX FOR OVERFLOWING TITLES */
-        overflow-wrap: anywhere; 
-        word-break: normal;
-        line-height: 1.1;
+        .game-btn {
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+            color: #999;
+            border-radius: 20px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: 800;
+            font-size: 8px;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 10px;
+            overflow-wrap: anywhere; 
+            word-break: normal;
+            line-height: 1.2;
+            cursor: pointer;
+            border: 1px solid #111;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);               
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        cursor: pointer;
-        border: 1px solid #111;
-        box-shadow: 
-            inset 0 2px 2px rgba(255, 255, 255, 0.08), 
-            inset 0 -2px 2px rgba(0, 0, 0, 0.5),      
-            0 8px 20px rgba(0,0,0,0.5);               
-        
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .game-btn:hover { 
-        transform: translateY(-8px) scale(1.1); 
-        background: #252525;
-        color: #fff;
-        border-color: #235bff; 
-        box-shadow: 0 0 20px rgba(35, 91, 255, 0.4), 0 15px 35px rgba(0,0,0,0.7);
-        z-index: 10;
-    }
-</style>
-
-
-
-
+        .game-btn:hover { 
+            transform: translateY(-8px) scale(1.05); 
+            background: #252525;
+            color: #fff;
+            border-color: #235bff; 
+            box-shadow: 0 0 20px rgba(35, 91, 255, 0.4);
+            z-index: 10;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a>
-        <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
-        <a href="https://lecture.library.english.literature.technology.ebb.com.au/" target="_blank">STRONGDOGXP</a>
-        <a href="https://math.geometry.algebra.learning.windsurfwetter.de/"target="_blank">STRONGDOGXP</a>
-     <!-- Fixed Sidebar Link -->
-<a href="#" onclick="
-    const currentUrl = window.location.href;
-    const win = window.open('about:blank', '_blank');
-
-    if (win) {
-        const iframe = win.document.createElement('iframe');
-        iframe.src = currentUrl;
-        iframe.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;';
+        <h2 style="color: #fff; padding-left: 25px; font-size: 12px; opacity: 0.5; margin-top: 20px; letter-spacing: 1px;">UNBLOCKED LINKS</h2>
         
-        win.document.body.appendChild(iframe);
-        win.document.body.style.margin = '0';
-        win.document.title = 'VORTEX | ULTIMATE GAME HUB';
-    }
-    return false; 
-">Cloak Page</a> <!-- Changed </button> to </a> -->
-
-
-
-
+        <a href="https://lecture.library.english.literature.technology.ebb.com.au" target="_blank">STRONGDOGXP 1</a>
+        <a href="https://math.geometry.algebra.learning.windsurfwetter.de" target="_blank">STRONGDOGXP 2</a>
+        
+        <a href="#" onclick="cloakPage()">Cloak Page</a>
     </div>
 
     <!-- Navigation -->
@@ -266,8 +234,17 @@
         <div class="menu-icon" onclick="toggleNav()">
             <div></div><div></div><div></div>
         </div>
-        <div class="logo" onclick="window.location.reload()">VORTEX | ULTIMATE GAME HUB</div>
         
+        <div class="logo" onclick="window.location.reload()">VORTEX | HUB</div>
+        
+        <div class="bento-wrapper">
+            <div class="bento-menu" onclick="launchInjex()" title="Open Injex Proxy">
+                <div class="bento-dot"></div><div class="bento-dot"></div><div class="bento-dot"></div>
+                <div class="bento-dot"></div><div class="bento-dot"></div><div class="bento-dot"></div>
+                <div class="bento-dot"></div><div class="bento-dot"></div><div class="bento-dot"></div>
+            </div>
+        </div>
+
         <div class="search-wrapper">
             <input type="text" id="game-search" class="game-search" placeholder="Search 1,205 games..." oninput="sdxpSearch()">
             <div id="search-results"></div>
@@ -275,87 +252,96 @@
     </nav>
 
     <!-- Update Bar -->
-    <div class="update-bar">UPDATE: Sorry Guys, Some Unity Games are down, only the original version of Granny works now, but most games should be fixed for chromebooks. I am working on trying to fix some heavy games that don'
-    t work, so hold on tight for a moment. Some games take a Long time to load, but if they dont load within about 1-2 minutes, then its probably broken. Original Granny works, same with Backrooms, and most others. </div>
+    <div class="update-bar">
+        UPDATE: Unity Games status improved. Granny fixed for Chromebooks. Most games fixed. Load times vary.
+    </div>
 
     <!-- Games Container -->
     <div id="sections-container"></div>
 
-<script>
-    // SIDEBAR TOGGLE
-    function toggleNav() {
-        const sidebar = document.getElementById("mySidebar");
-        sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
-    }
+    <script>
+        // 1. SIDEBAR & CLOAKING
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
+        }
 
-    function sdxpSearch() {
-    const input = document.getElementById('game-search');
-    const resultsDiv = document.getElementById('search-results');
-    const query = input.value.toLowerCase().trim();
+        function cloakPage() {
+            const currentUrl = window.location.href;
+            const win = window.open('about:blank', '_blank');
+            if (win) {
+                const iframe = win.document.createElement('iframe');
+                iframe.src = currentUrl;
+                iframe.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;';
+                win.document.body.appendChild(iframe);
+                win.document.body.style.margin = '0';
+                win.document.title = 'VORTEX | ULTIMATE GAME HUB';
+            }
+        }
 
-    // 1. Hide dropdown if search bar is empty
-    if (query.length < 1) {
-        resultsDiv.style.display = "none";
-        return;
-    }
+        // 2. INJEX MIRROR LAUNCHER
+        function launchInjex() {
+            const mirrors = [
+                 "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info/",
+          "https://8021688600113732413547102395624276084104729385613928573282.educationandtraining.info/",
+          "https://8021688600113732483727102395624276084104729385610293875616.foothillsbible.org/",
+          "https://8021688600113732413547102395624276482734729385610293875616.smarthomesllc.org/",
+          "https://8021688600113732413547102302937276084104729385610293875616.wilcorw.org/",
+          "https://8021688600113732413547102395624276084104208565610293875616.alertconference.org/"
+            ];
+            const randomMirror = mirrors[Math.floor(Math.random() * mirrors.length)];
+            window.location.href = randomMirror;
+        }
 
-    // 2. Filter through your list (using 'allGames' or 'myGamesList')
-    const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
-    
-    // Find up to 7 matches
-    const matches = list.filter(game => {
-        let clean = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-        return clean.toLowerCase().startsWith(query);
-    }).slice(0, 7);
+        // 3. SEARCH LOGIC
+        function sdxpSearch() {
+            const input = document.getElementById('game-search');
+            const resultsDiv = document.getElementById('search-results');
+            const query = input.value.toLowerCase().trim();
 
-    // 3. Build the floating dropdown
-    resultsDiv.innerHTML = "";
-    if (matches.length > 0) {
-        resultsDiv.style.display = "block";
-        matches.forEach(game => {
-            let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+            if (query.length < 1) {
+                resultsDiv.style.display = "none";
+                return;
+            }
+
+            const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
             
-            // FIND THE TRUE ID (INDEX) of this game in the main list
-            const gameId = list.indexOf(game); 
-            
-            // Link using the ID so play.html can use the Blob Loader
-            resultsDiv.innerHTML += `
-                <a href="play.html?id=${gameId}" class="search-item">
-                    ${cleanName}
-                </a>`;
+            const matches = list.filter(game => {
+                let clean = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+                return clean.toLowerCase().startsWith(query);
+            }).slice(0, 7);
+
+            resultsDiv.innerHTML = "";
+            if (matches.length > 0) {
+                resultsDiv.style.display = "block";
+                matches.forEach(game => {
+                    let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+                    const gameId = list.indexOf(game); 
+                    resultsDiv.innerHTML += `<a href="play.html?id=${gameId}" class="search-item">${cleanName}</a>`;
+                });
+            } else {
+                resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
+                resultsDiv.style.display = "block";
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-wrapper')) {
+                document.getElementById('search-results').style.display = "none";
+            }
         });
-    } else {
-        resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
-        resultsDiv.style.display = "block";
-    }
-}
 
-
-    // Close search if clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-wrapper')) {
-            document.getElementById('search-results').style.display = "none";
-        }
-    });
-
-    // GAME LOADER
-    window.GAME_HASH = "5591b2216ed9a3b4be843b5b1a38a5915e4af084"; 
-    const script = document.createElement('script');
-    script.src = ` https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
-    
-    script.onload = () => { 
-        if (typeof buildStash === 'function') {
-            buildStash(); 
-        }
-    };
-    document.head.appendChild(script);
-</script>
-
+        // 4. EXTERNAL GAME LIST LOADER
+        window.GAME_HASH = "5591b2216ed9a3b4be843b5b1a38a5915e4af084"; 
+        const script = document.createElement('script');
+        script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
+        
+        script.onload = () => { 
+            if (typeof buildStash === 'function') {
+                buildStash(); 
+            }
+        };
+        document.head.appendChild(script);
+    </script>
 </body>
 </html>
-
- 
-    
- 
-    
- 
