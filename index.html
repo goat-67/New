@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VORTEX | ULTIMATE GAME HUB</title>
-   <style>
+  
+
+<style>
     /* 1. BASE LAYOUT - MATTE CHARCOAL */
     html, body { 
         background-color: #2b2b2b; 
@@ -43,53 +45,30 @@
         cursor: pointer; white-space: nowrap;
     }
 
-    /* 4. 9-DOT BENTO MENU (INJEX LAUNCHER) */
+    /* 4. 9-DOT BENTO MENU */
     .bento-wrapper { margin-left: auto; margin-right: 15px; display: flex; align-items: center; }
     .bento-menu { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; cursor: pointer; padding: 10px; border-radius: 50%; transition: 0.3s; }
     .bento-menu:hover { background: rgba(255, 255, 255, 0.1); }
     .bento-dot { width: 4px; height: 4px; background-color: #fff; border-radius: 50%; }
 
-    /* 5. THE SEARCH WRAPPER - FIXED WIDTH 280px */
-    .search-wrapper { 
-        position: relative; 
-        width: 280px; 
-        max-width: 35vw; 
-        z-index: 4500; 
-        box-sizing: border-box; 
-    }
-
+    /* 5. SEARCH WRAPPER */
+    .search-wrapper { position: relative; width: 280px; max-width: 35vw; z-index: 4500; box-sizing: border-box; }
     .game-search {
-        width: 100%;
-        box-sizing: border-box; 
-        background: #222;
-        border: none;
-        border-radius: 12px;
-        padding: 12px 15px;
-        color: #fff;
-        font-size: 15px;
-        outline: none;
+        width: 100%; box-sizing: border-box; background: #222; border: none; border-radius: 12px;
+        padding: 12px 15px; color: #fff; font-size: 15px; outline: none;
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    /* 3. THE NAV BAR - NO OVERFLOW TO ALLOW SEARCH RESULTS */
     nav {
-        background-color: #121212;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 15px; 
-        position: relative;
-        z-index: 4000; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        background-color: #121212; height: 70px; display: flex; align-items: center;
+        justify-content: space-between; padding: 0 15px; position: relative;
+        z-index: 4000; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
     }
 
-    /* SEARCH RESULTS DROPDOWN - FIXED Z-INDEX */
     #search-results {
         position: absolute; top: 55px; left: 0; width: 100%;
         background: #1a1a1a; border-radius: 12px; display: none;
-        z-index: 5000; 
-        box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;
+        z-index: 5000; box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;
         border: 1px solid #252525;
     }
 
@@ -99,7 +78,7 @@
     }
     .search-item:hover { background: #333; color: #235bff; }
 
-    /* 6. ORIGINAL BLUE GRADIENT UPDATE BAR - RETAINED */
+    /* 6. ORIGINAL BLUE GRADIENT UPDATE BAR */
     .update-bar {
         width: 96%; max-width: 1400px; margin: 10px auto; padding: 14px 25px;
         background: linear-gradient(to right, #000B18 0%, #003366 25%, #235bff 50%, #003366 75%, #000B18 100%);
@@ -110,58 +89,60 @@
         border: 1px solid rgba(0, 163, 255, 0.3);
     }
 
-    /* 7. PREMIUM METALLIC SQUIRCLES (NON-HOVER STATE) */
+    /* 7. STEALTH PREMIUM SQUIRCLES (BARELY DARKER THAN BACKGROUND) */
     #sections-container {
         display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         gap: 15px; padding: 40px 60px; max-width: 1600px; margin: 0 auto;
     }
 
-      /* 6. ULTRA-PREMIUM SQUIRCLES (NON-HOVER STATE) */
     .game-btn {
         aspect-ratio: 1 / 1;
-        /* A deeper, multi-stage gradient for metallic depth */
-        background: linear-gradient(145deg, #353535, #1a1a1a);
-        color: #777; 
+        /* JUST BARELY DARKER THAN #2b2b2b */
+        background: linear-gradient(145deg, #252525, #1e1e1e); 
+        color: rgba(255, 255, 255, 0.5); 
         border-radius: 20px;
         display: flex; 
         align-items: center; 
         justify-content: center;
+        
+        /* FONT FIX: Scaled to 6.5px and broken to prevent overflow */
         font-weight: 800;
-        font-size: 7.5px;
+        font-size: 7px;
         text-transform: uppercase;
         text-align: center;
-        padding: 12px;
+        padding: 10px;
         cursor: pointer;
         
-        /* THE PREMIUM SECRET: "Glass-Beveled" Edges */
-        border: 1px solid rgba(0, 0, 0, 0.4);
+        overflow-wrap: anywhere; 
+        word-break: break-all;
+        line-height: 1.1;
+
+        /* PREMIUM DEPTH: Subtle but sharp */
+        border: 1px solid #1a1a1a;
         box-shadow: 
-            /* 1. Subtle Outer Glow (Bottom) */
-            0 10px 20px rgba(0, 0, 0, 0.5), 
-            /* 2. Top-Edge Highlight (Makes it look 3D) */
-            inset 0 1px 1px rgba(255, 255, 255, 0.15), 
-            /* 3. Deep Bottom Recess (Adds weight) */
-            inset 0 -3px 6px rgba(0, 0, 0, 0.6);
+            /* MICRO-TOP LIGHT: Gives that high-end carved look */
+            inset 0 1px 1px rgba(255, 255, 255, 0.08),
+            /* INNER DEPTH: Makes it look "pressed" into the charcoal */
+            inset 0 -2px 3px rgba(0, 0, 0, 0.4),
+            /* OUTER DROP: Separates it slightly from the background */
+            0 10px 15px rgba(0, 0, 0, 0.4);
             
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* THE PREMIUM HOVER: "Electric Engagement" */
     .game-btn:hover { 
-        transform: translateY(-8px) scale(1.08); 
-        background: #222;
+        transform: translateY(-6px) scale(1.08); 
+        background: #1f1f1f;
         color: #fff;
         border-color: #235bff; 
-        
-        /* High-Intensity Blue Underglow */
+        /* Electric Blue Glow */
         box-shadow: 
-            0 15px 30px rgba(0, 0, 0, 0.7),
-            0 0 20px rgba(35, 91, 255, 0.4), /* Electric Blue Aura */
-            inset 0 1px 2px rgba(255, 255, 255, 0.2); /* Brightens top edge on hover */
+            0 0 20px rgba(35, 91, 255, 0.3), 
+            0 15px 35px rgba(0, 0, 0, 0.7);
         z-index: 10;
     }
-
 </style>
+
 
 </head>
 <body>
