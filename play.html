@@ -139,30 +139,27 @@
             // The URL for the single-file game
             const fileName = game.gameUrl.split('/').pop();
             const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+fetch(fetchUrl)
+    .then(r => r.text())
+    .then(html => {
+        const frame = document.getElementById('game-frame');
 
-            fetch(fetchUrl)
-                .then(r => {
-                    if (!r.ok) throw new Error('Network response was not ok');
-                    return r.text();
-                })
-                .then(html => {
-                    const frame = document.getElementById('game-frame');
+        // 1. Tell the game to look for its loader/data files on the CDN, not your site
+        const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
+        const fixedHtml = `<base href="${baseUrl}">` + html;
 
-                    // FIX: Use srcdoc instead of URL.createObjectURL(blob)
-                    // This bypasses the "Not allowed to load local resource" security error
-                    frame.srcdoc = html;
+        // 2. Convert to Base64 to bypass the "Local Resource" (blob) block
+        const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
+        
+        // 3. Load as a Data URI instead of a Blob
+        frame.src = "data:text/html;base64," + base64Html;
+    })
+    .catch(err => {
+        console.error("Game Load Error:", err);
+        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+    });
 
-                    // FALLBACK: If srcdoc fails for very large games, use Data URI
-                    if (!frame.srcdoc) {
-                        frame.src = "data:text/html;base64," + btoa(unescape(encodeURIComponent(html)));
-                    }
-                })
-                .catch(err => {
-                    console.error("Fetch Error:", err);
-                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
-                });
-        }
-    };
+           
 
     // FIXED FULLSCREEN FUNCTION
     function openFullscreen() {
