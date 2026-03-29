@@ -106,7 +106,12 @@
     <div class="game-wrapper">
         <div class="iframe-container">
             <!-- Added allowfullscreen and allow="fullscreen" for Chromebooks -->
-            <iframe id="game-frame" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" allow="fullscreen"></iframe>
+           <iframe id="game-frame" 
+        sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock" 
+        allow="autoplay; fullscreen; keyboard; mouse-lock" 
+        allowfullscreen>
+</iframe>
+
         </div>
 
         <div class="control-bar">
@@ -116,44 +121,61 @@
     </div>
 
     <!-- 1. Load your games list (Change URL if your games.js moved) -->
-    <script src="https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
+    <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
 
-    <script>
-        window.onload = () => {
-            const params = new URLSearchParams(window.location.search);
-            const gameId = params.get('id');
-            
-            // Check if list exists (Handles allGames or myGamesList)
-            const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
+<script>
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const gameId = params.get('id');
+        
+        // Check if list exists (Handles allGames or myGamesList)
+        const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
 
-            if (list && list[gameId]) {
-                const game = list[gameId];
-                let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-                document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
+        if (list && list[gameId]) {
+            const game = list[gameId];
+            let cleanTitle = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
-                // THE BLOB FETCH (The filter bypass)
-                const fileName = game.gameUrl.split('/').pop();
-                const fetchUrl = `https://cdn.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+            // The URL for the single-file game
+            const fileName = game.gameUrl.split('/').pop();
+            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
 
-                fetch(fetchUrl)
-                    .then(r => r.text())
-                    .then(html => {
-                        const blob = new Blob([html], { type: 'text/html' });
-                        document.getElementById('game-frame').src = URL.createObjectURL(blob);
-                    })
-                    .catch(err => {
-                        document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
-                    });
-            }
-        };
+            fetch(fetchUrl)
+                .then(r => {
+                    if (!r.ok) throw new Error('Network response was not ok');
+                    return r.text();
+                })
+                .then(html => {
+                    const frame = document.getElementById('game-frame');
 
-        // FIXED FULLSCREEN FUNCTION
-        function openFullscreen() {
-            const elem = document.getElementById("game-frame");
-            if (elem.requestFullscreen) { elem.requestFullscreen(); }
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } // Chrome/Chromebooks
-            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+                    // FIX: Use srcdoc instead of URL.createObjectURL(blob)
+                    // This bypasses the "Not allowed to load local resource" security error
+                    frame.srcdoc = html;
+
+                    // FALLBACK: If srcdoc fails for very large games, use Data URI
+                    if (!frame.srcdoc) {
+                        frame.src = "data:text/html;base64," + btoa(unescape(encodeURIComponent(html)));
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch Error:", err);
+                    document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
+                });
         }
-    </script>
+    };
+
+    // FIXED FULLSCREEN FUNCTION
+    function openFullscreen() {
+        const elem = document.getElementById("game-frame");
+        if (elem.requestFullscreen) { 
+            elem.requestFullscreen(); 
+        } else if (elem.webkitRequestFullscreen) { 
+            elem.webkitRequestFullscreen(); // Specific for Chrome/Chromebooks
+        } else if (elem.msRequestFullscreen) { 
+            elem.msRequestFullscreen(); 
+        }
+    }
+</script>
+
 </body>
 </html>
