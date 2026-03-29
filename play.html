@@ -142,27 +142,23 @@ fetch(fetchUrl)
     .then(r => r.text())
     .then(html => {
         const frame = document.getElementById('game-frame');
-
-        // 1. Get the folder path from your jsDelivr link
         const baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
 
-        // 2. Force HTTPS and set the Base URL
-        // This stops the "Mixed Content" errors and "Insecure resource" blocks
-        const headInject = `
-            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-            <base href="${baseUrl}">
-        `;
-        
-        const fixedHtml = headInject + html;
+        // 1. Prepare the game code with a Base URL so it finds its scripts
+        const fixedHtml = `<base href="${baseUrl}"><meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">` + html;
 
-        // 3. Load via Base64 to bypass the "Local Resource" (Blob) error
-        const base64Html = btoa(unescape(encodeURIComponent(fixedHtml)));
-        frame.src = "data:text/html;base64," + base64Html;
+        // 2. The Nuclear Option: Directly write to the iframe's document
+        // This is the ONLY way to avoid "Local Resource" errors on strict hosts
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        frameDoc.open();
+        frameDoc.write(fixedHtml);
+        frameDoc.close();
     })
     .catch(err => {
         console.error("Game Load Error:", err);
         document.getElementById('display-title').innerText = "FILTER BLOCKED DOWNLOAD";
     });
+
 
             
         } // <--- WAS MISSING (Closes the 'if' statement)
