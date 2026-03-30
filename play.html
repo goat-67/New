@@ -122,8 +122,6 @@
 
     <!-- 1. Load your games list (Change URL if your games.js moved) -->
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
-
-<script src="https://fastly.jsdelivr.net"></script>
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
@@ -141,7 +139,7 @@
             document.getElementById('display-title').innerText = game.name.toUpperCase();
 
             const fileName = game.gameUrl.split('/').pop();
-            const fetchUrl = `https://fastly.jsdelivr.net{fileName}`;
+            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@latest/UGS-Files/${fileName}`;
 
             fetch(fetchUrl)
                 .then(r => r.text())
