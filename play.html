@@ -122,23 +122,26 @@
 
     <!-- 1. Load your games list (Change URL if your games.js moved) -->
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
+
+<script src="https://fastly.jsdelivr.net"></script>
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
-        const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : null);
+        // Ensure we are looking at the correct list
+        const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
 
-        if (list && list[gameId]) {
-            const game = list[gameId];
-            
-            // 1. TITLE CLEANER (Removes 'cl' and 'y')
-            let cleanTitle = game.name;
-            if (cleanTitle.toLowerCase().startsWith('cl')) cleanTitle = cleanTitle.substring(2);
-            if (cleanTitle.toLowerCase().endsWith('y')) cleanTitle = cleanTitle.slice(0, -1);
-            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
+        // FIXED: Instead of using a number index (which breaks when you delete games),
+        // we find the game that matches the ID (filename) we sent from the button.
+        const game = list.find(g => g.gameUrl.endsWith(gameId));
+
+        if (game) {
+            // FIXED: Removed the 'cleaner' that was chopping off 'cl' and 'y'
+            // This ensures "Achilles" stays "Achilles" and "Granny" stays "Granny"
+            document.getElementById('display-title').innerText = game.name.toUpperCase();
 
             const fileName = game.gameUrl.split('/').pop();
-            const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/UGS-Files/${fileName}`;
+            const fetchUrl = `https://fastly.jsdelivr.net{fileName}`;
 
             fetch(fetchUrl)
                 .then(r => r.text())
@@ -147,19 +150,16 @@
                     let baseUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf("/") + 1);
                     if (!baseUrl.endsWith('/')) baseUrl += '/';
 
-                    // 2. THE PERFECT MOCK SDK (Matches your code snippet exactly)
                     const masterHeaders = `
                         <head>
                             <base href="${baseUrl}">
                             <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
                             <script>
-                                // MOCK YSDK: Satisfies _GameplayStop_js and _IsFullscreen_js
                                 window.ysdk = {
                                     features: {
                                         LoadingAPI: { ready: function() { console.log("SDK Ready"); } },
                                         GameplayAPI: {
                                             stop: function() { 
-                                                console.log("Stop Intercepted - Forcing Start");
                                                 if(window.ysdk.features.GameplayAPI.start) window.ysdk.features.GameplayAPI.start();
                                             },
                                             start: function() { console.log("Gameplay Resumed"); }
@@ -176,32 +176,25 @@
                                     getStorage: function() { return Promise.resolve({}); }
                                 };
 
-                                // GLOBAL FUNCTIONS: Satisfies _FullAdShow and _InitGame_js
                                 window.FullAdShow = function() { 
-                                    console.log("Ad bypassed");
                                     if (window.unityInstance) {
                                         window.unityInstance.SendMessage('GameManager', 'ResumeGame');
                                         window.unityInstance.SendMessage('GameManager', 'Unpause');
                                     }
                                 };
                                 window.InitGame = function() { console.log("InitGame Successful"); };
-                                window.BuyPayments = function() { return true; };
-                                window.ConsumePurchases = function() { return true; };
 
-                                // THE ENGINE UNBLOCKER (Runs 10 times a second)
                                 window.setInterval(() => {
                                     window.isAdShowing = false;
                                     window.isPaused = false;
-                                    // Forces the Unity Main Loop to stay active
                                     if (window.unityInstance && window.unityInstance.Module) {
                                         try { window.unityInstance.Module.resumeMainLoop(); } catch(e) {}
                                     }
-                                }, 100);
+                                }, 1000);
                             <\/script>
                         </head>
                     `;
 
-                    // 3. THE NUCLEAR INJECTION (Bypasses Local Resource Block)
                     const finalHtml = masterHeaders + html;
                     frame.src = "about:blank";
                     const frameDoc = frame.contentDocument || frame.contentWindow.document;
@@ -221,7 +214,6 @@
         else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
     }
 </script>
-
 
 
 
