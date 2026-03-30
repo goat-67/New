@@ -237,7 +237,7 @@
                 matches.forEach(game => {
                     let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
                     const gameId = list.indexOf(game); 
-                    resultsDiv.innerHTML += `<a href="play.html?id=${gameId}" class="search-item">${cleanName}</a>`;
+                    resultsDiv.innerHTML += `<a href="play.html?id=${gameUrl}" class="search-item">${cleanName}</a>`;
                 });
             } else {
                 resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
@@ -247,7 +247,7 @@
 
         document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) document.getElementById('search-results').style.display = "none"; });
 
-        window.GAME_HASH = "6ec02a1268ecf1f724cac61badbc8433f8258488"; 
+        window.GAME_HASH = "ecbaef7e435d6dba23720c3148a2da92fb7f2226"; 
         const script = document.createElement('script');
         script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
         script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
