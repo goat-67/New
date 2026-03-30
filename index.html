@@ -247,7 +247,7 @@
 
         document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) document.getElementById('search-results').style.display = "none"; });
 
-        window.GAME_HASH = "5591b2216ed9a3b4be843b5b1a38a5915e4af084"; 
+        window.GAME_HASH = "6ec02a1268ecf1f724cac61badbc8433f8258488"; 
         const script = document.createElement('script');
         script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
         script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
