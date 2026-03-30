@@ -220,30 +220,50 @@
             const randomMirror = mirrors[Math.floor(Math.random() * mirrors.length)];
             window.location.href = randomMirror;
         }
+function sdxpSearch() {
+    const input = document.getElementById('game-search');
+    const resultsDiv = document.getElementById('search-results');
+    const query = input.value.toLowerCase().trim();
+    
+    if (query.length < 1) { 
+        resultsDiv.style.display = "none"; 
+        return; 
+    }
 
-        function sdxpSearch() {
-            const input = document.getElementById('game-search');
-            const resultsDiv = document.getElementById('search-results');
-            const query = input.value.toLowerCase().trim();
-            if (query.length < 1) { resultsDiv.style.display = "none"; return; }
-            const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
-            const matches = list.filter(game => {
-                let clean = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-                return clean.toLowerCase().startsWith(query);
-            }).slice(0, 7);
-            resultsDiv.innerHTML = "";
-            if (matches.length > 0) {
-                resultsDiv.style.display = "block";
-                matches.forEach(game => {
-                    let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-                    const gameId = list.indexOf(game); 
-                    resultsDiv.innerHTML += `<a href="play.html?id=${gameId}" class="search-item">${cleanName}</a>`;
-                });
-            } else {
-                resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
-                resultsDiv.style.display = "block";
-            }
-        }
+    const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
+    
+    // Filter the list
+    const matches = list.filter(game => {
+        let clean = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+        return clean.toLowerCase().includes(query); // Changed to includes so it's easier to find games
+    }).slice(0, 7);
+
+    resultsDiv.innerHTML = "";
+    
+    if (matches.length > 0) {
+        resultsDiv.style.display = "block";
+        matches.forEach(game => {
+            // 1. Clean the 'cl' for the display name
+            let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
+            
+            // 2. FIXED: Use the filename instead of indexOf(game)
+            const fileName = game.gameUrl.split('/').pop();
+            
+            // 3. Create the link using the filename ID
+            const item = document.createElement('a');
+            item.href = `play.html?id=${fileName}`;
+            item.className = 'search-item';
+            item.innerText = cleanName.toUpperCase();
+            resultsDiv.appendChild(item);
+        });
+    } else {
+        resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
+        resultsDiv.style.display = "block";
+    }
+}
+
+      
+        
 
         document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) document.getElementById('search-results').style.display = "none"; });
 
