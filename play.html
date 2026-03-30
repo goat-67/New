@@ -122,23 +122,24 @@
 
     <!-- 1. Load your games list (Change URL if your games.js moved) -->
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
-<script>
+
+              <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
-        // Ensure we are looking at the correct list
         const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
 
-        // FIXED: Instead of using a number index (which breaks when you delete games),
-        // we find the game that matches the ID (filename) we sent from the button.
-        const game = list.find(g => g.gameUrl.endsWith(gameId));
+        // Find the game by filename so deleting games doesn't break links
+        const game = list.find(g => g.gameUrl && g.gameUrl.endsWith(gameId));
 
         if (game) {
-            // FIXED: Removed the 'cleaner' that was chopping off 'cl' and 'y'
-            // This ensures "Achilles" stays "Achilles" and "Granny" stays "Granny"
-            document.getElementById('display-title').innerText = game.name.toUpperCase();
+            // FIXED: Cleans the 'cl' from the title so it looks normal
+            let cleanTitle = game.name;
+            if (cleanTitle.toLowerCase().startsWith('cl')) cleanTitle = cleanTitle.substring(2);
+            document.getElementById('display-title').innerText = cleanTitle.toUpperCase();
 
             const fileName = game.gameUrl.split('/').pop();
+            // Using @latest as you specified
             const fetchUrl = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@latest/UGS-Files/${fileName}`;
 
             fetch(fetchUrl)
@@ -155,12 +156,12 @@
                             <script>
                                 window.ysdk = {
                                     features: {
-                                        LoadingAPI: { ready: function() { console.log("SDK Ready"); } },
+                                        LoadingAPI: { ready: function() {} },
                                         GameplayAPI: {
                                             stop: function() { 
                                                 if(window.ysdk.features.GameplayAPI.start) window.ysdk.features.GameplayAPI.start();
                                             },
-                                            start: function() { console.log("Gameplay Resumed"); }
+                                            start: function() {}
                                         }
                                     },
                                     screen: { fullscreen: { status: "on" } },
@@ -180,24 +181,21 @@
                                         window.unityInstance.SendMessage('GameManager', 'Unpause');
                                     }
                                 };
-                                window.InitGame = function() { console.log("InitGame Successful"); };
-
+                                window.InitGame = function() {};
                                 window.setInterval(() => {
                                     window.isAdShowing = false;
                                     window.isPaused = false;
                                     if (window.unityInstance && window.unityInstance.Module) {
                                         try { window.unityInstance.Module.resumeMainLoop(); } catch(e) {}
                                     }
-                                }, 1000);
+                                }, 100);
                             <\/script>
                         </head>
                     `;
 
-                    const finalHtml = masterHeaders + html;
-                    frame.src = "about:blank";
                     const frameDoc = frame.contentDocument || frame.contentWindow.document;
                     frameDoc.open();
-                    frameDoc.write(finalHtml);
+                    frameDoc.write(masterHeaders + html);
                     frameDoc.close();
                 })
                 .catch(err => {
@@ -205,13 +203,15 @@
                 });
         }
     };
-
-    function openFullscreen() {
+                    function openFullscreen() {
         const elem = document.getElementById("game-frame");
         if (elem.requestFullscreen) { elem.requestFullscreen(); }
         else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
     }
+
 </script>
+         
+
 
 
 
