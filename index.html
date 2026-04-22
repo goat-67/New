@@ -227,6 +227,30 @@ animation: shake 0.3s;
         display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         gap: 15px; padding: 40px 60px; max-width: 1600px; margin: 0 auto;
     }
+    #dev-bonus-box {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 9999;
+    opacity: 0.2;
+    transition: 0.2s;
+}
+
+#dev-bonus-box:hover {
+    opacity: 1;
+}
+
+#bonus-input {
+    width: 60px;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    background: #1f1f1f;
+    color: #fff;
+    font-size: 12px;
+    outline: none;
+    text-align: center;
+}
 
         /* 7. DEEP CARVED SQUIRCLES (NON-PLASTIC) */
         /* 7. PREMIUM SLATE SQUIRCLES (SOLID & HEAVY) */
@@ -285,6 +309,9 @@ animation: shake 0.3s;
 
 </head>
 <body>
+    <div id="dev-bonus-box">
+    <input type="password" id="bonus-input" placeholder="..." />
+</div>
     <div id="password-overlay">
     <div class="password-box">
         <h2>Enter Password</h2>
@@ -512,6 +539,26 @@ function formatTime(ms) {
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+        document.getElementById("bonus-input").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        if (this.value === "67") {
+            give15Minutes();
+            this.value = "";
+        }
+    }
+});
+
+function give15Minutes() {
+    let data = JSON.parse(localStorage.getItem("timeData"));
+    if (!data) return;
+
+    const BONUS = 15 * 60 * 1000;
+
+    // reduce used time = adds 15 minutes back
+    data.timeSpent = Math.max(0, data.timeSpent - BONUS);
+
+    localStorage.setItem("timeData", JSON.stringify(data));
 }
 
 function lockSite() {
