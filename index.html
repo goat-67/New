@@ -417,7 +417,112 @@ setTimeout(() => {
     }
 }
 
-      
+      const MAX_TIME = 60 * 60 * 1000; // 1 hour
+
+function getTodayKey() {
+    return new Date().toDateString();
+}
+
+function initTimeLimit() {
+    const today = getTodayKey();
+    let data = JSON.parse(localStorage.getItem("timeData")) || {};
+
+    // Reset on new day
+    if (data.date !== today) {
+        data = {
+            date: today,
+            timeSpent: 0,
+            lastUpdate: Date.now()
+        };
+    }
+
+    localStorage.setItem("timeData", JSON.stringify(data));
+
+    createTimerUI();
+    startTracking();
+}
+
+function createTimerUI() {
+    const timer = document.createElement("div");
+    timer.id = "time-remaining";
+    timer.style.position = "fixed";
+    timer.style.bottom = "15px";
+    timer.style.right = "20px";
+    timer.style.padding = "10px 14px";
+    timer.style.background = "rgba(0,0,0,0.6)";
+    timer.style.backdropFilter = "blur(8px)";
+    timer.style.color = "#fff";
+    timer.style.fontSize = "13px";
+    timer.style.borderRadius = "10px";
+    timer.style.zIndex = "9999";
+    timer.style.fontWeight = "600";
+    timer.style.boxShadow = "0 5px 15px rgba(0,0,0,0.6)";
+
+    document.body.appendChild(timer);
+}
+
+function formatTime(ms) {
+    let totalSeconds = Math.floor(ms / 1000);
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startTracking() {
+    setInterval(() => {
+        let data = JSON.parse(localStorage.getItem("timeData"));
+        if (!data) return;
+
+        const now = Date.now();
+
+        const delta = now - data.lastUpdate;
+        data.timeSpent += delta;
+        data.lastUpdate = now;
+
+        localStorage.setItem("timeData", JSON.stringify(data));
+
+        const remaining = MAX_TIME - data.timeSpent;
+
+        const timerEl = document.getElementById("time-remaining");
+        if (timerEl) {
+            if (remaining > 0) {
+                timerEl.innerText = "Time Left: " + formatTime(remaining);
+            } else {
+                timerEl.innerText = "Time Left: 0:00";
+            }
+        }
+
+        if (remaining <= 0) {
+            lockSite();
+        }
+
+    }, 1000);
+}
+
+function lockSite() {
+    document.body.innerHTML = `
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:100vh;
+            background:#111;
+            color:white;
+            font-family:sans-serif;
+            text-align:center;
+        ">
+            <div>
+                <h1>Time Limit Reached</h1>
+                <p>You’ve used your 1 hour for today.</p>
+                <p>Come back tomorrow.</p>
+            </div>
+        </div>
+    `;
+}
+
+// START
+initTimeLimit();
         
 
         document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) document.getElementById('search-results').style.display = "none"; });
