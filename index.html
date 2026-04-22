@@ -357,85 +357,92 @@ animation: shake 0.3s;
 
     <div id="sections-container"></div>
 
-    <script>
-        function toggleNav() {
-            const sidebar = document.getElementById("mySidebar");
-            sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
-        }
+ <script>
+/* ================= NAV + UI ================= */
 
-        function cloakPage() {
-            const currentUrl = window.location.href;
-            const win = window.open('about:blank', '_blank');
-            if (win) {
-                const iframe = win.document.createElement('iframe');
-                iframe.src = currentUrl;
-                iframe.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;';
-                win.document.body.appendChild(iframe);
-                win.document.body.style.margin = '0';
-                win.document.title = 'VORTEX | ULTIMATE GAME HUB';
-            }
-        }
+function toggleNav() {
+    const sidebar = document.getElementById("mySidebar");
+    sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
+}
 
-        function launchInjex() {
-            const mirrors = [
-                "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
-                "https://8021688600113732413547102395624276084104729385613928573282.educationandtraining.info",
-                "https://8021688600113732483727102395624276084104729385610293875616.foothillsbible.org",
-                "https://8021688600113732413547102395624276482734729385610293875616.smarthomesllc.org",
-                "https://8021688600113732413547102302937276084104729385610293875616.wilcorw.org",
-                "https://8021688600113732413547102395624276084104208565610293875616.alertconference.org"
-            ];
-            const randomMirror = mirrors[Math.floor(Math.random() * mirrors.length)];
-            window.location.href = randomMirror;
-        }
+function cloakPage() {
+    const currentUrl = window.location.href;
+    const win = window.open('about:blank', '_blank');
+
+    if (win) {
+        const iframe = win.document.createElement('iframe');
+        iframe.src = currentUrl;
+        iframe.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;';
+        win.document.body.appendChild(iframe);
+        win.document.title = 'VORTEX | ULTIMATE GAME HUB';
+    }
+}
+
+function launchInjex() {
+    const mirrors = [
+        "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
+        "https://8021688600113732413547102395624276084104729385613928573282.educationandtraining.info",
+        "https://8021688600113732483727102395624276084104729385610293875616.foothillsbible.org",
+        "https://8021688600113732413547102395624276482734729385610293875616.smarthomesllc.org",
+        "https://8021688600113732413547102302937276084104729385610293875616.wilcorw.org",
+        "https://8021688600113732413547102395624276084104208565610293875616.alertconference.org"
+    ];
+
+    window.location.href = mirrors[Math.floor(Math.random() * mirrors.length)];
+}
+
+/* ================= SEARCH ================= */
+
 function sdxpSearch() {
     const input = document.getElementById('game-search');
     const resultsDiv = document.getElementById('search-results');
     const query = input.value.toLowerCase().trim();
-    
-    if (query.length < 1) { 
-        resultsDiv.style.display = "none"; 
-        return; 
+
+    if (!query) {
+        resultsDiv.style.display = "none";
+        return;
     }
 
     const list = typeof allGames !== 'undefined' ? allGames : (typeof myGamesList !== 'undefined' ? myGamesList : []);
-    
-    // Filter the list
+
     const matches = list.filter(game => {
         let clean = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-        return clean.toLowerCase().includes(query); // Changed to includes so it's easier to find games
+        return clean.toLowerCase().includes(query);
     }).slice(0, 7);
 
     resultsDiv.innerHTML = "";
-    
+
     if (matches.length > 0) {
         resultsDiv.style.display = "block";
+
         matches.forEach(game => {
-            // 1. Clean the 'cl' for the display name
             let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-            
-            // 2. FIXED: Use the filename instead of indexOf(game)
             const fileName = game.gameUrl.split('/').pop();
-            
-            // 3. Create the link using the filename ID
+
             const item = document.createElement('a');
             item.href = `play.html?id=${fileName}`;
             item.className = 'search-item';
             item.innerText = cleanName.toUpperCase();
+
             resultsDiv.appendChild(item);
         });
+
     } else {
         resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
         resultsDiv.style.display = "block";
     }
 }
-        function checkPassword() {
-            document.querySelector(".password-box").classList.add("shake");
-setTimeout(() => {
-    document.querySelector(".password-box").classList.remove("shake");
-}, 300);
+
+/* ================= PASSWORD ================= */
+
+function checkPassword() {
+    const box = document.querySelector(".password-box");
+
+    box.classList.add("shake");
+    setTimeout(() => box.classList.remove("shake"), 300);
+
     const input = document.getElementById("password-input").value;
-    const correctPassword = "chinknees foot fungus"; // change this
+    const correctPassword = "chinknees foot fungus";
 
     if (input === correctPassword) {
         document.getElementById("password-overlay").style.display = "none";
@@ -444,14 +451,16 @@ setTimeout(() => {
     }
 }
 
-     const MAX_TIME =  60 * 60 * 1000; // 1 hour
+/* ================= TIMER SYSTEM ================= */
+
+const MAX_TIME = 45 * 60 * 1000; // 45 minutes
 
 function getTodayKey() {
     return new Date().toDateString();
 }
 
 function getData() {
-    return JSON.parse(localStorage.getItem("timeData"));
+    return JSON.parse(localStorage.getItem("timeData")) || null;
 }
 
 function saveData(data) {
@@ -466,18 +475,21 @@ function initTimeLimit() {
         data = {
             date: today,
             timeSpent: 0,
-            lastStart: Date.now()
+            lastStart: Date.now(),
+            bonusTime: 0,
+            bonusUsed: false
         };
-        saveData(data);
     } else {
-        // IMPORTANT: restart session tracking correctly
         data.lastStart = Date.now();
-        saveData(data);
     }
+
+    saveData(data);
 
     createTimerUI();
     updateLoop();
 }
+
+/* ================= TIMER UI ================= */
 
 function createTimerUI() {
     if (document.getElementById("time-remaining")) return;
@@ -500,6 +512,8 @@ function createTimerUI() {
     document.body.appendChild(timer);
 }
 
+/* ================= MAIN TIMER LOOP ================= */
+
 function updateLoop() {
     setInterval(() => {
         let data = getData();
@@ -507,11 +521,11 @@ function updateLoop() {
 
         const now = Date.now();
 
-        // REAL TIME CALCULATION (this is the fix)
         const sessionTime = now - data.lastStart;
-        const totalTime = data.timeSpent + sessionTime;
+        const totalAllowed = MAX_TIME + (data.bonusTime || 0);
+        const used = data.timeSpent + sessionTime;
 
-        const remaining = MAX_TIME - totalTime;
+        const remaining = totalAllowed - used;
 
         const timerEl = document.getElementById("time-remaining");
 
@@ -526,9 +540,9 @@ function updateLoop() {
             return;
         }
 
-        // Update stored baseline so refresh doesn't break it
-        data.timeSpent = totalTime;
+        data.timeSpent = used;
         data.lastStart = now;
+
         saveData(data);
 
     }, 1000);
@@ -540,26 +554,40 @@ function formatTime(ms) {
     let seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
-        document.getElementById("bonus-input").addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-        if (this.value === "67") {
-            give15Minutes();
-            this.value = "";
-        }
+
+/* ================= BONUS SYSTEM ================= */
+
+window.addEventListener("load", () => {
+    const input = document.getElementById("bonus-input");
+
+    if (input) {
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                if (this.value === "67") {
+                    give15Minutes();
+                    this.value = "";
+                }
+            }
+        });
     }
 });
 
 function give15Minutes() {
-    let data = JSON.parse(localStorage.getItem("timeData"));
+    let data = getData();
     if (!data) return;
+
+    if (!data.bonusUsed) data.bonusUsed = false;
+    if (data.bonusUsed) return;
 
     const BONUS = 15 * 60 * 1000;
 
-    // reduce used time = adds 15 minutes back
-    data.timeSpent = Math.max(0, data.timeSpent - BONUS);
+    data.bonusTime = (data.bonusTime || 0) + BONUS;
+    data.bonusUsed = true;
 
-    localStorage.setItem("timeData", JSON.stringify(data));
+    saveData(data);
 }
+
+/* ================= LOCK SCREEN ================= */
 
 function lockSite() {
     document.body.innerHTML = `
@@ -582,16 +610,32 @@ function lockSite() {
     `;
 }
 
+/* ================= START ================= */
+
 initTimeLimit();
-        
 
-        document.addEventListener('click', (e) => { if (!e.target.closest('.search-wrapper')) document.getElementById('search-results').style.display = "none"; });
+/* ================= OUTSIDE CLICK CLOSE SEARCH ================= */
 
-        window.GAME_HASH = "ecbaef7e435d6dba23720c3148a2da92fb7f2226"; 
-        const script = document.createElement('script');
-        script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
-        script.onload = () => { if (typeof buildStash === 'function') buildStash(); };
-        document.head.appendChild(script);
-    </script>
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper')) {
+        const el = document.getElementById('search-results');
+        if (el) el.style.display = "none";
+    }
+});
+
+/* ================= GAME LOADER ================= */
+
+window.GAME_HASH = "ecbaef7e435d6dba23720c3148a2da92fb7f2226";
+
+const script = document.createElement('script');
+script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
+
+script.onload = () => {
+    if (typeof buildStash === "function") buildStash();
+};
+
+document.head.appendChild(script);
+
+</script>
 </body>
 </html>
