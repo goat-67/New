@@ -417,34 +417,47 @@ setTimeout(() => {
     }
 }
 
-      const MAX_TIME =   600000; // 1 hour
+     const MAX_TIME = 60 * 60 * 1000; // 1 hour
 
 function getTodayKey() {
     return new Date().toDateString();
 }
 
+function getData() {
+    return JSON.parse(localStorage.getItem("timeData"));
+}
+
+function saveData(data) {
+    localStorage.setItem("timeData", JSON.stringify(data));
+}
+
 function initTimeLimit() {
     const today = getTodayKey();
-    let data = JSON.parse(localStorage.getItem("timeData")) || {};
+    let data = getData();
 
-    // Reset on new day
-    if (data.date !== today) {
+    if (!data || data.date !== today) {
         data = {
             date: today,
             timeSpent: 0,
-            lastUpdate: Date.now()
+            lastStart: Date.now()
         };
+        saveData(data);
+    } else {
+        // IMPORTANT: restart session tracking correctly
+        data.lastStart = Date.now();
+        saveData(data);
     }
 
-    localStorage.setItem("timeData", JSON.stringify(data));
-
     createTimerUI();
-    startTracking();
+    updateLoop();
 }
 
 function createTimerUI() {
+    if (document.getElementById("time-remaining")) return;
+
     const timer = document.createElement("div");
     timer.id = "time-remaining";
+
     timer.style.position = "fixed";
     timer.style.bottom = "15px";
     timer.style.right = "20px";
@@ -456,48 +469,49 @@ function createTimerUI() {
     timer.style.borderRadius = "10px";
     timer.style.zIndex = "9999";
     timer.style.fontWeight = "600";
-    timer.style.boxShadow = "0 5px 15px rgba(0,0,0,0.6)";
 
     document.body.appendChild(timer);
+}
+
+function updateLoop() {
+    setInterval(() => {
+        let data = getData();
+        if (!data) return;
+
+        const now = Date.now();
+
+        // REAL TIME CALCULATION (this is the fix)
+        const sessionTime = now - data.lastStart;
+        const totalTime = data.timeSpent + sessionTime;
+
+        const remaining = MAX_TIME - totalTime;
+
+        const timerEl = document.getElementById("time-remaining");
+
+        if (timerEl) {
+            timerEl.innerText = remaining > 0
+                ? "Time Left: " + formatTime(remaining)
+                : "Time Left: 0:00";
+        }
+
+        if (remaining <= 0) {
+            lockSite();
+            return;
+        }
+
+        // Update stored baseline so refresh doesn't break it
+        data.timeSpent = totalTime;
+        data.lastStart = now;
+        saveData(data);
+
+    }, 1000);
 }
 
 function formatTime(ms) {
     let totalSeconds = Math.floor(ms / 1000);
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
-
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-function startTracking() {
-    setInterval(() => {
-        let data = JSON.parse(localStorage.getItem("timeData"));
-        if (!data) return;
-
-        const now = Date.now();
-
-        const delta = now - data.lastUpdate;
-        data.timeSpent += delta;
-        data.lastUpdate = now;
-
-        localStorage.setItem("timeData", JSON.stringify(data));
-
-        const remaining = MAX_TIME - data.timeSpent;
-
-        const timerEl = document.getElementById("time-remaining");
-        if (timerEl) {
-            if (remaining > 0) {
-                timerEl.innerText = "Time Left: " + formatTime(remaining);
-            } else {
-                timerEl.innerText = "Time Left: 0:00";
-            }
-        }
-
-        if (remaining <= 0) {
-            lockSite();
-        }
-
-    }, 1000);
 }
 
 function lockSite() {
@@ -521,7 +535,6 @@ function lockSite() {
     `;
 }
 
-// START
 initTimeLimit();
         
 
