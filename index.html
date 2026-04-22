@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VORTEX | ULTIMATE GAME HUB</title>
+    <title>SCHOOL | EDUCATION</title>
   
 
 <style>
@@ -16,6 +16,60 @@
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
+
+    #password-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 99999;
+}
+
+.password-box {
+    background: #1b1b1b;
+    padding: 40px;
+    border-radius: 25px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    border: 1px solid #2a2a2a;
+}
+
+.password-box input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #222;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.password-box button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #235bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#error-msg {
+    color: red;
+    margin-top: 10px;
+    font-size: 13px;
+}
 
     /* 2. FLOATING SIDEBAR */
     .sidebar {
@@ -152,6 +206,14 @@
 
 </head>
 <body>
+    <div id="password-overlay">
+    <div class="password-box">
+        <h2>Enter Password</h2>
+        <input type="password" id="password-input" placeholder="Password">
+        <button onclick="checkPassword()">Enter</button>
+        <p id="error-msg"></p>
+    </div>
+</div>
 
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
@@ -259,6 +321,16 @@ function sdxpSearch() {
     } else {
         resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
         resultsDiv.style.display = "block";
+    }
+}
+        function checkPassword() {
+    const input = document.getElementById("password-input").value;
+    const correctPassword = "1234"; // change this
+
+    if (input === correctPassword) {
+        document.getElementById("password-overlay").style.display = "none";
+    } else {
+        document.getElementById("error-msg").innerText = "Wrong password";
     }
 }
 
