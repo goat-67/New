@@ -445,12 +445,20 @@ function checkPassword() {
     const correctPassword = "chinknees foot fungus";
 
     if (input === correctPassword) {
-        document.getElementById("password-overlay").style.display = "none";
+    localStorage.setItem("unlocked", "true"); // ADD THIS
+    document.getElementById("password-overlay").style.display = "none";
+
     } else {
         document.getElementById("error-msg").innerText = "Wrong password";
     }
 }
 
+     window.addEventListener("load", () => {
+    if (localStorage.getItem("unlocked") === "true") {
+        const overlay = document.getElementById("password-overlay");
+        if (overlay) overlay.style.display = "none";
+    }
+});
 /* ================= TIMER SYSTEM ================= */
 
 const MAX_TIME = 45 * 60 * 1000; // 45 minutes
