@@ -476,21 +476,8 @@ const savedDevice = localStorage.getItem(deviceKey);
 if (!savedDevice) {
   localStorage.setItem(deviceKey, currentDevice);
 } else if (savedDevice !== currentDevice) {
- document.body.innerHTML = `
-    <div style="
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      background:#111;
-      color:white;
-      font-family:sans-serif;
-    ">
-      <div>
-      <h1>Access Denied</h1>
-      <p>Who shared it to you.....</p>
-    </div>
-  </div>";
+document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#111;color:white;font-family:sans-serif;"><div><h1>Access Denied</h1><p>Who shared it to you.....</p></div></div>';
+
   throw new Error("Blocked");
 }
 function toggleNav() {
