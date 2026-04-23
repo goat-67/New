@@ -442,7 +442,21 @@ animation: shake 0.3s;
 
  <script>
 /* ================= NAV + UI ================= */
+// ================= KEY LOCK =================
 
+const allowedUsers = [
+  "manoftree",
+  "wlucwar",
+  "goat-67"
+];
+
+const params = new URLSearchParams(window.location.search);
+const user = params.get("user");
+
+if (!allowedUsers.includes(user)) {
+  document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:20%'>Access Denied</h1>";
+  throw new Error("Blocked");
+}
 function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
