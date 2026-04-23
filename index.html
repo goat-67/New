@@ -393,9 +393,9 @@ animation: shake 0.3s;
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a>
         <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
-        <a href="https://lecture.library.english.literature.technology.ebb.com.au" target="_blank">STRONGDOGXP</a>
-        <a href="https://math.geometry.algebra.learning.windsurfwetter.de" target="_blank">STRONGDOGXP</a>
-        <a href="#" onclick="cloakPage()">Cloak Page</a>
+        <a href="https://altonhabitat.com/" target="_blank">STRONGDOGXP</a>
+    
+       
     </div>
 
     <!-- Navigation -->
@@ -428,23 +428,23 @@ animation: shake 0.3s;
 
  <script>
 /* ================= NAV + UI ================= */
-
+window.addEventListener("load", () => {
+    cloakPage();
+});
 function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
 }
 
 function cloakPage() {
-    const currentUrl = window.location.href;
-    const win = window.open('about:blank', '_blank');
+    const overlay = document.getElementById("cloak-overlay");
+    const frame = document.getElementById("cloak-frame");
 
-    if (win) {
-        const iframe = win.document.createElement('iframe');
-        iframe.src = currentUrl;
-        iframe.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;';
-        win.document.body.appendChild(iframe);
-        win.document.title = 'VORTEX | ULTIMATE GAME HUB';
-    }
+    frame.src = window.location.href; // load current site inside iframe
+    overlay.style.display = "block";
+
+    // optional: stop scrolling behind it
+    document.body.style.overflow = "hidden";
 }
 
 function launchInjex() {
