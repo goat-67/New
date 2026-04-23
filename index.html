@@ -69,42 +69,43 @@ animation: popIn 0.35s ease;
 }
 .password-input-wrapper {
     position: relative;
+    width: 100%;
 }
-    #toggle-password {
+
+#password-input {
+    width: 100%;
+    padding: 12px 42px 12px 12px;
+    border-radius: 10px;
+    border: none;
+    background: #1f1f1f;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+}
+
+/* ICON POSITION FIX */
+#toggle-password {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
     width: 18px;
-    height: 10px;
-    border: 2px solid #888;
-    border-radius: 10px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    opacity: 0.7;
     transition: 0.2s;
 }
 
-#toggle-password::after {
-    content: "";
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #888;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 #toggle-password:hover {
-    border-color: #235bff;
+    opacity: 1;
 }
 
-#toggle-password.active {
-    border-color: #235bff;
-}
-
-#toggle-password.active::after {
-    background: #235bff;
+#toggle-password svg {
+    width: 18px;
+    height: 18px;
 }
 /* BOX POP */
 @keyframes popIn {
@@ -355,11 +356,18 @@ animation: shake 0.3s;
         <div class="password-box">
             <h2>Enter Password</h2>
 
-            <!-- UPDATED PASSWORD INPUT (wrapper added) -->
-            <div class="password-input-wrapper">
-                <input type="password" id="password-input" placeholder="Password">
-                <div id="toggle-password"></div>
-            </div>
+          <div class="password-input-wrapper">
+    <input type="password" id="password-input" placeholder="Password">
+
+    <div id="toggle-password">
+        <!-- simple eye icon -->
+        <svg viewBox="0 0 24 24">
+            <path d="M12 5C6 5 2 12 2 12s4 7 10 7 10-7 10-7-4-7-10-7z"
+                  stroke="#888" stroke-width="2" fill="none"/>
+            <circle cx="12" cy="12" r="3" fill="#888"/>
+        </svg>
+    </div>
+</div>
 
             <button onclick="checkPassword()">Enter</button>
             <p id="error-msg"></p>
@@ -480,6 +488,7 @@ function sdxpSearch() {
 }
 
 /* ================= PASSWORD ================= */
+
 document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("password-input");
     const toggle = document.getElementById("toggle-password");
@@ -492,25 +501,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 function checkPassword() {
     const box = document.querySelector(".password-box");
+
+    if (!box) return;
 
     box.classList.add("shake");
     setTimeout(() => box.classList.remove("shake"), 300);
 
-    const input = document.getElementById("password-input").value;
+    const inputValue = document.getElementById("password-input").value;
     const correctPassword = "chinknees foot fungus";
 
-    if (input === correctPassword) {
-    sessionStorage.setItem("unlocked", "true"); // ADD THIS
-    document.getElementById("password-overlay").style.display = "none";
-
+    if (inputValue === correctPassword) {
+        sessionStorage.setItem("unlocked", "true");
+        document.getElementById("password-overlay").style.display = "none";
     } else {
         document.getElementById("error-msg").innerText = "Wrong password";
     }
 }
 
-     window.addEventListener("load", () => {
+window.addEventListener("load", () => {
     if (sessionStorage.getItem("unlocked") === "true") {
         const overlay = document.getElementById("password-overlay");
         if (overlay) overlay.style.display = "none";
