@@ -442,25 +442,33 @@ animation: shake 0.3s;
 
  <script>
 /* ================= NAV + UI ================= */
-window.addEventListener("load", () => {
-    cloakPage();
-});
+
 function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
 }
+if (input === correctPassword) {
+    sessionStorage.setItem("unlocked", "true");
+    document.getElementById("password-overlay").style.display = "none";
 
-function cloakPage() {
-    const overlay = document.getElementById("cloak-overlay");
-    const frame = document.getElementById("cloak-frame");
-
-    frame.src = window.location.href; // load current site inside iframe
-    overlay.style.display = "block";
-
-    // optional: stop scrolling behind it
-    document.body.style.overflow = "hidden";
+    cloakNewTab();
 }
+function cloakNewTab() {
+    const win = window.open("about:blank", "_blank");
 
+    if (!win) {
+        alert("Popup blocked — allow popups for this site.");
+        return;
+    }
+
+    const html = document.documentElement.outerHTML;
+
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+
+    win.document.title = "VORTEX | ULTIMATE GAME HUB";
+}
 function launchInjex() {
     const mirrors = [
         "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
