@@ -124,6 +124,137 @@
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
 
               <script>
+
+                  /* ================= PLAY PAGE TIMER SYSTEM ================= */
+
+const MAX_TIME = 45 * 60 * 1000; // 45 minutes
+
+function getTodayKey() {
+    return new Date().toDateString();
+}
+
+function getData() {
+    return JSON.parse(localStorage.getItem("timeData")) || null;
+}
+
+function saveData(data) {
+    localStorage.setItem("timeData", JSON.stringify(data));
+}
+
+function initTimeLimit() {
+    const today = getTodayKey();
+    let data = getData();
+
+    if (!data || data.date !== today) {
+        data = {
+            date: today,
+            timeSpent: 0,
+            lastStart: Date.now(),
+            bonusTime: 0,
+            bonusUsed: false
+        };
+    } else {
+        data.lastStart = Date.now();
+    }
+
+    saveData(data);
+
+    createTimerUI();
+    updateLoop();
+}
+
+/* ================= TIMER UI ================= */
+
+function createTimerUI() {
+    if (document.getElementById("time-remaining")) return;
+
+    const timer = document.createElement("div");
+    timer.id = "time-remaining";
+
+    timer.style.position = "fixed";
+    timer.style.bottom = "15px";
+    timer.style.right = "20px";
+    timer.style.padding = "10px 14px";
+    timer.style.background = "rgba(0,0,0,0.6)";
+    timer.style.backdropFilter = "blur(8px)";
+    timer.style.color = "#fff";
+    timer.style.fontSize = "13px";
+    timer.style.borderRadius = "10px";
+    timer.style.zIndex = "9999";
+    timer.style.fontWeight = "600";
+
+    document.body.appendChild(timer);
+}
+
+/* ================= MAIN LOOP ================= */
+
+function updateLoop() {
+    setInterval(() => {
+        let data = getData();
+        if (!data) return;
+
+        const now = Date.now();
+
+        const sessionTime = now - data.lastStart;
+        const totalAllowed = MAX_TIME + (data.bonusTime || 0);
+        const used = data.timeSpent + sessionTime;
+
+        const remaining = totalAllowed - used;
+
+        const timerEl = document.getElementById("time-remaining");
+
+        if (timerEl) {
+            timerEl.innerText = remaining > 0
+                ? "Time Left: " + formatTime(remaining)
+                : "Time Left: 0:00";
+        }
+
+        if (remaining <= 0) {
+            lockSite();
+            return;
+        }
+
+        data.timeSpent = used;
+        data.lastStart = now;
+
+        saveData(data);
+
+    }, 1000);
+}
+
+function formatTime(ms) {
+    let totalSeconds = Math.floor(ms / 1000);
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+/* ================= LOCK ================= */
+
+function lockSite() {
+    document.body.innerHTML = `
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:100vh;
+            background:#111;
+            color:white;
+            font-family:sans-serif;
+            text-align:center;
+        ">
+            <div>
+                <h1>Time Limit Reached</h1>
+                <p>You’ve used your limit for today.</p>
+                <p>Come back tomorrow.</p>
+            </div>
+        </div>
+    `;
+}
+
+/* ================= START ================= */
+
+initTimeLimit();
                   window.addEventListener("load", () => {
     if (sessionStorage.getItem("unlocked") === "true") {
         const overlay = document.getElementById("password-overlay");
