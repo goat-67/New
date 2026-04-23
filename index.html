@@ -444,17 +444,52 @@ animation: shake 0.3s;
 /* ================= NAV + UI ================= */
 // ================= KEY LOCK =================
 
+// ================= KEY LOCK =================
+
 const allowedUsers = [
   "manoftree",
   "wlucwar",
   "goat-67"
 ];
 
+// get user from URL
 const params = new URLSearchParams(window.location.search);
 const user = params.get("user");
 
+// ❌ block if not valid key FIRST
 if (!allowedUsers.includes(user)) {
   document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:20%'>Access Denied</h1>";
+  throw new Error("Blocked");
+}
+
+// ================= DEVICE LOCK =================
+
+// create a unique storage key per user
+const deviceKey = "device_lock_" + user;
+
+// get current device info
+const currentDevice = navigator.userAgent;
+
+// check if already used
+const savedDevice = localStorage.getItem(deviceKey);
+
+if (!savedDevice) {
+  localStorage.setItem(deviceKey, currentDevice);
+} else if (savedDevice !== currentDevice) {
+  document.body.innerHTML = " <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#111;
+    color:white;
+    font-family:sans-serif;
+  ">
+    <div>
+      <h1>Access Denied</h1>
+      <p>Who shared it to you.....</p>
+    </div>
+  </div>";
   throw new Error("Blocked");
 }
 function toggleNav() {
