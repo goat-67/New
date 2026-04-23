@@ -450,20 +450,21 @@ function toggleNav() {
 function cloakNewTab() {
     const win = window.open("about:blank", "_blank");
 
-    if (!win) {
-        alert("Popup blocked — allow popups for this site.");
-        return;
-    }
+    if (!win) return;
 
-    const html = document.documentElement.outerHTML;
+    const iframe = win.document.createElement("iframe");
+    iframe.src = window.location.href;
 
-    win.document.open();
-    win.document.write(html);
-    win.document.close();
+    iframe.style.position = "fixed";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
 
-    win.document.title = "SCHOOL| EDUCATION";
+    win.document.body.appendChild(iframe);
+    win.document.title = "SCHOOL | EDUCATION";
 }
-
 function launchInjex() {
     const mirrors = [
         "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
