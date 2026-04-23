@@ -447,45 +447,7 @@ function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
 }
-     if (window.self !== window.top) {
-    window.stop();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("password-input");
-    const toggle = document.getElementById("toggle-password");
-
-    if (input && toggle) {
-        toggle.addEventListener("click", () => {
-            const isHidden = input.type === "password";
-            input.type = isHidden ? "text" : "password";
-            toggle.classList.toggle("active", isHidden);
-        });
-    }
-
-    // auto-hide overlay if already unlocked
-    if (sessionStorage.getItem("unlocked") === "true") {
-        const overlay = document.getElementById("password-overlay");
-        if (overlay) overlay.style.display = "none";
-    }
-function cloakNewTab() {
-    const win = window.open("about:blank", "_blank");
-
-    if (!win) return;
-
-    const iframe = win.document.createElement("iframe");
-    iframe.src = window.location.href;
-
-    iframe.style.position = "fixed";
-    iframe.style.top = "0";
-    iframe.style.left = "0";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-
-    win.document.body.appendChild(iframe);
-    win.document.title = "SCHOOL | EDUCATION";
-}
+   
 function launchInjex() {
     const mirrors = [
         "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
@@ -541,38 +503,72 @@ function sdxpSearch() {
     }
 }
 
-/* ================= PASSWORD ================= */
+/* ================= PASSWORD + TOGGLE + CLOAK ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("password-input");
     const toggle = document.getElementById("toggle-password");
 
+    // Eye toggle
     if (input && toggle) {
         toggle.addEventListener("click", () => {
-            const isHidden = input.type === "password";
-            input.type = isHidden ? "text" : "password";
-            toggle.classList.toggle("active", isHidden);
+            const hidden = input.type === "password";
+            input.type = hidden ? "text" : "password";
+            toggle.classList.toggle("active", hidden);
         });
+    }
+
+    // auto unlock
+    if (sessionStorage.getItem("unlocked") === "true") {
+        const overlay = document.getElementById("password-overlay");
+        if (overlay) overlay.style.display = "none";
     }
 });
 
+
 function checkPassword() {
     const box = document.querySelector(".password-box");
+    const inputValue = document.getElementById("password-input").value;
+    const correctPassword = "chinknees foot fungus";
 
     box.classList.add("shake");
     setTimeout(() => box.classList.remove("shake"), 300);
 
-    const inputValue = document.getElementById("password-input").value;
-    const correctPassword = "chinknees foot fungus";
-
     if (inputValue === correctPassword) {
         sessionStorage.setItem("unlocked", "true");
-        document.getElementById("password-overlay").style.display = "none";
 
-        cloakNewTab(); // ✅ THIS is where it belongs
+        const overlay = document.getElementById("password-overlay");
+        if (overlay) overlay.style.display = "none";
+
+        cloakNewTab(); // runs ONLY after correct password
     } else {
         document.getElementById("error-msg").innerText = "Wrong password";
     }
+}
+
+
+/* ================= CLOAK (FIXED VERSION) ================= */
+
+function cloakNewTab() {
+    const win = window.open("about:blank", "_blank");
+
+    if (!win) {
+        alert("Popup blocked. Allow popups.");
+        return;
+    }
+
+    const iframe = win.document.createElement("iframe");
+
+    iframe.src = window.location.href;
+    iframe.style.position = "fixed";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+
+    win.document.body.appendChild(iframe);
+    win.document.title = "VORTEX | ULTIMATE GAME HUB";
 }
 /* ================= TIMER SYSTEM ================= */
 
