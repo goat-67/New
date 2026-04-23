@@ -447,6 +447,27 @@ function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
 }
+     if (window.self !== window.top) {
+    window.stop();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("password-input");
+    const toggle = document.getElementById("toggle-password");
+
+    if (input && toggle) {
+        toggle.addEventListener("click", () => {
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+            toggle.classList.toggle("active", isHidden);
+        });
+    }
+
+    // auto-hide overlay if already unlocked
+    if (sessionStorage.getItem("unlocked") === "true") {
+        const overlay = document.getElementById("password-overlay");
+        if (overlay) overlay.style.display = "none";
+    }
 function cloakNewTab() {
     const win = window.open("about:blank", "_blank");
 
