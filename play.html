@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> VORTEX | Playing</title>
+    <title> School | Playing</title>
     <style>
     /* 1. BASE LAYOUT - MATTE CHARCOAL (Fixes white screen) */
     body, html {
@@ -125,7 +125,7 @@
 
               <script>
                   window.addEventListener("load", () => {
-    if (localStorage.getItem("unlocked") === "true") {
+    if (sessionStorage.getItem("unlocked") === "true") {
         const overlay = document.getElementById("password-overlay");
         if (overlay) overlay.style.display = "none";
     }
