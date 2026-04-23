@@ -310,16 +310,23 @@ animation: shake 0.3s;
 </head>
 <body>
     <div id="dev-bonus-box">
-    <input type="password" id="bonus-input" placeholder="..." />
-</div>
-    <div id="password-overlay">
-    <div class="password-box">
-        <h2>Enter Password</h2>
-        <input type="password" id="password-input" placeholder="Password">
-        <button onclick="checkPassword()">Enter</button>
-        <p id="error-msg"></p>
+        <input type="password" id="bonus-input" placeholder="..." />
     </div>
-</div>
+
+    <div id="password-overlay">
+        <div class="password-box">
+            <h2>Enter Password</h2>
+
+            <!-- UPDATED PASSWORD INPUT (wrapper added) -->
+            <div class="password-input-wrapper">
+                <input type="password" id="password-input" placeholder="Password">
+                <div id="toggle-password"></div>
+            </div>
+
+            <button onclick="checkPassword()">Enter</button>
+            <p id="error-msg"></p>
+        </div>
+    </div>
 
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
@@ -356,6 +363,7 @@ animation: shake 0.3s;
     <div class="update-bar">UPDATE: INJEX IS ADDED!!! Injex should be the 9 dots by the search bar. Also, some games take a long time to load, but if they dont load within about 1-2 minutes, then its probably broken.</div>
 
     <div id="sections-container"></div>
+
 
  <script>
 /* ================= NAV + UI ================= */
@@ -434,7 +442,18 @@ function sdxpSearch() {
 }
 
 /* ================= PASSWORD ================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("password-input");
+    const toggle = document.getElementById("toggle-password");
 
+    if (input && toggle) {
+        toggle.addEventListener("click", () => {
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+            toggle.classList.toggle("active", isHidden);
+        });
+    }
+});
 function checkPassword() {
     const box = document.querySelector(".password-box");
 
