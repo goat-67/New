@@ -124,6 +124,12 @@
     <script src="https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@main/src/games.js"></script>
 
               <script>
+                  window.addEventListener("load", () => {
+    if (localStorage.getItem("unlocked") === "true") {
+        const overlay = document.getElementById("password-overlay");
+        if (overlay) overlay.style.display = "none";
+    }
+});
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const gameId = params.get('id');
