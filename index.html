@@ -447,12 +447,6 @@ function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
 }
-if (input === correctPassword) {
-    sessionStorage.setItem("unlocked", "true");
-    document.getElementById("password-overlay").style.display = "none";
-
-    cloakNewTab();
-}
 function cloakNewTab() {
     const win = window.open("about:blank", "_blank");
 
@@ -467,8 +461,9 @@ function cloakNewTab() {
     win.document.write(html);
     win.document.close();
 
-    win.document.title = "VORTEX | ULTIMATE GAME HUB";
+    win.document.title = "SCHOOL| EDUCATION";
 }
+
 function launchInjex() {
     const mirrors = [
         "https://8021688600113732413547102395624276084104729385610293875616.estoniaeducation.info",
@@ -542,8 +537,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function checkPassword() {
     const box = document.querySelector(".password-box");
 
-    if (!box) return;
-
     box.classList.add("shake");
     setTimeout(() => box.classList.remove("shake"), 300);
 
@@ -553,17 +546,12 @@ function checkPassword() {
     if (inputValue === correctPassword) {
         sessionStorage.setItem("unlocked", "true");
         document.getElementById("password-overlay").style.display = "none";
+
+        cloakNewTab(); // ✅ THIS is where it belongs
     } else {
         document.getElementById("error-msg").innerText = "Wrong password";
     }
 }
-
-window.addEventListener("load", () => {
-    if (sessionStorage.getItem("unlocked") === "true") {
-        const overlay = document.getElementById("password-overlay");
-        if (overlay) overlay.style.display = "none";
-    }
-});
 /* ================= TIMER SYSTEM ================= */
 
 const MAX_TIME = 45 * 60 * 1000; // 45 minutes
