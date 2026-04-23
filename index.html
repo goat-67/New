@@ -74,7 +74,7 @@ animation: popIn 0.35s ease;
 
 #password-input {
     width: 100%;
-    padding: 12px 42px 12px 12px;
+      padding: 10px 40px 10px 12px;
     border-radius: 10px;
     border: none;
     background: #1f1f1f;
@@ -96,7 +96,6 @@ animation: popIn 0.35s ease;
     justify-content: center;
     cursor: pointer;
     opacity: 0.7;
-    transition: 0.2s;
 }
 
 #toggle-password:hover {
@@ -117,6 +116,21 @@ to {
 transform: scale(1);
 opacity: 1;
 }
+}
+    /* slash line */
+#toggle-password::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #888;
+    transform: rotate(-45deg);
+    transition: 0.2s;
+}
+
+/* when visible → hide slash */
+#toggle-password.active::after {
+    opacity: 0;
 }
 
 /* TITLE */
