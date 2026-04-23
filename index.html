@@ -74,7 +74,8 @@ animation: popIn 0.35s ease;
 
 #password-input {
     width: 100%;
-      padding: 10px 40px 10px 12px;
+    box-sizing: border-box; /* 🔥 THIS is the real fix */
+    padding: 10px 40px 10px 12px;
     border-radius: 10px;
     border: none;
     background: #1f1f1f;
@@ -88,7 +89,7 @@ animation: popIn 0.35s ease;
     position: absolute;
     right: 12px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-52%);
     width: 18px;
     height: 18px;
     display: flex;
