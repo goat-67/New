@@ -445,7 +445,7 @@ function checkPassword() {
     const correctPassword = "chinknees foot fungus";
 
     if (input === correctPassword) {
-    localStorage.setItem("unlocked", "true"); // ADD THIS
+    sessionStorage.setItem("unlocked", "true"); // ADD THIS
     document.getElementById("password-overlay").style.display = "none";
 
     } else {
@@ -454,7 +454,7 @@ function checkPassword() {
 }
 
      window.addEventListener("load", () => {
-    if (localStorage.getItem("unlocked") === "true") {
+    if (sessionStorage.getItem("unlocked") === "true") {
         const overlay = document.getElementById("password-overlay");
         if (overlay) overlay.style.display = "none";
     }
