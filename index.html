@@ -286,7 +286,7 @@ animation: shake 0.3s;
     bottom: 10px;
     left: 10px;
     z-index: 9999;
-    opacity: 0.2;
+    opacity: 0.05;
     transition: 0.2s;
 }
 
@@ -527,7 +527,7 @@ function sdxpSearch() {
             const fileName = game.gameUrl.split('/').pop();
 
             const item = document.createElement('a');
-            item.href = `play.html?id=${fileName}`;
+          item.href = `play.html?id=${fileName}&user=${user}`;
             item.className = 'search-item';
             item.innerText = cleanName.toUpperCase();
 
