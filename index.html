@@ -621,12 +621,16 @@ if (panicInput) {
 }
 
 document.addEventListener("keydown", (e) => {
+    // 🚫 don't trigger if typing in input
+    if (document.activeElement.id === "panic-key-input") return;
+
     if (!panicKey) return;
 
     if (e.key.toLowerCase() === panicKey) {
         window.location.href = "https://sojomiddle.jordandistrict.org/";
     }
 });
+
 
 /* ================= PASSWORD + TOGGLE + CLOAK ================= */
 
