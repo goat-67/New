@@ -584,13 +584,29 @@ function sdxpSearch() {
             let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
             const fileName = game.gameUrl.split('/').pop();
 
-            const item = document.createElement('a');
-          item.href = `play.html?id=${fileName}&user=${user}`;
-            item.className = 'search-item';
-            item.innerText = cleanName.toUpperCase();
+            const item = document.createElement('div');
+item.className = 'search-item';
+item.innerText = cleanName.toUpperCase();
 
-            resultsDiv.appendChild(item);
+item.onclick = () => {
+    fetch(game.gameUrl + "?t=" + Date.now())
+        .then(res => res.text())
+        .then(html => {
+            const win = window.open("about:blank", "_blank");
+
+            if (!win) {
+                alert("Enable popups");
+                return;
+            }
+
+            win.document.open();
+            win.document.write(html);
+            win.document.close();
+        })
+        .catch(err => {
+            console.error("Game failed to load:", err);
         });
+};
 
     } else {
         resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
@@ -893,7 +909,7 @@ document.addEventListener('click', (e) => {
 
 /* ================= GAME LOADER ================= */
 
-window.GAME_HASH = "ecbaef7e435d6dba23720c3148a2da92fb7f2226";
+window.GAME_HASH = "059de2e844f6432c0b721fb9a4304d22ad1904c5";
 
 const script = document.createElement('script');
 script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
