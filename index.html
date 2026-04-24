@@ -610,14 +610,28 @@ const panicInput = document.getElementById("panic-key-input");
 
 if (panicInput) {
     panicInput.addEventListener("keydown", (e) => {
-        e.preventDefault();
+    e.preventDefault();
+    e.stopPropagation();
 
-        panicKey = e.key.toLowerCase();
-        localStorage.setItem("panicKey", panicKey);
-
+    // 🔥 BACKSPACE = CLEAR
+    if (e.key === "Backspace") {
+        panicKey = null;
+        localStorage.removeItem("panicKey");
         updatePanicDisplay();
-        panicInput.value = panicKey;
-    });
+        panicInput.value = "";
+        return;
+    }
+
+    // 🚫 ignore weird keys
+    if (e.key.length !== 1) return;
+
+    // ✅ set normal key
+    panicKey = e.key.toLowerCase();
+    localStorage.setItem("panicKey", panicKey);
+
+    updatePanicDisplay();
+    panicInput.value = panicKey;
+});
 }
 
 document.addEventListener("keydown", (e) => {
