@@ -97,10 +97,10 @@
 <body>
 
     <nav>
-        <div class="menu-icon" onclick="window.location.href='index.html'">
+        <div class="menu-icon" onclick="window.location.href='index.html?user=' + sessionStorage.getItem('user')">
             <div></div><div></div><div></div>
         </div>
-        <div class="logo" onclick="window.location.href='index.html'">VORTEX | ULTIMATE GAME HUB</div>
+        <div class="logo" onclick="window.location.href='index.html?user=' + sessionStorage.getItem('user')">VORTEX | ULTIMATE GAME HUB</div>
     </nav>
 
     <div class="game-wrapper">
@@ -126,7 +126,23 @@
               <script>
 
                   /* ================= PLAY PAGE TIMER SYSTEM ================= */
+// get user from URL OR session
+const params = new URLSearchParams(window.location.search);
+let user = params.get("user") || sessionStorage.getItem("user");
 
+// save it if it exists
+if (user) {
+  sessionStorage.setItem("user", user);
+}
+
+// your allowed users
+const allowedUsers = ["manoftree", "wlucwar", "goat-67"];
+
+// block if invalid
+if (!user || !allowedUsers.includes(user)) {
+  document.body.innerHTML = "<h1 style='color:white;text-align:center;margin-top:20%'>Access Denied</h1>";
+  throw new Error("Blocked");
+}
 const MAX_TIME = 45 * 60 * 1000; // 45 minutes
 
 function getTodayKey() {
