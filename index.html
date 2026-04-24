@@ -449,7 +449,9 @@ animation: shake 0.3s;
 const allowedUsers = [
   "manoftree",
   "wlucwar",
-  "goat-67"
+  "goat-67",
+"roberjam",
+    "rykaboi"
 ];
 
 // get user from URL
@@ -590,7 +592,13 @@ function checkPassword() {
     }
 }
 
+if (user === "roberjam") {
+  document.title = "Google Classroom"; // normal
+}
 
+if (user === "rykaboi") {
+  document.title = "Classroom"; // slightly different
+}
 /* ================= CLOAK (FIXED VERSION) ================= */
 
 function cloakNewTab() {
