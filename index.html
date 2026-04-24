@@ -454,7 +454,14 @@ const allowedUsers = [
 
 // get user from URL
 const params = new URLSearchParams(window.location.search);
-const user = params.get("user");
+
+// get from URL OR session
+let user = params.get("user") || sessionStorage.getItem("user");
+
+// save it if found
+if (user) {
+  sessionStorage.setItem("user", user);
+}
 
 // ❌ block if not valid key FIRST
 if (!user || !allowedUsers.includes(user))  {
