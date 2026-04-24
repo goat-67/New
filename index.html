@@ -580,33 +580,36 @@ function sdxpSearch() {
     if (matches.length > 0) {
         resultsDiv.style.display = "block";
 
-        matches.forEach(game => {
-            let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
-            const fileName = game.gameUrl.split('/').pop();
+       matches.forEach(game => {
+    let cleanName = game.name.startsWith('cl') ? game.name.substring(2) : game.name;
 
-            const item = document.createElement('div');
-item.className = 'search-item';
-item.innerText = cleanName.toUpperCase();
+    const item = document.createElement('div');
+    item.className = 'search-item';
+    item.innerText = cleanName.toUpperCase();
 
-item.onclick = () => {
-    fetch(game.gameUrl + "?t=" + Date.now())
-        .then(res => res.text())
-        .then(html => {
-            const win = window.open("about:blank", "_blank");
+    item.onclick = () => {
+        fetch(game.gameUrl + "?t=" + Date.now())
+            .then(res => res.text())
+            .then(html => {
+                const win = window.open("about:blank", "_blank");
 
-            if (!win) {
-                alert("Enable popups");
-                return;
-            }
+                if (!win) {
+                    alert("Enable popups");
+                    return;
+                }
 
-            win.document.open();
-            win.document.write(html);
-            win.document.close();
-        })
-        .catch(err => {
-            console.error("Game failed to load:", err);
-        });
-};
+                win.document.open();
+                win.document.write(html);
+                win.document.close();
+            })
+            .catch(err => {
+                console.error("Game failed to load:", err);
+            });
+    };
+
+    // ✅ THIS WAS MISSING
+    resultsDiv.appendChild(item);
+});
 
     } else {
         resultsDiv.innerHTML = `<div class="search-item" style="opacity:0.5">No results found</div>`;
