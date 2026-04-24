@@ -264,7 +264,41 @@ animation: shake 0.3s;
         text-decoration: none; font-size: 14px; border-bottom: 1px solid #252525; transition: 0.2s;
     }
     .search-item:hover { background: #333; color: #235bff; }
+.panic-wrapper {
+    padding: 15px 25px;
+}
 
+.panic-label {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+.panic-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: #222;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.panic-input:focus {
+    box-shadow: 0 0 0 2px #235bff;
+}
+
+.panic-current {
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.6;
+    color: #aaa;
+}
     /* 6. ORIGINAL BLUE GRADIENT UPDATE BAR */
     .update-bar {
         width: 96%; max-width: 1400px; margin: 10px auto; padding: 14px 25px;
@@ -408,7 +442,24 @@ animation: shake 0.3s;
         <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a>
         <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
         <a href="https://altonhabitat.com/" target="_blank">STRONGDOGXP</a>
-    
+    <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a>
+    <h2 style="color: #fff; padding-left: 25px; font-size: 14px; opacity: 0.5; margin-top: 40px;">UNBLOCKED LINKS</h2>
+    <a href="https://altonhabitat.com/" target="_blank">STRONGDOGXP</a>
+
+  <div class="panic-wrapper">
+    <div class="panic-label">PANIC KEY</div>
+
+    <input id="panic-key-input" class="panic-input" placeholder="Press a key...">
+
+    <div class="panic-current">
+        Current: <span id="current-panic-key">None</span>
+    </div>
+</div>
+    </div>
+    <!-- ✅ END -->
+
+</div>
        
     </div>
 
@@ -548,6 +599,36 @@ function sdxpSearch() {
         resultsDiv.style.display = "block";
     }
 }
+
+     let panicKey = localStorage.getItem("panicKey");
+
+function updatePanicDisplay() {
+    const el = document.getElementById("current-panic-key");
+    if (el) el.innerText = panicKey || "None";
+}
+updatePanicDisplay();
+
+const panicInput = document.getElementById("panic-key-input");
+
+if (panicInput) {
+    panicInput.addEventListener("keydown", (e) => {
+        e.preventDefault();
+
+        panicKey = e.key.toLowerCase();
+        localStorage.setItem("panicKey", panicKey);
+
+        updatePanicDisplay();
+        panicInput.value = panicKey;
+    });
+}
+
+document.addEventListener("keydown", (e) => {
+    if (!panicKey) return;
+
+    if (e.key.toLowerCase() === panicKey) {
+        window.location.href = "https://sojomiddle.jordandistrict.org/";
+    }
+});
 
 /* ================= PASSWORD + TOGGLE + CLOAK ================= */
 
