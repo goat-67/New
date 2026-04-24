@@ -467,7 +467,7 @@ animation: shake 0.3s;
             <div></div><div></div><div></div>
         </div>
         
-        <div class="logo" onclick="window.location.reload()">SCHOOL  | EDUCATION</div>
+        <div class="logo" onclick="window.location.reload()">VORTEX | EDUCATION</div>
         
         <div class="bento-wrapper">
             <div class="bento-menu" onclick="launchInjex()">
@@ -478,7 +478,7 @@ animation: shake 0.3s;
         </div>
 
         <div class="search-wrapper">
-            <input type="text" id="game-search" class="game-search" placeholder="Search 1,205 games..." oninput="sdxpSearch()">
+            <input type="text" id="game-search" class="game-search" placeholder="Search 1,206 games..." oninput="sdxpSearch()">
             <div id="search-results"></div>
         </div>
     </nav>
@@ -520,24 +520,7 @@ if (!user || !allowedUsers.includes(user))  {
   throw new Error("Blocked");
 }
 
-// ================= DEVICE LOCK =================
 
-// create a unique storage key per user
-const deviceKey = "device_lock_" + user;
-
-// get current device info
-const currentDevice = navigator.userAgent;
-
-// check if already used
-const savedDevice = localStorage.getItem(deviceKey);
-
-if (!savedDevice) {
-  localStorage.setItem(deviceKey, currentDevice);
-} else if (savedDevice !== currentDevice) {
-document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#111;color:white;font-family:sans-serif;"><div><h1>Access Denied</h1><p>Who shared it to you.....</p></div></div>';
-
-  throw new Error("Blocked");
-}
 function toggleNav() {
     const sidebar = document.getElementById("mySidebar");
     sidebar.style.width = (sidebar.style.width === "250px") ? "0" : "250px";
@@ -912,7 +895,7 @@ document.addEventListener('click', (e) => {
 
 /* ================= GAME LOADER ================= */
 
-window.GAME_HASH = "12d5791aa0e28b70d805327d0dd8d80b544e2c68";
+window.GAME_HASH = "78d40235341a1ae92d57015e5e71431a4d6b1287";
 
 const script = document.createElement('script');
 script.src = `https://fastly.jsdelivr.net/gh/goat-67/ugs-singlefile@${window.GAME_HASH}/src/games.js`;
